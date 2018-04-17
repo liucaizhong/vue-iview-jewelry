@@ -46,15 +46,15 @@ module.exports = {
     }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'comma-dangle': ["error", "only-multiline"],
-    'semi': ["error", "never"],
-    'space-before-function-paren': ["error", "always"],
-    'vue/no-parsing-error': [2, {
-      "x-invalid-end-tag": false
+    'comma-dangle': ['error', 'only-multiline'],
+    'semi': ['error', 'never'],
+    'space-before-function-paren': ['error', 'always'],
+    'vue/no-parsing-error': [0, {
+      'x-invalid-end-tag': false
     }],
-    'func-names': ["error", "as-needed"],
+    'func-names': ['error', 'as-needed'],
     'no-console': [0],
     'object-shorthand': [0],
-    'arrow-parens': ["error", "as-needed"]
+    'arrow-parens': ['error', 'as-needed']
   }
 }
