@@ -1,16 +1,21 @@
 <template>
   <div id="app">
-    <router-view/>
+    <dashboard />
   </div>
 </template>
 
 <script>
+import Index from '@/components/Index'
+
 export default {
   name: 'App',
+  components: {
+    dashboard: Index,
+  },
 }
 </script>
 
-<style style="less">
+<style lang="less">
 * {
   box-sizing: border-box;
 }

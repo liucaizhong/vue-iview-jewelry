@@ -10,7 +10,7 @@ module.exports = {
   },
   // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
   // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-  extends: ['plugin:vue/essential', 'airbnb-base'],
+  extends: ['plugin:vue/recommended', 'airbnb-base'],
   // required to lint *.vue files
   plugins: [
     'vue'
@@ -49,12 +49,19 @@ module.exports = {
     'comma-dangle': ['error', 'only-multiline'],
     'semi': ['error', 'never'],
     'space-before-function-paren': ['error', 'always'],
-    'vue/no-parsing-error': [0, {
+    'vue/no-parsing-error': [2, {
       'x-invalid-end-tag': false
+    }],
+    "vue/max-attributes-per-line": [2, {
+      "singleline": 5,
+      "multiline": {
+        "allowFirstLine": true
+      }
     }],
     'func-names': ['error', 'as-needed'],
     'no-console': [0],
     'object-shorthand': [0],
-    'arrow-parens': ['error', 'as-needed']
+    'arrow-parens': ['error', 'as-needed'],
+    'vue/html-indent': ['error', 2]
   }
-}
+};
