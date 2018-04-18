@@ -9,6 +9,15 @@ import router from './router'
 Vue.config.productionTip = false
 Vue.use(iView)
 
+router.beforeEach((to, from, next) => {
+  iView.LoadingBar.start()
+  next()
+})
+
+router.afterEach(route => {
+  iView.LoadingBar.finish()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

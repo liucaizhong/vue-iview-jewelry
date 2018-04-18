@@ -62,6 +62,12 @@ module.exports = {
     'no-console': [0],
     'object-shorthand': [0],
     'arrow-parens': ['error', 'as-needed'],
-    'vue/html-indent': ['error', 2]
+    'vue/html-indent': ['error', 2],
+    'no-unused-vars': [0],
+    'prefer-template': [0],
+    'no-plusplus': [0],
+    'no-mixed-operators': [0],
+    'no-nested-ternary': [0],
+    'arrow-body-style': [0]
   }
 };
