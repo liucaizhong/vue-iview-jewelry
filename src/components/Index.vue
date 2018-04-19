@@ -46,7 +46,6 @@
       </Sider>
       <Layout>
         <Header
-          :style="{padding: 0}"
           class="layout-header-bar"
         >
           <Icon
@@ -78,7 +77,7 @@
             </Dropdown>
           </div>
         </Header>
-        <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+        <Content>
           <router-view />
         </Content>
       </Layout>
@@ -135,7 +134,27 @@ export default {
   overflow: hidden;
 
   .ivu-layout-content {
-    display: flex;
+    position: relative;
+    background: #fff;
+    min-height: 260px;
+
+    > div {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+
+      .ivu-form {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
   }
 
   .sidebar {
@@ -146,6 +165,8 @@ export default {
   .layout-header-bar{
     background: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    padding: 0;
+    border-bottom: 1px solid #dddee1;
   }
   .layout-logo-left{
     width: 90%;
