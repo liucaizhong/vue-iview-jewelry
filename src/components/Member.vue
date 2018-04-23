@@ -26,7 +26,7 @@
         <FormItem>
           <Button type="primary">搜索</Button>
           <Button type="error">清空</Button>
-          <Button type="success" icon="loop">刷新</Button>
+          <!-- <Button type="success" icon="loop">刷新</Button> -->
         </FormItem>
       </Form>
     </div>
@@ -70,98 +70,77 @@ export default {
       tableLoading: false,
       tableColumns: [
         {
-          title: 'Name',
+          title: '会员号',
+          key: 'memberId',
+          sortable: true,
+        },
+        {
+          title: '姓名',
           key: 'name',
           sortable: true,
         },
         {
-          title: 'Status',
-          key: 'status',
-          render: (h, params) => {
-            const row = params.row
-            const color = row.status === 1 ? 'blue' : row.status === 2 ? 'green' : 'red'
-            const text = row.status === 1 ? 'Working' : row.status === 2 ? 'Success' : 'Fail'
-
-            return h('Tag', {
-              props: {
-                type: 'dot',
-                color: color
-              }
-            }, text)
+          title: '性别',
+          key: 'gender',
+          filters: [
+            {
+              label: '男',
+              value: 0,
+            },
+            {
+              label: '女',
+              value: 1,
+            }
+          ],
+          filterMultiple: false,
+          filterMethod (value, row) {
+            if (value) {
+              return row.gender === 'female'
+            }
+            return row.gender === 'male'
           }
         },
         {
-          title: 'Portrayal',
-          key: 'portrayal',
-          render: (h, params) => {
-            return h('Poptip', {
-              props: {
-                trigger: 'hover',
-                title: params.row.portrayal.length + 'portrayals',
-                placement: 'bottom'
-              }
-            }, [
-              h('Tag', params.row.portrayal.length),
-              h('div', {
-                slot: 'content'
-              }, [
-                h('ul', this.tableData1[params.index].portrayal.map(item => {
-                  return h('li', {
-                    style: {
-                      textAlign: 'center',
-                      padding: '4px'
-                    }
-                  }, item)
-                }))
-              ])
-            ])
+          title: '证件类型',
+          key: 'idType',
+          filters: IDTYPE.map(t => ({
+            label: t.value,
+            value: t.key,
+          })),
+          filterMultiple: true,
+          filterMethod (value, row) {
+            return row.idType === value
           }
         },
         {
-          title: 'People',
-          key: 'people',
-          render: (h, params) => {
-            return h('Poptip', {
-              props: {
-                trigger: 'hover',
-                title: params.row.people.length + 'customers',
-                placement: 'bottom'
-              }
-            }, [
-              h('Tag', params.row.people.length),
-              h('div', {
-                slot: 'content'
-              }, [
-                h('ul', this.tableData1[params.index].people.map(item => {
-                  return h('li', {
-                    style: {
-                      textAlign: 'center',
-                      padding: '4px'
-                    }
-                  }, item.n + '：' + item.c + 'People')
-                }))
-              ])
-            ])
-          }
+          title: '证件号码',
+          key: 'idNo',
+          sortable: true,
         },
         {
-          title: 'Sampling Time',
-          key: 'time',
-          render: (h, params) => {
-            return h('div', 'Almost' + params.row.time + 'days')
-          }
+          title: '手机号',
+          key: 'cellPhone',
+          sortable: true,
         },
         {
-          title: 'Updated Time',
-          key: 'update',
-          render: (h, params) => {
-            return h('div', this.formatDate(this.tableData1[params.index].update))
-          }
+          title: '余额',
+          key: 'balance',
+          sortable: true,
         },
         {
-          title: 'Action',
+          title: '押金',
+          key: 'deposit',
+          sortable: true,
+        },
+        {
+          title: '租金',
+          key: 'rent',
+          sortable: true,
+        },
+        {
+          title: '操作',
           key: 'action',
-          width: 150,
+          width: 80,
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -175,21 +154,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.show(params.index)
+                    console.log(params)
                   }
                 }
-              }, 'View'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    this.remove(params.index)
-                  }
-                }
-              }, 'Delete')
+              }, '详情'),
             ])
           }
         }
@@ -247,7 +215,7 @@ export default {
 
   .body {
     border: 1px solid #dddee1;
-    min-height: 600px;
+    min-height: 300px;
     flex: 1;
 
     .ivu-table-wrapper {
@@ -259,6 +227,10 @@ export default {
       }
 
       .ivu-table:before {
+        content: none;
+      }
+
+      .ivu-table:after {
         content: none;
       }
 
