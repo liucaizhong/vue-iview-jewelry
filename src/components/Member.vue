@@ -1,75 +1,41 @@
 <template>
   <div class="member">
     <div class="header">
-      <Form :model="formItem" :label-width="80">
-        <FormItem label="Input">
-          <Input v-model="formItem.input" placeholder="Enter something...">
-          </Input>
-        </FormItem>
-        <FormItem label="Select">
-          <Select v-model="formItem.select">
-            <Option value="beijing">New York</Option>
-            <Option value="shanghai">London</Option>
-            <Option value="shenzhen">Sydney</Option>
-          </Select>
-        </FormItem>
-        <FormItem label="DatePicker">
-          <Row>
-            <Col span="11">
-            <DatePicker v-model="formItem.date" type="date" placeholder="Select date" />
-            </Col>
-            <Col span="2" style="text-align: center">-</Col>
-            <Col span="11">
-            <TimePicker v-model="formItem.time" type="time" placeholder="Select time" />
-            </Col>
-          </Row>
-        </FormItem>
-        <FormItem label="Radio">
-          <RadioGroup v-model="formItem.radio">
-            <Radio label="male">Male</Radio>
-            <Radio label="female">Female</Radio>
-          </RadioGroup>
-        </FormItem>
-        <FormItem label="Checkbox">
-          <CheckboxGroup v-model="formItem.checkbox">
-            <Checkbox label="Eat"/>
-            <Checkbox label="Sleep"/>
-            <Checkbox label="Run"/>
-            <Checkbox label="Movie"/>
-          </CheckboxGroup>
-        </FormItem>
-        <FormItem label="Switch">
-          <i-switch v-model="formItem.switch" size="large">
-            <span slot="open">On</span>
-            <span slot="close">Off</span>
-          </i-switch>
-        </FormItem>
-        <FormItem label="Slider">
-          <Slider v-model="formItem.slider" range/>
-        </FormItem>
-        <FormItem label="Text">
-          <Input
-            v-model="formItem.textarea"
-            :autosize="{minRows: 2,maxRows: 5}"
-            type="textarea"
-            placeholder="Enter something..."
-          >
+      <Form :model="searchForm" :label-width="80" inline>
+        <FormItem label="姓名">
+          <Input v-model="searchForm.name">
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="success">搜索</Button>
-          <Button type="warning">清空</Button>
-          <Button type="primary">下载</Button>
+          <Input v-model="searchForm.idNo">
+          <Select slot="prepend" v-model="searchForm.idType" style="width: 80px">
+            <Option
+              v-for="(idtype, i) in idTypes"
+              :key="i"
+              :value="idtype.key"
+            >
+              {{ idtype.value }}
+            </Option>
+          </Select>
+          </Input>
+        </FormItem>
+        <FormItem label="手机号">
+          <Input v-model="searchForm.cellPhone">
+          </Input>
+        </FormItem>
+        <FormItem>
+          <Button type="primary">搜索</Button>
+          <Button type="error">清空</Button>
+          <Button type="success" icon="loop">刷新</Button>
         </FormItem>
       </Form>
     </div>
     <div class="body">
       <Table
-        :data="tableData1"
-        :columns="tableColumns1"
+        :data="tableData"
+        :columns="tableColumns"
         :loading="tableLoading"
         stripe
-        @on-row-dblclick="dbClickRow"
       />
     </div>
     <div class="footer">
@@ -88,23 +54,21 @@
 </template>
 
 <script>
+import { IDTYPE } from '@/constant'
+
 export default {
   data () {
     return {
-      formItem: {
-        input: '',
-        select: '',
-        radio: 'male',
-        checkbox: [],
-        switch: true,
-        date: '',
-        time: '',
-        slider: [20, 50],
-        textarea: '',
+      idTypes: IDTYPE,
+      searchForm: {
+        name: '',
+        idType: 0,
+        idNo: '',
+        cellPhone: '',
       },
-      tableData1: this.mockTableData1(),
+      tableData: this.mockTableData1(),
       tableLoading: false,
-      tableColumns1: [
+      tableColumns: [
         {
           title: 'Name',
           key: 'name',
@@ -270,10 +234,6 @@ export default {
     },
     changePage () {
       this.tableData1 = this.mockTableData1()
-    },
-    dbClickRow (row, index) {
-      console.log('row', row)
-      console.log('index', index)
     }
   }
 }
@@ -281,12 +241,22 @@ export default {
 
 <style lang="less">
 .member {
+  .header {
+    flex-grow: 0;
+  }
+
   .body {
-    overflow: auto;
     border: 1px solid #dddee1;
+    min-height: 600px;
+    flex: 1;
 
     .ivu-table-wrapper {
       border: none;
+      height: 100%;
+
+      .ivu-table {
+        overflow: auto;
+      }
 
       .ivu-table:before {
         content: none;
@@ -301,15 +271,29 @@ export default {
         margin-top: 40px;
         margin-bottom: 10px;
       }
+
+      .ivu-table-tip {
+        top: 40px;
+        position: relative;
+
+        table {
+          width: auto;
+
+          td {
+            border-bottom: none;
+          }
+        }
+      }
     }
   }
 
   .footer {
-    height: 56px;
+    height: 36px;
     box-sizing: border-box;
     margin-top: 10px;
     margin-right: 10px;
     overflow: hidden;
+    flex-grow: 0;
   }
 }
 </style>
