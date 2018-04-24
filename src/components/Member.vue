@@ -140,7 +140,7 @@ export default {
         {
           title: '操作',
           key: 'action',
-          width: 80,
+          width: 100,
           align: 'center',
           render: (h, params) => {
             return h('div', [
