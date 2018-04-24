@@ -34,18 +34,6 @@ export default {
 </script>
 
 <style lang="less">
-.bg-blur {
-            float: left;
-            width: 100%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            -webkit-filter: blur(15px);
-            -moz-filter: blur(15px);
-            -o-filter: blur(15px);
-            -ms-filter: blur(15px);
-            filter: blur(15px);
-        }
 body{
 	font-family: "微软雅黑";
 	font-size: 14px;
