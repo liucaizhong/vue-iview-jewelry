@@ -28,8 +28,8 @@
             <span>信息管理</span>
             </MenuItem>
             <MenuItem name="1-2">
-            <Icon type="ios-list" />
-            <span>预约管理</span>
+            <Icon type="ios-box" />
+            <span>商品管理</span>
             </MenuItem>
           </Submenu>
           <Submenu name="2">
@@ -168,6 +168,7 @@ export default {
     padding: 0;
     border-bottom: 1px solid #dddee1;
   }
+
   .layout-logo-left{
     width: 90%;
     height: 30px;

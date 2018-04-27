@@ -338,6 +338,7 @@ export default {
   padding: 15px;
   justify-content: flex-start;
   background: #f7f7f7;
+  overflow: auto;
 
   * {
     font-size: 14px;
