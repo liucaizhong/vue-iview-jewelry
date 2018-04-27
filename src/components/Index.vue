@@ -28,18 +28,22 @@
             <span>信息管理</span>
             </MenuItem>
             <MenuItem name="1-2">
-            <Icon type="ios-box" />
-            <span>商品管理</span>
+            <Icon type="ios-list" />
+            <span>预约管理</span>
             </MenuItem>
           </Submenu>
           <Submenu name="2">
             <template slot="title">
-              <Icon type="ios-people" />
-              <span>门店管理</span>
+              <Icon type="ios-box" />
+              <span>商品管理</span>
             </template>
             <MenuItem name="2-1">
             <Icon type="search" />
-            <span>信息管理</span>
+            <span>商品查询</span>
+            </MenuItem>
+            <MenuItem name="2-2">
+            <Icon type="ios-plus" />
+            <span>新增商品</span>
             </MenuItem>
           </Submenu>
         </Menu>
