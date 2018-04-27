@@ -120,7 +120,7 @@ export default {
       const paths = {
         '1-1': 'member',
         '1-2': 'booking',
-        '2-1': 'shop',
+        '2-1': 'goods',
       }
       this.$router.push(paths[name])
     },
