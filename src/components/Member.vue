@@ -1,7 +1,7 @@
 <template>
   <div class="member">
     <div class="header">
-      <Form :model="searchForm" :label-width="80" inline>
+      <Form :model="searchForm" :label-width="80">
         <FormItem label="姓名">
           <Input v-model="searchForm.name">
           </Input>
@@ -155,6 +155,7 @@ export default {
                 on: {
                   click: () => {
                     console.log(params)
+                    this.$router.push('member/detail')
                   }
                 }
               }, '详情'),
@@ -223,7 +224,8 @@ export default {
       height: 100%;
 
       .ivu-table {
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
       }
 
       .ivu-table:before {
@@ -242,6 +244,12 @@ export default {
       .ivu-table-body {
         margin-top: 40px;
         margin-bottom: 10px;
+      }
+
+      @media screen and (max-width: 768px){
+        .ivu-table-body {
+          margin-top: 55px;
+        }
       }
 
       .ivu-table-tip {

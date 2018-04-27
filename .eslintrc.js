@@ -49,7 +49,7 @@ module.exports = {
     'comma-dangle': ['error', 'only-multiline'],
     'semi': ['error', 'never'],
     'space-before-function-paren': ['error', 'always'],
-    'vue/no-parsing-error': [2, {
+    'vue/no-parsing-error': [0, {
       'x-invalid-end-tag': false
     }],
     "vue/max-attributes-per-line": [2, {
@@ -68,6 +68,8 @@ module.exports = {
     'no-plusplus': [0],
     'no-mixed-operators': [0],
     'no-nested-ternary': [0],
-    'arrow-body-style': [0]
+    'arrow-body-style': [0],
+    'default-case': [0],
+    'vue/attributes-order': [0]
   }
 };

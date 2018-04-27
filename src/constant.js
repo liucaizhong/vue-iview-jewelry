@@ -9,4 +9,5 @@ module.exports = {
     key: 2,
     value: '其他证件',
   }],
+  ADDRESSMAXNUM: 5,
 }

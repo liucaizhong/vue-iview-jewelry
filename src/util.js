@@ -23,5 +23,19 @@ module.exports = {
     document.cookie = name + '=' + encodeURIComponent(value) + ((expiredays === null)
       ? ''
       : ';expires=' + exdate.toGMTString())
-  }
+  },
+  getLocalStorage (key) {
+    const localStorage = window.localStorage
+    return localStorage.getItem(key)
+  },
+  setLocalStorage (key, value) {
+    const localStorage = window.localStorage
+    try {
+      localStorage.setItem(key, value)
+    } catch (e) {
+      console.log(e)
+      return false
+    }
+    return true
+  },
 }
