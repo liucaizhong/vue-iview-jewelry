@@ -1,32 +1,22 @@
 <template>
-  <div class="member">
+  <div class="goods">
     <div class="header">
       <Form :model="searchForm" :label-width="80">
-        <FormItem label="姓名" prop="name">
-          <Input v-model="searchForm.name">
+        <FormItem label="商品型号" prop="model">
+          <Input v-model="searchForm.model">
+          </Input>
+        </FormItem>
+        <FormItem label="商品名称" prop="title">
+          <Input v-model="searchForm.title">
           </Input>
         </FormItem>
         <FormItem>
-          <Input v-model="searchForm.idNo">
-          <Select slot="prepend" v-model="searchForm.idType" style="width: 80px">
-            <Option
-              v-for="(idtype, i) in idTypes"
-              :key="i"
-              :value="idtype.key"
-            >
-              {{ idtype.value }}
-            </Option>
-          </Select>
-          </Input>
-        </FormItem>
-        <FormItem label="手机号">
-          <Input v-model="searchForm.cellPhone">
-          </Input>
+          <Button type="ghost" icon="ios-search" @click="expandMoreCond">更多筛选</Button>
         </FormItem>
         <FormItem>
           <Button type="primary">搜索</Button>
           <Button type="error">清空</Button>
-          <!-- <Button type="success" icon="loop">刷新</Button> -->
+          <Button type="success" icon="loop">导出</Button>
         </FormItem>
       </Form>
     </div>
@@ -50,21 +40,82 @@
         />
       </div>
     </div>
+    <Modal
+      class="edit-field-modal"
+      v-model="moreCondModal"
+      title="更多筛选条件"
+      :mask-closable="false"
+      :width="700"
+    >
+      <Form
+        :model="moreCondModalForm"
+        :label-width="70"
+      >
+        <FormItem label="商品类别" prop="category">
+          <enum-selector
+            :selected.sync="moreCondModalForm.category"
+            :items="categoryOfGood"
+            :single="false"
+          />
+        </FormItem>
+        <FormItem label="镶嵌材质" prop="goldType">
+          <enum-selector
+            :selected.sync="moreCondModalForm.goldType"
+            :items="goldTypes"
+            :single="false"
+          />
+        </FormItem>
+        <FormItem label="品牌" prop="brand">
+          <Input v-model="searchForm.brand">
+          </Input>
+        </FormItem>
+        <FormItem label="系列" prop="series">
+          <Input v-model="searchForm.series">
+          </Input>
+        </FormItem>
+        <FormItem>
+          <Button
+            type="success"
+            @click="saveMoreCond"
+          >保存</Button>
+          <Button
+            type="ghost"
+            style="margin-left: 8px"
+            @click="cancelMoreCond"
+          >取消</Button>
+        </FormItem>
+      </Form>
+    </Modal>
   </div>
 </template>
 
 <script>
-import { IDTYPE } from '@/constant'
+import { IDTYPE, CATEGORYOFGOOD, GOLDTYPE } from '@/constant'
+import EnumSelector from './EnumSelector'
 
 export default {
+  components: {
+    'enum-selector': EnumSelector,
+  },
   data () {
     return {
       idTypes: IDTYPE,
+      categoryOfGood: CATEGORYOFGOOD,
+      goldTypes: GOLDTYPE,
       searchForm: {
-        name: '',
-        idType: 0,
-        idNo: '',
-        cellPhone: '',
+        category: [],
+        model: '',
+        title: '',
+        goldType: [],
+        brand: '',
+        series: '',
+      },
+      moreCondModal: false,
+      moreCondModalForm: {
+        category: [],
+        goldType: [],
+        brand: '',
+        series: '',
       },
       tableData: this.mockTableData1(),
       tableLoading: false,
@@ -166,10 +217,23 @@ export default {
     }
   },
   methods: {
+    expandMoreCond () {
+      this.moreCondModal = true
+    },
+    saveMoreCond () {
+      this.searchForm = Object.assign({}, this.searchForm, this.moreCondModalForm)
+      this.moreCondModal = false
+    },
+    cancelMoreCond () {
+      const { category, goldType, brand, series } = this.searchForm
+      this.moreCondModalForm = { category, goldType, brand, series }
+      this.moreCondModal = false
+    },
     mockTableData1 () {
       const data = []
       for (let i = 0; i < 20; i++) {
         data.push({
+          id: 'test',
           name: 'Business' + Math.floor(Math.random() * 100 + 1),
           status: Math.floor(Math.random() * 3 + 1),
           portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
@@ -209,7 +273,7 @@ export default {
 </script>
 
 <style lang="less">
-.member {
+.goods {
   .header {
     flex-grow: 0;
   }
@@ -276,5 +340,20 @@ export default {
     flex-grow: 0;
   }
 }
-</style>
+.edit-field-modal {
+  .ivu-form {
+    height: 100%;
 
+    .ivu-input {
+      width: 400px;
+    }
+
+    .ivu-form-item:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .ivu-modal-footer {
+    display: none;
+  }
+}
+</style>

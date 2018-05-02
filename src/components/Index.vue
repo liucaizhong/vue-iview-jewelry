@@ -12,38 +12,28 @@
       >
         <Menu
           :class="menuitemClasses"
-          :open-names="['1']"
-          active-name="1-1"
+          :open-names="openNames"
+          :active-name="activeName"
           theme="dark"
           width="auto"
           @on-select="navTo"
         >
-          <Submenu name="1">
+          <Submenu
+            v-for="(menu, i) in sidebarMenus"
+            :name="`${i}`"
+            :key="i"
+          >
             <template slot="title">
-              <Icon type="ios-people" />
-              <span>会员管理</span>
+              <Icon :type="menu.icon" />
+              <span>{{ menu.name }}</span>
             </template>
-            <MenuItem name="1-1">
-            <Icon type="search" />
-            <span>信息管理</span>
-            </MenuItem>
-            <MenuItem name="1-2">
-            <Icon type="ios-list" />
-            <span>预约管理</span>
-            </MenuItem>
-          </Submenu>
-          <Submenu name="2">
-            <template slot="title">
-              <Icon type="ios-box" />
-              <span>商品管理</span>
-            </template>
-            <MenuItem name="2-1">
-            <Icon type="search" />
-            <span>商品查询</span>
-            </MenuItem>
-            <MenuItem name="2-2">
-            <Icon type="ios-plus" />
-            <span>新增商品</span>
+            <MenuItem
+              v-for="(submenu, k) in menu.items"
+              :name="`${i}-${k}`"
+              :key="k"
+            >
+            <Icon :type="submenu.icon" />
+            <span>{{ submenu.name }}</span>
             </MenuItem>
           </Submenu>
         </Menu>
@@ -90,12 +80,17 @@
 </template>
 
 <script>
+import { SIDEBARMENUS, SIDEBARSUBMENUS } from '@/constant'
+
 export default {
   name: 'Index',
   data () {
     return {
       isCollapsed: false,
       userName: 'Te Yu',
+      openNames: ['0'],
+      activeName: '0-0',
+      sidebarMenus: SIDEBARMENUS,
     }
   },
   computed: {
@@ -110,19 +105,21 @@ export default {
         'menu-item',
         this.isCollapsed ? 'collapsed-menu' : ''
       ]
-    }
+    },
+  },
+  created () {
+    const activeName = SIDEBARSUBMENUS[this.$route.path]
+    this.activeName = activeName
+    this.openNames = [activeName[0]]
   },
   methods: {
     collapsedSider () {
       this.$refs.sidebar.toggleCollapse()
     },
     navTo (name) {
-      const paths = {
-        '1-1': 'member',
-        '1-2': 'booking',
-        '2-1': 'goods',
-      }
-      this.$router.push(paths[name])
+      const [menu, submenu] = name.split`-`
+      const navToUrl = this.sidebarMenus[menu].items[submenu].url
+      this.$router.push(navToUrl)
     },
   }
 }
@@ -131,10 +128,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .index {
-  /* border: 1px solid #d7dde4; */
   background: #f5f7f9;
   position: relative;
-  /* border-radius: 4px; */
   overflow: hidden;
 
   .ivu-layout-content {

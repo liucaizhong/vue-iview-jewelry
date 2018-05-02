@@ -70,6 +70,8 @@ module.exports = {
     'no-nested-ternary': [0],
     'arrow-body-style': [0],
     'default-case': [0],
-    'vue/attributes-order': [0]
+    'vue/attributes-order': [0],
+    'vue/require-valid-default-prop': [0],
+    'no-bitwise': [0]
   }
 };
