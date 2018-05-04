@@ -108,9 +108,11 @@ export default {
     },
   },
   created () {
-    const activeName = SIDEBARSUBMENUS[this.$route.path]
-    this.activeName = activeName
-    this.openNames = [activeName[0]]
+    const activeName = SIDEBARSUBMENUS[this.$route.path.split`/`.slice(0, 3).join`/`]
+    if (activeName) {
+      this.activeName = activeName
+      this.openNames = [activeName[0]]
+    }
   },
   methods: {
     collapsedSider () {

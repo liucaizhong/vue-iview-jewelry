@@ -5,6 +5,7 @@ import Member from '@/components/Member'
 import Login from '@/components/Login'
 import MemberDetail from '@/components/MemberDetail'
 import Goods from '@/components/Goods'
+import GoodsDetail from '@/components/GoodsDetail'
 
 Vue.use(Router)
 
@@ -43,7 +44,14 @@ export default new Router({
         // meta: {
         //   requiresAuth: true,
         // }
+      }, {
+        path: 'goods/detail',
+        component: GoodsDetail,
+        // meta: {
+        //   requiresAuth: true,
+        // }
       }]
+
     },
   ],
 })

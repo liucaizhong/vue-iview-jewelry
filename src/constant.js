@@ -86,7 +86,38 @@ module.exports = {
     key: 1,
     value: '24K',
   }, {
-    key: 1,
+    key: 2,
     value: '900',
   }],
+  BRANDOPTIONS: ['THEIA', '通灵', 'I do'],
+  SERIESOPTIONS: ['经典系列', '奢华系列'],
+  RELEASESTATUS: [{
+    key: 0,
+    value: '未发布',
+  }, {
+    key: 1,
+    value: '已发布',
+  }],
+  CERTIFICATES: [{
+    key: 0,
+    value: 'IGI证书',
+  }, {
+    key: 1,
+    value: 'GIA证书',
+  }, {
+    key: 2,
+    value: 'HRD证书',
+  }, {
+    key: 3,
+    value: 'AGS证书',
+  }, {
+    key: 4,
+    value: 'EGL证书',
+  }, {
+    key: 5,
+    value: 'NGTC证书',
+  }, {
+    key: 6,
+    value: 'GemEx®兼美证书',
+  }]
 }

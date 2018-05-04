@@ -370,6 +370,7 @@ export default {
 
       .ivu-form-item {
         margin-bottom: 0;
+        padding: 5px 0;
 
         .ivu-form-item-label {
           font-weight: bold;
@@ -381,7 +382,7 @@ export default {
 
         p {
           padding: 1px 0;
-          display: inline;
+          display: inline-block;
 
           & + i {
             margin-left: 10px;

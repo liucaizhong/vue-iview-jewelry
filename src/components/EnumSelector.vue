@@ -4,11 +4,11 @@
       class="enum-selector__item"
       v-for="(item, i) in items"
       :key="item.key"
-      :class="{ active: selectedItem[i] }"
+      :class="{ active: selected[i] }"
     >
       <input
         type="checkbox"
-        :checked="selectedItem[i]"
+        :checked="selected[i]"
         @change="changeSelected($event.target.checked, i)"
       >
       {{ item.value }}
@@ -32,18 +32,17 @@ export default {
       default: true,
     }
   },
-  data () {
-    return {
-      selectedItem: this.selected,
-      totalNum: this.items.length,
-    }
-  },
+  // data () {
+  //   return {
+  //     selectedItem: [...this.selected],
+  //   }
+  // },
   methods: {
     changeSelected (b, i) {
       if (this.single) {
-        this.selectedItem.fill(false)
+        this.selected.fill(false)
       }
-      this.selectedItem[i] = b
+      this.selected[i] = b
       this.$forceUpdate()
     },
   },

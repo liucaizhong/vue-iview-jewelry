@@ -11,7 +11,9 @@
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="ghost" icon="ios-search" @click="expandMoreCond">更多筛选</Button>
+          <Badge dot :count="moreCondCount">
+            <Button type="ghost" icon="ios-search" @click="expandMoreCond">更多筛选</Button>
+          </Badge>
         </FormItem>
         <FormItem>
           <Button type="primary">搜索</Button>
@@ -53,25 +55,35 @@
       >
         <FormItem label="商品类别" prop="category">
           <enum-selector
-            :selected.sync="moreCondModalForm.category"
+            :selected="moreCondModalForm.category"
             :items="categoryOfGood"
             :single="false"
           />
         </FormItem>
         <FormItem label="镶嵌材质" prop="goldType">
           <enum-selector
-            :selected.sync="moreCondModalForm.goldType"
+            :selected="moreCondModalForm.goldType"
             :items="goldTypes"
             :single="false"
           />
         </FormItem>
         <FormItem label="品牌" prop="brand">
-          <Input v-model="searchForm.brand">
-          </Input>
+          <AutoComplete
+            v-model="moreCondModalForm.brand"
+            :data="brandOptions"
+            :filter-method="filterMethod"
+            placeholder="输入关键字搜索品牌"
+            style="width:400px"
+          />
         </FormItem>
         <FormItem label="系列" prop="series">
-          <Input v-model="searchForm.series">
-          </Input>
+          <AutoComplete
+            v-model="moreCondModalForm.series"
+            :data="seriesOptions"
+            :filter-method="filterMethod"
+            placeholder="输入关键字搜索系列"
+            style="width:400px"
+          />
         </FormItem>
         <FormItem>
           <Button
@@ -90,7 +102,8 @@
 </template>
 
 <script>
-import { IDTYPE, CATEGORYOFGOOD, GOLDTYPE } from '@/constant'
+import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY,
+  BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS } from '@/constant'
 import EnumSelector from './EnumSelector'
 
 export default {
@@ -99,9 +112,10 @@ export default {
   },
   data () {
     return {
-      idTypes: IDTYPE,
       categoryOfGood: CATEGORYOFGOOD,
       goldTypes: GOLDTYPE,
+      brandOptions: BRANDOPTIONS,
+      seriesOptions: SERIESOPTIONS,
       searchForm: {
         category: [],
         model: '',
@@ -111,6 +125,7 @@ export default {
         series: '',
       },
       moreCondModal: false,
+      moreCondCount: 0,
       moreCondModalForm: {
         category: [],
         goldType: [],
@@ -121,61 +136,77 @@ export default {
       tableLoading: false,
       tableColumns: [
         {
-          title: '会员号',
-          key: 'memberId',
+          title: '商品ID',
+          key: 'yd',
           sortable: true,
         },
         {
-          title: '姓名',
-          key: 'name',
+          title: '商品类别',
+          key: 'category',
           sortable: true,
         },
         {
-          title: '性别',
-          key: 'gender',
-          filters: [
-            {
-              label: '男',
-              value: 0,
-            },
-            {
-              label: '女',
-              value: 1,
-            }
-          ],
-          filterMultiple: false,
-          filterMethod (value, row) {
-            if (value) {
-              return row.gender === 'female'
-            }
-            return row.gender === 'male'
-          }
+          title: '商品型号',
+          key: 'model',
+          sortable: true,
         },
         {
-          title: '证件类型',
-          key: 'idType',
-          filters: IDTYPE.map(t => ({
+          title: '商品名称',
+          key: 'title',
+          sortable: true,
+        },
+        {
+          title: '品牌',
+          key: 'brand',
+          sortable: true,
+        },
+        {
+          title: '系列',
+          key: 'series',
+          sortable: true,
+        },
+        {
+          title: '镶嵌材质',
+          key: 'goldType',
+          filters: GOLDTYPE.map(t => ({
             label: t.value,
             value: t.key,
           })),
           filterMultiple: true,
           filterMethod (value, row) {
-            return row.idType === value
+            return row.goldType === value
           }
         },
         {
-          title: '证件号码',
-          key: 'idNo',
+          title: '材质纯度',
+          key: 'goldPurity',
+          filters: GOLDPURITY.map(t => ({
+            label: t.value,
+            value: t.key,
+          })),
+          filterMultiple: true,
+          filterMethod (value, row) {
+            return row.goldPurity === value
+          }
+        },
+        {
+          title: '含金量（克）',
+          key: 'goldContent',
           sortable: true,
         },
         {
-          title: '手机号',
-          key: 'cellPhone',
+          title: '钻石重量（克）',
+          key: 'diamondWeight',
           sortable: true,
         },
         {
-          title: '余额',
-          key: 'balance',
+          title: '销售价',
+          key: 'sellingPrice',
+          sortable: true,
+        },
+        {
+          title: '租金',
+          key: 'rent',
           sortable: true,
         },
         {
@@ -184,9 +215,16 @@ export default {
           sortable: true,
         },
         {
-          title: '租金',
-          key: 'rent',
-          sortable: true,
+          title: '是否发布',
+          key: 'releaseStatus',
+          filters: RELEASESTATUS.map(t => ({
+            label: t.value,
+            value: t.key,
+          })),
+          filterMultiple: true,
+          filterMethod (value, row) {
+            return row.releaseStatus === value
+          }
         },
         {
           title: '操作',
@@ -206,10 +244,10 @@ export default {
                 on: {
                   click: () => {
                     console.log(params)
-                    this.$router.push('member/detail')
+                    this.$router.push('goods/detail')
                   }
                 }
-              }, '详情'),
+              }, '编辑'),
             ])
           }
         }
@@ -221,13 +259,36 @@ export default {
       this.moreCondModal = true
     },
     saveMoreCond () {
-      this.searchForm = Object.assign({}, this.searchForm, this.moreCondModalForm)
+      const { category, goldType, brand, series } = this.moreCondModalForm
+      this.searchForm = Object.assign(this.searchForm, {
+        category: [...category],
+        goldType: [...goldType],
+        brand,
+        series,
+      })
+      this.moreCondCount = this.calMoreCondCount(this.moreCondModalForm)
       this.moreCondModal = false
     },
     cancelMoreCond () {
       const { category, goldType, brand, series } = this.searchForm
-      this.moreCondModalForm = { category, goldType, brand, series }
+      this.moreCondModalForm = {
+        category: [...category],
+        goldType: [...goldType],
+        brand,
+        series,
+      }
+      this.moreCondCount = this.calMoreCondCount(this.moreCondModalForm)
       this.moreCondModal = false
+    },
+    filterMethod (value, option) {
+      return option.includes(value)
+    },
+    calMoreCondCount (obj) {
+      return +Object.keys(obj).reduce((cum, key) => {
+        return cum || (obj[key] instanceof Array
+          ? obj[key].filter(cur => cur).length
+          : obj[key])
+      }, false)
     },
     mockTableData1 () {
       const data = []
@@ -310,11 +371,11 @@ export default {
         margin-bottom: 10px;
       }
 
-      @media screen and (max-width: 768px){
-        .ivu-table-body {
-          margin-top: 55px;
-        }
-      }
+      // @media screen and (max-width: 768px){
+      //   .ivu-table-body {
+      //     margin-top: 55px;
+      //   }
+      // }
 
       .ivu-table-tip {
         top: 40px;

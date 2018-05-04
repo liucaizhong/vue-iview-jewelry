@@ -246,11 +246,11 @@ export default {
         margin-bottom: 10px;
       }
 
-      @media screen and (max-width: 768px){
-        .ivu-table-body {
-          margin-top: 55px;
-        }
-      }
+      // @media screen and (max-width: 768px){
+      //   .ivu-table-body {
+      //     margin-top: 55px;
+      //   }
+      // }
 
       .ivu-table-tip {
         top: 40px;
