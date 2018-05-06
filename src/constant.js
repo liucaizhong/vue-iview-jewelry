@@ -10,6 +10,8 @@ module.exports = {
     value: '其他证件',
   }],
   ADDRESSMAXNUM: 5,
+  MAINIMAGENUM: 6,
+  MAINIMAGEMAXSIZE: 2048,
   SIDEBARMENUS: [{
     name: '会员管理',
     icon: 'ios-people',

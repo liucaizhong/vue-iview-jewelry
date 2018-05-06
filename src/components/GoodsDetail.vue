@@ -1,10 +1,10 @@
 <template>
   <div id="goods-detail">
-    <Form :model="formGoods" :label-width="150">
+    <Form ref="goodsForm" :model="formGoods" :label-width="150">
       <section>
         <header>基本信息</header>
         <div class="section-body">
-          <FormItem label="商品ID" prop="yd">
+          <FormItem v-if="!mode" label="商品ID" prop="yd">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <p>{{ formGoods.yd }}</p>
@@ -14,7 +14,13 @@
           <FormItem label="商品型号" prop="model">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.model }}</p>
+              <p v-if="!mode">{{ formGoods.model }}</p>
+              <Input
+                v-else
+                v-model="formGoods.model"
+                placeholder="输入商品型号"
+              >
+              </Input>
               </Col>
             </Row>
           </FormItem>
@@ -62,7 +68,9 @@
         </div>
       </section>
       <section>
-        <header>品质信息</header>
+        <header>
+          品质信息
+        </header>
         <div class="section-body">
           <FormItem label="品牌" prop="brand">
             <Row>
@@ -85,6 +93,21 @@
                 :filter-method="filterMethod"
                 placeholder="输入系列名称"
               />
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="证书" prop="certificate">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Select v-model="formGoods.certificate">
+                <Option
+                  v-for="item in certificates"
+                  :value="item.key"
+                  :key="item.key"
+                >
+                  {{ item.value }}
+                </Option>
+              </Select>
               </Col>
             </Row>
           </FormItem>
@@ -118,37 +141,174 @@
               </Col>
             </Row>
           </FormItem>
+          <FormItem label="尺寸" prop="size">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.size"
+                placeholder="输入钻石重量"
+              >
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="钻石重量" prop="diamondWeight">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.diamondWeight"
+                placeholder="输入钻石重量"
+              >
+              <span slot="append">克</span>
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="含金量" prop="goldContent">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.goldContent"
+                placeholder="输入含金量"
+              >
+              <span slot="append">克</span>
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
         </div>
       </section>
       <section>
         <header>
-          账户信息
+          销售信息
         </header>
         <div class="section-body">
-          <FormItem label="余额" prop="balance">
+          <FormItem label="销售价" prop="sellingPrice">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.balance + ' 元' }}</p>
+              <Input
+                v-model="formGoods.sellingPrice"
+                placeholder="输入销售价"
+              >
+              <span slot="append">元</span>
+              </Input>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="押金" prop="deposit">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.deposit + ' 元' }}</p>
+              <Input
+                v-model="formGoods.deposit"
+                placeholder="输入押金"
+              >
+              <span slot="append">元</span>
+              </Input>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="租金" prop="rent">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.rent + ' 元' }}</p>
+              <Input
+                v-model="formGoods.rent"
+                placeholder="输入租金"
+              >
+              <span slot="append">元</span>
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="起租周期" prop="rentcycle">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.rentcycle"
+                placeholder="输入起租周期"
+              >
+              <span slot="append">天</span>
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="续租周期" prop="reletcycle">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.reletcycle"
+                placeholder="输入续租周期"
+              >
+              <span slot="append">天</span>
+              </Input>
               </Col>
             </Row>
           </FormItem>
         </div>
       </section>
       <section>
+        <header>
+          描述信息
+        </header>
+        <div class="section-body">
+          <FormItem label="商品图片" prop="mainImage">
+            <image-uploader
+              :image-list="formGoods.mainImage"
+              multiple
+              :image-max-num="mainImageNum"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+            />
+          </FormItem>
+          <FormItem label="商品详情图片" prop="detailImage">
+            <image-uploader
+              :image-list="formGoods.detailImage"
+              :image-max-num="1"
+              :image-max-size="10240"
+              action="javascript(void)"
+            />
+          </FormItem>
+          <FormItem label="商品描述" prop="desc">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.desc"
+                type="textarea"
+                :autosize="{ minRows: 3 }"
+                :maxlength="500"
+                placeholder="输入商品描述信息(不超过500字符)"
+              >
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem label="备注" prop="remark">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <Input
+                v-model="formGoods.remark"
+                type="textarea"
+                :autosize="{ minRows: 3 }"
+                :maxlength="500"
+                placeholder="输入商品备注信息(不超过500字符)"
+              >
+              </Input>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem v-if="mode">
+            <Button
+              type="success"
+              @click="save"
+            >保存</Button>
+            <Button
+              type="ghost"
+              style="margin-left: 8px"
+              @click="cancel"
+            >重置</Button>
+          </FormItem>
+        </div>
+      </section>
+      <section v-if="!mode">
         <header>
           其他信息
         </header>
@@ -160,10 +320,10 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="创建来源" prop="source">
+          <FormItem label="创建人" prop="createdBy">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.source }}</p>
+              <p>{{ formGoods.createdBy }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -181,6 +341,17 @@
               </Col>
             </Row>
           </FormItem>
+          <FormItem>
+            <Button
+              type="success"
+              @click="save"
+            >保存</Button>
+            <Button
+              type="ghost"
+              style="margin-left: 8px"
+              @click="cancel"
+            >重置</Button>
+          </FormItem>
         </div>
       </section>
     </Form>
@@ -188,18 +359,33 @@
 </template>
 
 <script>
-import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY,
-  BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS } from '@/constant'
+import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY, MAINIMAGENUM, MAINIMAGEMAXSIZE,
+  BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS, CERTIFICATES } from '@/constant'
+import ImageUploader from './ImageUploader'
 
 export default {
+  components: {
+    'image-uploader': ImageUploader,
+  },
+  props: {
+    modeType: {
+      type: Number,
+      default: 0,
+    }
+  },
   data () {
     return {
+      mode: this.modeType, // 0:update, 1:add
       categoryOfGood: CATEGORYOFGOOD,
       goldTypes: GOLDTYPE,
       goldPurity: GOLDPURITY,
       brandOptions: BRANDOPTIONS,
       seriesOptions: SERIESOPTIONS,
       releaseStatus: RELEASESTATUS,
+      certificates: CERTIFICATES,
+      mainImageNum: MAINIMAGENUM,
+      imageMaxSize: MAINIMAGEMAXSIZE,
+      formGoodsBak: {},
       formGoods: {
         yd: 'zz945',
         category: 0,
@@ -210,38 +396,50 @@ export default {
         releaseStatus: 1,
         brand: 'THEIA',
         series: '经典系列',
-        name: '黄逼王',
-        gender: '女',
-        idType: 0,
-        idNo: '31023019880231212X',
-        birthday: '19880231',
-        cellPhone: '18812344843',
-        email: '5654545@qq.com',
-        address: ['adff', 'adfd', 'adfd', 'dafdf', 'dafdff'],
-        balance: '123',
+        certificate: 0,
+        size: '大',
+        goldContent: 1.12,
+        diamondWeight: 10.1,
+        sellingPrice: '1230.12',
         deposit: '12323',
         rent: '21312312',
+        rentcycle: 7,
+        reletcycle: 7,
+        desc: 'dafadfsd',
+        remark: 'dafadfsd',
         createdDate: '2018-04-27',
-        source: '公众号',
+        createdBy: 'lcz',
         lastModified: '2018-05-27',
         lastModifiedBy: 'hsw',
+        mainImage: [
+          {
+            name: 'a42bdcc1178e62b4694c830f028db5c0',
+            url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+          },
+          {
+            name: 'bc7521e033abdd1e92222d733590f104',
+            url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+          },
+        ],
+        detailImage: [],
       },
     }
   },
   methods: {
-    saveField (type) {
-      this.$refs[`${type}ModalForm`].validate(valid => {
+    save () {
+      this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          this.formGoods[type] = this[`${type}ModalForm`][type]
           this.$Message.success('保存成功!')
-          this[`${type}Modal`] = false
         } else {
           this.$Message.error('保存失败')
         }
       })
     },
-    cancelSaveField (type) {
-      this[`${type}Modal`] = false
+    cancel () {
+      this.formGoods = {
+        ...this.formGoodsBak,
+      }
+      this.$Message.success('重置成功')
     },
     filterMethod (value, option) {
       return option.includes(value)

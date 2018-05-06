@@ -229,6 +229,7 @@
           <Row>
             <Col span="12">
             <Button
+              v-show="addressModalForm.address.length < addressMaxNum"
               type="dashed"
               long
               @click="addAddressItem"
@@ -260,6 +261,7 @@ export default {
   data () {
     return {
       idTypes: IDTYPE,
+      addressMaxNum: ADDRESSMAXNUM,
       formMember: {
         memberId: 'zz945',
         name: '黄逼王',
@@ -316,7 +318,7 @@ export default {
       this[`${type}Modal`] = false
     },
     addAddressItem () {
-      if (this.addressModalForm.address.length === ADDRESSMAXNUM) {
+      if (this.addressModalForm.address.length === this.addressMaxNum) {
         this.$Message.error('最多添加5个常用地址')
       } else {
         this.addressModalForm.address.push('')

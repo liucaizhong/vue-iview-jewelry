@@ -139,31 +139,37 @@ export default {
           title: '商品ID',
           key: 'yd',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '商品类别',
           key: 'category',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '商品型号',
           key: 'model',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '商品名称',
           key: 'title',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '品牌',
           key: 'brand',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '系列',
           key: 'series',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '镶嵌材质',
@@ -175,7 +181,8 @@ export default {
           filterMultiple: true,
           filterMethod (value, row) {
             return row.goldType === value
-          }
+          },
+          minWidth: 100,
         },
         {
           title: '材质纯度',
@@ -187,32 +194,38 @@ export default {
           filterMultiple: true,
           filterMethod (value, row) {
             return row.goldPurity === value
-          }
+          },
+          minWidth: 100,
         },
         {
           title: '含金量（克）',
           key: 'goldContent',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '钻石重量（克）',
           key: 'diamondWeight',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '销售价',
           key: 'sellingPrice',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '租金',
           key: 'rent',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '押金',
           key: 'deposit',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '是否发布',
@@ -224,7 +237,8 @@ export default {
           filterMultiple: true,
           filterMethod (value, row) {
             return row.releaseStatus === value
-          }
+          },
+          minWidth: 100,
         },
         {
           title: '操作',
@@ -243,14 +257,14 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params)
+                    // console.log(params)
                     this.$router.push('goods/detail')
                   }
                 }
-              }, '编辑'),
+              }, '详情'),
             ])
           }
-        }
+        },
       ]
     }
   },
@@ -349,8 +363,8 @@ export default {
       height: 100%;
 
       .ivu-table {
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: auto;
+        // overflow-x: hidden;
       }
 
       .ivu-table:before {
@@ -361,13 +375,13 @@ export default {
         content: none;
       }
 
-      .ivu-table-header {
-        position: fixed;
-        z-index: 99;
-      }
+      // .ivu-table-header {
+      //   position: fixed;
+      //   z-index: 99;
+      // }
 
       .ivu-table-body {
-        margin-top: 40px;
+        // margin-top: 40px;
         margin-bottom: 10px;
       }
 

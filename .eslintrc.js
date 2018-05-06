@@ -72,6 +72,8 @@ module.exports = {
     'default-case': [0],
     'vue/attributes-order': [0],
     'vue/require-valid-default-prop': [0],
-    'no-bitwise': [0]
+    'no-bitwise': [0],
+    'no-param-reassign': ["error", { "props": false }],
+    'func-names': ["error", "never"]
   }
 };

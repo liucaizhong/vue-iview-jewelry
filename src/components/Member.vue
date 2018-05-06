@@ -73,11 +73,13 @@ export default {
           title: '会员号',
           key: 'memberId',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '姓名',
           key: 'name',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '性别',
@@ -98,7 +100,8 @@ export default {
               return row.gender === 'female'
             }
             return row.gender === 'male'
-          }
+          },
+          minWidth: 100,
         },
         {
           title: '证件类型',
@@ -110,32 +113,38 @@ export default {
           filterMultiple: true,
           filterMethod (value, row) {
             return row.idType === value
-          }
+          },
+          minWidth: 100,
         },
         {
           title: '证件号码',
           key: 'idNo',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '手机号',
           key: 'cellPhone',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '余额',
           key: 'balance',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '押金',
           key: 'deposit',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '租金',
           key: 'rent',
           sortable: true,
+          minWidth: 100,
         },
         {
           title: '操作',
@@ -154,14 +163,14 @@ export default {
                 },
                 on: {
                   click: () => {
-                    console.log(params)
+                    // console.log(params)
                     this.$router.push('member/detail')
                   }
                 }
               }, '详情'),
             ])
           }
-        }
+        },
       ]
     }
   },
@@ -224,8 +233,8 @@ export default {
       height: 100%;
 
       .ivu-table {
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: auto;
+        // overflow-x: hidden;
       }
 
       .ivu-table:before {
@@ -236,13 +245,13 @@ export default {
         content: none;
       }
 
-      .ivu-table-header {
-        position: fixed;
-        z-index: 99;
-      }
+      // .ivu-table-header {
+      //   position: fixed;
+      //   z-index: 99;
+      // }
 
       .ivu-table-body {
-        margin-top: 40px;
+        // margin-top: 40px;
         margin-bottom: 10px;
       }
 
