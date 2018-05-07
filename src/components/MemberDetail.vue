@@ -296,6 +296,9 @@ export default {
       }
     }
   },
+  created () {
+    console.log(this.$route.params.id)
+  },
   methods: {
     editField (type) {
       this[`${type}ModalForm`][type] = typeof this.formMember[type] === 'string'
@@ -331,7 +334,7 @@ export default {
         this.addressModalForm.address.splice(i, 1)
       }
     },
-  }
+  },
 }
 </script>
 

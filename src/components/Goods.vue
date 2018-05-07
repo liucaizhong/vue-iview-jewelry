@@ -258,7 +258,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push('goods/detail')
+                    this.$router.push(`goods/${params.row.yd}`)
                   }
                 }
               }, '详情'),

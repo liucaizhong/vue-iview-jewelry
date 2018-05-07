@@ -1,6 +1,11 @@
 <template>
   <div id="goods-detail">
-    <Form ref="goodsForm" :model="formGoods" :label-width="150">
+    <Form
+      ref="goodsForm"
+      :model="formGoods"
+      :label-width="150"
+      :rules="ruleValidate"
+    >
       <section>
         <header>基本信息</header>
         <div class="section-body">
@@ -388,23 +393,23 @@ export default {
       formGoodsBak: {},
       formGoods: {
         yd: 'zz945',
-        category: 0,
+        category: '0',
         model: 'dfasdfsdf',
         title: '黄逼王的大金链子',
         goldType: 'W',
-        goldPurity: 0,
-        releaseStatus: 1,
+        goldPurity: '0',
+        releaseStatus: '0',
         brand: 'THEIA',
         series: '经典系列',
-        certificate: 0,
+        certificate: '0',
         size: '大',
-        goldContent: 1.12,
-        diamondWeight: 10.1,
+        goldContent: '1.12',
+        diamondWeight: '10.1',
         sellingPrice: '1230.12',
         deposit: '12323',
         rent: '21312312',
-        rentcycle: 7,
-        reletcycle: 7,
+        rentcycle: '7',
+        reletcycle: '7',
         desc: 'dafadfsd',
         remark: 'dafadfsd',
         createdDate: '2018-04-27',
@@ -423,13 +428,202 @@ export default {
         ],
         detailImage: [],
       },
+      ruleValidate: {
+        category: [{
+          required: true,
+          message: '商品类别不能为空',
+          trigger: 'blur',
+        }],
+        model: [{
+          required: true,
+          message: '商品型号不能为空',
+          trigger: 'blur',
+        }],
+        title: [{
+          required: true,
+          message: '商品名称不能为空',
+          trigger: 'blur',
+        }],
+        releaseStatus: [{
+          required: true,
+          message: '发布状态不能为空',
+          trigger: 'blur',
+        }],
+        brand: [{
+          required: true,
+          message: '品牌不能为空',
+          trigger: 'blur',
+        }],
+        series: [{
+          required: true,
+          message: '系列不能为空',
+          trigger: 'blur',
+        }],
+        goldType: [{
+          required: true,
+          message: '镶嵌材质不能为空',
+          trigger: 'blur',
+        }],
+        goldPurity: [{
+          required: true,
+          message: '材质纯度不能为空',
+          trigger: 'blur',
+        }],
+        certificate: [{
+          required: true,
+          message: '证书不能为空',
+          trigger: 'blur',
+        }],
+        size: [{
+          required: true,
+          message: '尺寸不能为空',
+          trigger: 'blur',
+        }],
+        goldContent: [{
+          required: true,
+          message: '含金量不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            const num = parseFloat(value, 10)
+            if (isNaN(num)) {
+              cb(new Error('输入必须为数值'))
+            }
+            if (num <= 0) {
+              cb(new Error('含金量不能小于0'))
+            }
+            cb()
+          },
+        }],
+        diamondWeight: [{
+          required: true,
+          message: '钻石重量不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (isNaN(+value)) {
+              cb(new Error('输入必须为数值'))
+            }
+            const num = parseFloat(value, 10)
+            if (num <= 0) {
+              cb(new Error('钻石重量不能小于0'))
+            }
+            cb()
+          },
+        }],
+        sellingPrice: [{
+          required: true,
+          message: '销售价不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (isNaN(+value)) {
+              cb(new Error('输入必须为数值'))
+            }
+            const num = parseFloat(value, 10)
+            if (num <= 0) {
+              cb(new Error('销售价不能小于0'))
+            }
+            cb()
+          },
+        }],
+        deposit: [{
+          required: true,
+          message: '押金不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (isNaN(+value)) {
+              cb(new Error('输入必须为数值'))
+            }
+            const num = parseFloat(value, 10)
+
+            if (num <= 0) {
+              cb(new Error('押金不能小于0'))
+            }
+            cb()
+          },
+        }],
+        rent: [{
+          required: true,
+          message: '租金不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (isNaN(+value)) {
+              cb(new Error('输入必须为数值'))
+            }
+            const num = parseFloat(value, 10)
+            if (num <= 0) {
+              cb(new Error('租金不能小于0'))
+            }
+            cb()
+          },
+        }],
+        rentcycle: [{
+          required: true,
+          message: '起租周期不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            const numFloat = parseFloat(value, 10)
+            const numInt = parseInt(value, 10)
+            if (isNaN(+value) || numFloat !== numInt) {
+              cb(new Error('输入必须为整数'))
+            }
+            if (numInt < 1) {
+              cb(new Error('起租周期至少1天'))
+            }
+            cb()
+          },
+        }],
+        reletcycle: [{
+          required: true,
+          message: '起租周期不能为空',
+          trigger: 'blur',
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            const numFloat = parseFloat(value, 10)
+            const numInt = parseInt(value, 10)
+            if (isNaN(+value) || numFloat !== numInt) {
+              cb(new Error('输入必须为整数'))
+            }
+            if (numInt < 1) {
+              cb(new Error('起租周期至少1天'))
+            }
+            cb()
+          },
+        }],
+        desc: [{
+          trigger: 'change',
+          type: 'string',
+          max: 500,
+          message: '商品描述至多500字符',
+        }],
+        remark: [{
+          trigger: 'change',
+          type: 'string',
+          max: 500,
+          message: '备注至多500字符',
+        }],
+      },
     }
+  },
+  created () {
+    console.log(this.$route.params.id)
   },
   methods: {
     save () {
       this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          this.$Message.success('保存成功!')
+          this.$Message.success('保存成功')
         } else {
           this.$Message.error('保存失败')
         }
@@ -484,11 +678,13 @@ export default {
       padding: 15px;
 
       .ivu-form-item {
-        margin-bottom: 0;
-        padding: 5px 0;
 
         .ivu-form-item-label {
           font-weight: bold;
+        }
+
+        .ivu-form-item-error-tip {
+          font-size: 12px;
         }
       }
 

@@ -28,6 +28,9 @@
       :multiple="multiple"
       type="drag"
       :action="action"
+      :data="data"
+      :with-credentials="withCredentials"
+      :headers="headers"
     >
       <div class="upload-icon">
         <Icon type="camera" />
@@ -86,6 +89,22 @@ export default {
       type: Function,
       default: function () {},
     },
+    data: {
+      type: Object,
+      default: function () {
+        return []
+      },
+    },
+    withCredentials: {
+      type: Boolean,
+      default: false,
+    },
+    headers: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+    },
   },
   data () {
     return {
@@ -97,7 +116,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.imageList)
     this.uploadList = this.$refs.upload.fileList
   },
   beforeDestroy () {
@@ -127,9 +145,10 @@ export default {
       })
     },
     handleMaxSize (file) {
+      const unit = this.imageMaxSize < 1024 ? 'KB' : 'M'
       this.$Notice.warning({
         title: '图片过大',
-        desc: `${file.name} 大小不能超过${this.imageMaxSize / 1024}M`,
+        desc: `${file.name} 大小不能超过${this.imageMaxSize / 1024 || this.imageMaxSize}${unit}`,
       })
     },
     handleBeforeUpload (file) {

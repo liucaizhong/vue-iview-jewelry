@@ -74,6 +74,7 @@ module.exports = {
     'vue/require-valid-default-prop': [0],
     'no-bitwise': [0],
     'no-param-reassign': ["error", { "props": false }],
-    'func-names': ["error", "never"]
+    'func-names': ["error", "never"],
+    'linebreak-style': ["error", "unix"]
   }
 };

@@ -164,7 +164,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push('member/detail')
+                    this.$router.push(`member/${params.row.memberId}`)
                   }
                 }
               }, '详情'),
@@ -179,6 +179,7 @@ export default {
       const data = []
       for (let i = 0; i < 20; i++) {
         data.push({
+          memberId: '123',
           name: 'Business' + Math.floor(Math.random() * 100 + 1),
           status: Math.floor(Math.random() * 3 + 1),
           portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
