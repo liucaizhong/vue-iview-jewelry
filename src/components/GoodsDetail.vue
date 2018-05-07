@@ -255,11 +255,21 @@
           描述信息
         </header>
         <div class="section-body">
-          <FormItem label="商品图片" prop="mainImage">
+          <!-- <FormItem label="商品图片" prop="mainImage">
             <image-uploader
               :image-list="formGoods.mainImage"
               multiple
               :image-max-num="mainImageNum"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+            />
+          </FormItem> -->
+          <FormItem label="商品图片" class="main-images">
+            <image-uploader
+              v-for="i in mainImageNum"
+              :key="i - 1"
+              :image-list="formGoods[`mainImage${i - 1}`]"
+              :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
             />
@@ -268,7 +278,7 @@
             <image-uploader
               :image-list="formGoods.detailImage"
               :image-max-num="1"
-              :image-max-size="10240"
+              :image-max-size="imageMaxSize"
               action="javascript(void)"
             />
           </FormItem>
@@ -416,16 +426,32 @@ export default {
         createdBy: 'lcz',
         lastModified: '2018-05-27',
         lastModifiedBy: 'hsw',
-        mainImage: [
-          {
-            name: 'a42bdcc1178e62b4694c830f028db5c0',
-            url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
-          },
-          {
-            name: 'bc7521e033abdd1e92222d733590f104',
-            url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
-          },
-        ],
+        // mainImage: [
+        //   {
+        //     name: 'a42bdcc1178e62b4694c830f028db5c0',
+        //     url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+        //   },
+        //   {
+        //     name: 'bc7521e033abdd1e92222d733590f104',
+        //     url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+        //   },
+        // ],
+        mainImage0: [{
+          name: 'a42bdcc1178e62b4694c830f028db5c0',
+          file: null,
+          url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+          avatar: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+        }],
+        mainImage1: [{
+          name: 'bc7521e033abdd1e92222d733590f104',
+          file: null,
+          url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+          avatar: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+        }],
+        mainImage2: [],
+        mainImage3: [],
+        mainImage4: [],
+        mainImage5: [],
         detailImage: [],
       },
       ruleValidate: {
@@ -678,6 +704,17 @@ export default {
       padding: 15px;
 
       .ivu-form-item {
+
+        &.main-images .ivu-form-item-content {
+          display: flex;
+          flex-wrap: wrap;
+
+          .image-uploader {
+            .upload {
+              margin-right: 4px;
+            }
+          }
+        }
 
         .ivu-form-item-label {
           font-weight: bold;

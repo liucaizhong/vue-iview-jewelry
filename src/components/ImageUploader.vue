@@ -2,7 +2,7 @@
   <div class="image-uploader">
     <div class="upload-list" v-for="item in uploadList" :key="item.url">
       <template v-if="item.status === 'finished'">
-        <img :src="item.url">
+        <img :src="item.avatar">
         <div class="upload-list-cover">
           <Icon type="ios-eye-outline" @click.native="handleView(item.name)" />
           <Icon type="ios-trash-outline" @click.native="handleRemove(item)" />
@@ -92,7 +92,7 @@ export default {
     data: {
       type: Object,
       default: function () {
-        return []
+        return {}
       },
     },
     withCredentials: {
@@ -117,6 +117,7 @@ export default {
   },
   mounted () {
     this.uploadList = this.$refs.upload.fileList
+    console.log(this.uploadList)
   },
   beforeDestroy () {
     this.uploadList.filter(cur => cur.local).forEach(cur => {
