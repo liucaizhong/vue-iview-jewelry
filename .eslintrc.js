@@ -75,6 +75,7 @@ module.exports = {
     'no-bitwise': [0],
     'no-param-reassign': ["error", { "props": false }],
     'func-names': ["error", "never"],
-    'linebreak-style': ["error", "unix"]
+    'linebreak-style': ["error", "unix"],
+    'consistent-return': [0]
   }
 };

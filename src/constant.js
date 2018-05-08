@@ -1,13 +1,22 @@
 module.exports = {
+  DEVURL: 'http://localhost:3000/api-auth/admin',
+  PRODURL: '/api-auth/admin',
   IDTYPE: [{
-    key: 0,
+    key: '0',
     value: '证件号',
   }, {
-    key: 1,
+    key: '1',
     value: '护照',
   }, {
-    key: 2,
+    key: '2',
     value: '其他证件',
+  }],
+  GENDER: [{
+    value: '男',
+    key: '0',
+  }, {
+    value: '女',
+    key: '1',
   }],
   ADDRESSMAXNUM: 5,
   MAINIMAGENUM: 6,

@@ -1,4 +1,7 @@
-module.exports = {
+import axios from 'axios'
+import { DEVURL, PRODURL } from './constant'
+
+export default {
   getCookie (name) {
     if (document.cookie.length > 0) {
       let start = document
@@ -37,5 +40,36 @@ module.exports = {
       return false
     }
     return true
+  },
+  fetch (url, config = {}) {
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? PRODURL
+      : DEVURL
+    const realUrl = baseUrl + url
+    const mergeConfig = Object.assign({}, {
+      params: {
+        limit: 10,
+        offset: 0,
+      },
+    }, config)
+
+    return new Promise((resolve, reject) => {
+      const request = async () => {
+        try {
+          const rsp = await axios({
+            url: realUrl,
+            method: 'get',
+            ...mergeConfig,
+          })
+          resolve(rsp)
+        } catch (err) {
+          // todo: error handle
+          console.error(err)
+          reject(err)
+        }
+      }
+
+      request()
+    })
   },
 }

@@ -2,7 +2,7 @@
   <div id="batch-import-goods">
     <Form
       :model="formGoods"
-      :label-width="100"
+      :label-width="150"
     >
       <section>
         <header>商品信息导入</header>
@@ -14,15 +14,15 @@
                 ref="uploadCSV"
                 type="drag"
                 :action="infoAction"
-                show-upload-list
+                :show-upload-list="false"
                 :accept="'.csv'"
                 :format="['csv']"
                 :max-size="csvFileMaxSize"
                 :on-format-error="handleCSVFormatError"
                 :on-exceeded-size="handleCSVMaxSize"
                 :on-success="handleCSVSuccess"
-                :before-upload="handleCSVBeforeUpload"
                 :on-error="handleCSVError"
+                :on-progress="handleCSVProgress"
               >
                 <div style="padding: 20px 0">
                   <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" />
@@ -34,7 +34,7 @@
           </FormItem>
         </div>
       </section>
-      <section>
+      <section v-if="importImg">
         <header>商品图片导入</header>
         <div class="section-body">
           <FormItem label="商品图片" prop="imgs">
@@ -44,15 +44,15 @@
                 ref="uploadZIP"
                 type="drag"
                 :action="imgsAction"
-                show-upload-list
+                :show-upload-list="false"
                 :accept="'.zip'"
                 :format="['zip']"
                 :max-size="zipFileMaxSize"
                 :on-format-error="handleZIPFormatError"
                 :on-exceeded-size="handleZIPMaxSize"
                 :on-success="handleZIPSuccess"
-                :before-upload="handleZIPBeforeUpload"
                 :on-error="handleZIPError"
+                :on-progress="handleZIPProgress"
               >
                 <div style="padding: 20px 0">
                   <Icon type="ios-cloud-upload" size="52" style="color: #3399ff" />
@@ -65,13 +65,18 @@
         </div>
       </section>
     </Form>
+    <file-upload-indicator :files="files" />
   </div>
 </template>
 
 <script>
 import { CSVFILEMAXSIZE, ZIPFILEMAXSIZE } from '@/constant'
+import FileUploadIndicator from './FileUploadIndicator'
 
 export default {
+  components: {
+    'file-upload-indicator': FileUploadIndicator,
+  },
   data () {
     return {
       csvFileMaxSize: CSVFILEMAXSIZE,
@@ -82,6 +87,17 @@ export default {
       },
       infoAction: '/infoAction',
       imgsAction: '/imgsAction',
+      importImg: false,
+      files: [{
+        name: '文件0',
+        status: 'active',
+      }, {
+        name: '文件1',
+        status: 'success',
+      }, {
+        name: '文件2',
+        status: 'wrong',
+      }],
     }
   },
   methods: {
@@ -100,12 +116,13 @@ export default {
     },
     handleCSVSuccess (res, file) {
       console.log(res)
+      this.$Message.success('商品信息批量导入成功')
     },
-    handleCSVBeforeUpload (file) {
+    handleCSVProgress (file) {
       console.log(file)
-      return true
     },
     handleCSVError (err, file) {
+      this.$Message.success('商品信息批量导入失败')
       console.log(err)
     },
     handleZIPFormatError (file) {
@@ -124,9 +141,8 @@ export default {
     handleZIPSuccess (res, file) {
       console.log(res)
     },
-    handleZIPBeforeUpload (file) {
+    handleZIPProgress (file) {
       console.log(file)
-      return true
     },
     handleZIPError (err, file) {
       console.log(err)

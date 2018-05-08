@@ -7,7 +7,7 @@ import axios from 'axios'
 import App from './App'
 import router from './router'
 import store from './store'
-import { getCookie } from './util'
+import util from './util'
 
 Vue.config.productionTip = false
 Vue.use(iView)
@@ -16,7 +16,7 @@ Vue.use(iView)
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (getCookie('sessionid')) {
+    if (util.getCookie('sessionid')) {
       next()
     } else {
       next({

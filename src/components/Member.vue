@@ -41,12 +41,13 @@
     <div class="footer">
       <div class="pager" style="float: right;">
         <Page
-          :total="100"
+          :total="totalCount"
           :current="1"
           show-total
           show-elevator
           show-sizer
           @on-change="changePage"
+          @on-page-size-change="changePageSize"
         />
       </div>
     </div>
@@ -54,19 +55,26 @@
 </template>
 
 <script>
-import { IDTYPE } from '@/constant'
+import { IDTYPE, GENDER } from '@/constant'
+import util from '@/util'
 
 export default {
   data () {
     return {
       idTypes: IDTYPE,
+      gender: GENDER,
+      totalCount: 0,
+      page: 1,
+      pageSize: 10,
       searchForm: {
         name: '',
-        idType: 0,
+        idType: '0',
         idNo: '',
         cellPhone: '',
       },
-      tableData: this.mockTableData1(),
+      tableData: [{
+        gender: '0'
+      }],
       tableLoading: false,
       tableColumns: [
         {
@@ -84,24 +92,20 @@ export default {
         {
           title: '性别',
           key: 'gender',
-          filters: [
-            {
-              label: '男',
-              value: 0,
-            },
-            {
-              label: '女',
-              value: 1,
-            }
-          ],
-          filterMultiple: false,
+          filters: GENDER.map(t => ({
+            label: t.value,
+            value: t.key,
+          })),
+          filterMultiple: true,
           filterMethod (value, row) {
-            if (value) {
-              return row.gender === 'female'
-            }
-            return row.gender === 'male'
+            return row.gender === value
           },
           minWidth: 100,
+          render (h, params) {
+            const gender = GENDER.find(
+              cur => params.row.gender === cur.key).value
+            return h('span', gender)
+          },
         },
         {
           title: '证件类型',
@@ -174,45 +178,46 @@ export default {
       ]
     }
   },
+  created () {
+    this.mockTableData()
+  },
   methods: {
-    mockTableData1 () {
-      const data = []
-      for (let i = 0; i < 20; i++) {
-        data.push({
-          memberId: '123',
-          name: 'Business' + Math.floor(Math.random() * 100 + 1),
-          status: Math.floor(Math.random() * 3 + 1),
-          portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
-          people: [
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            },
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            },
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            }
-          ],
-          time: Math.floor(Math.random() * 7 + 1),
-          update: new Date()
+    mockTableData (config) {
+      this.tableLoading = true
+      const url = '/member/'
+      util.fetch(url, config)
+        .then(resp => {
+          console.log(resp)
+          const { count, results } = resp.data
+          this.tableData = results
+          this.totalCount = count
+          this.tableLoading = false
         })
-      }
-      return data
+        .catch(err => {
+          console.log(err)
+          this.$Message.error(err)
+          this.tableLoading = false
+        })
     },
-    formatDate (date) {
-      const y = date.getFullYear()
-      let m = date.getMonth() + 1
-      m = m < 10 ? '0' + m : m
-      let d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
-      return y + '-' + m + '-' + d
+    changePage (page) {
+      console.log(page)
+      this.page = page
+      this.mockTableData({
+        params: {
+          offset: (page - 1) * this.pageSize,
+          limit: this.pageSize,
+        }
+      })
     },
-    changePage () {
-      this.tableData1 = this.mockTableData1()
+    changePageSize (pageSize) {
+      console.log(pageSize)
+      this.pageSize = pageSize
+      this.mockTableData({
+        params: {
+          offset: 0,
+          limit: pageSize,
+        }
+      })
     }
   }
 }

@@ -310,7 +310,7 @@ export default {
       this.$refs[`${type}ModalForm`].validate(valid => {
         if (valid) {
           this.formMember[type] = this[`${type}ModalForm`][type]
-          this.$Message.success('保存成功!')
+          this.$Message.success('保存成功')
           this[`${type}Modal`] = false
         } else {
           this.$Message.error('保存失败')
