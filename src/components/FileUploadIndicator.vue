@@ -3,11 +3,12 @@
     <Panel name="0">
       &nbsp;&nbsp;&nbsp;&nbsp;上传文件
       <p slot="content">
-        <ul class="file-list">
+        <ul v-if="files.length" class="file-list">
           <li v-for="(item, i) in files" :key="i">
             <file-progress :name="item.name" :status="item.status" />
           </li>
         </ul>
+        <span v-else>暂未上传</span>
       </p>
     </Panel>
   </Collapse>
@@ -28,9 +29,14 @@ export default {
       },
     },
   },
-  data () {
-    return {
-      opening: '0',
+  // data () {
+  //   return {
+  //     opening: '',
+  //   }
+  // },
+  computed: {
+    opening: function () {
+      return this.files.length && '0' || ''
     }
   }
 }

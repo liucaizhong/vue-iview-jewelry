@@ -13,10 +13,11 @@
               <Upload
                 ref="uploadCSV"
                 type="drag"
-                :action="infoAction"
-                :show-upload-list="false"
+                multiple
                 :accept="'.csv'"
                 :format="['csv']"
+                :action="infoAction"
+                :show-upload-list="false"
                 :max-size="csvFileMaxSize"
                 :on-format-error="handleCSVFormatError"
                 :on-exceeded-size="handleCSVMaxSize"
@@ -70,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { CSVFILEMAXSIZE, ZIPFILEMAXSIZE } from '@/constant'
 import FileUploadIndicator from './FileUploadIndicator'
 
@@ -88,17 +90,12 @@ export default {
       infoAction: '/infoAction',
       imgsAction: '/imgsAction',
       importImg: false,
-      files: [{
-        name: '文件0',
-        status: 'active',
-      }, {
-        name: '文件1',
-        status: 'success',
-      }, {
-        name: '文件2',
-        status: 'wrong',
-      }],
     }
+  },
+  computed: {
+    ...mapState({
+      files: 'uploadingFiles',
+    }),
   },
   methods: {
     handleCSVFormatError (file) {
@@ -115,15 +112,24 @@ export default {
       })
     },
     handleCSVSuccess (res, file) {
-      console.log(res)
+      console.log(file)
+      this.$store.commit('updateUploadingStatus', {
+        name: file.name,
+        status: 'success',
+      })
       this.$Message.success('商品信息批量导入成功')
     },
-    handleCSVProgress (file) {
+    handleCSVProgress (event, file) {
       console.log(file)
+      this.$store.commit('pushNewUploadingFile', file.name)
     },
-    handleCSVError (err, file) {
-      this.$Message.success('商品信息批量导入失败')
-      console.log(err)
+    handleCSVError (err, file, filelist) {
+      // console.log(err)
+      this.$store.commit('updateUploadingStatus', {
+        name: filelist.name,
+        status: 'wrong',
+      })
+      this.$Message.error('商品信息批量导入失败')
     },
     handleZIPFormatError (file) {
       this.$Notice.warning({
@@ -141,10 +147,10 @@ export default {
     handleZIPSuccess (res, file) {
       console.log(res)
     },
-    handleZIPProgress (file) {
+    handleZIPProgress (event, file) {
       console.log(file)
     },
-    handleZIPError (err, file) {
+    handleZIPError (err, file, filelist) {
       console.log(err)
     },
   },
