@@ -1,6 +1,6 @@
 <template>
   <div class="file-progress">
-    <span>{{ name }}</span>
+    <span>{{ name + ' 上传于 ' + date }}</span>
     <Progress
       :percent="percent"
       :stroke-width="8"
@@ -19,7 +19,11 @@ export default {
     status: {
       type: String,
       default: 'normal',
-    }
+    },
+    date: {
+      type: String,
+      default: (new Date()).toLocaleString(),
+    },
   },
   data () {
     return {

@@ -1,12 +1,23 @@
+const UPLOADINGFILESMAXNUM = 30
+
 export default {
-  pushNewUploadingFile (state, name) {
-    state.uploadingFiles.push({
-      name,
-      status: 'active',
-    })
+  pushNewUploadingFile (state, { name, date }) {
+    if (state.uploadingFiles.length < UPLOADINGFILESMAXNUM) {
+      state.uploadingFiles.push({
+        name,
+        date,
+        status: 'active',
+      })
+    } else {
+      state.uploadingFiles.shift()
+      state.uploadingFiles.push({
+        name,
+        date,
+        status: 'active',
+      })
+    }
   },
   updateUploadingStatus (state, { name, status }) {
-    console.log('vuex', name)
     state.uploadingFiles.find(cur => cur.name === name).status = status
   },
 }

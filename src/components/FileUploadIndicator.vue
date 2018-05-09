@@ -5,7 +5,11 @@
       <p slot="content">
         <ul v-if="files.length" class="file-list">
           <li v-for="(item, i) in files" :key="i">
-            <file-progress :name="item.name" :status="item.status" />
+            <file-progress
+              :name="item.name"
+              :date="item.date"
+              :status="item.status"
+            />
           </li>
         </ul>
         <span v-else>暂未上传</span>
@@ -29,16 +33,19 @@ export default {
       },
     },
   },
-  // data () {
-  //   return {
-  //     opening: '',
-  //   }
-  // },
-  computed: {
-    opening: function () {
-      return this.files.length && '0' || ''
+  data () {
+    return {
+      opening: '',
     }
-  }
+  },
+  watch: {
+    files: {
+      handler (val, oldVal) {
+        this.opening = val.length && '0' || ''
+      },
+      deep: true,
+    }
+  },
 }
 </script>
 

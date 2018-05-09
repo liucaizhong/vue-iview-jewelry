@@ -121,7 +121,10 @@ export default {
     },
     handleCSVProgress (event, file) {
       console.log(file)
-      this.$store.commit('pushNewUploadingFile', file.name)
+      this.$store.commit('pushNewUploadingFile', {
+        name: file.name,
+        date: (new Date()).toLocaleString(),
+      })
     },
     handleCSVError (err, file, filelist) {
       // console.log(err)
