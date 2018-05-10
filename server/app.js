@@ -26,13 +26,11 @@ app.all('*', (req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
 
   if (req.method === 'OPTIONS') {
-    console.log('Options start!')
     res.statusCode = 204
-    next()
     // res.status(204).send('204 | No Content')
-  } else {
-    next()
   }
+
+  next()
 })
 
 app.use('/api-auth/admin', require('./index.js')())

@@ -18,7 +18,7 @@ function request ({ url, method = 'get', ...args }, req, res) {
     method,
     url,
     ...args,
-    responseType: 'stream'
+    responseType: 'stream',
   }).then(resp => {
     // console.log('resp is', resp)
     resp.data.pipe(res)
@@ -30,10 +30,10 @@ function request ({ url, method = 'get', ...args }, req, res) {
 
 module.exports = () => {
   router.post('/member/', (req, res) => {
-    console.log('member post', req.data)
     request({
       url: mapUrl(req.url),
       method: 'post',
+      data: req.body
     }, req, res)
   })
 

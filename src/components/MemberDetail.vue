@@ -352,26 +352,25 @@ export default {
       this.$refs[`${type}ModalForm`].validate(valid => {
         if (valid) {
           const url = '/member/'
+          const postData = this[`${type}ModalForm`][type]
+          const isAddress = Array.isArray(postData)
           this.$fetch(url, {
-            params: {
-              memberId: this.formMember.memberId,
-            },
             data: {
-              [type]: this[`${type}ModalForm`][type],
+              memberId: this.formMember.memberId,
+              [type]: isAddress
+                ? JSON.stringify(postData)
+                : postData,
             },
             method: 'post',
           })
             .then(resp => {
               console.log(resp)
-              // const results = resp.data.results
-              // if (results && results.length) {
-              //   this.formMember = {
-              //     ...results[0],
-              //   }
-              //   this.formMember.address = JSON.parse(this.formMember.address)
-              // } else {
-              //   this.$Message.error('未找到该会员的详细信息')
-              // }
+              const data = resp.data
+              this.formMember[type] = isAddress
+                ? JSON.parse(data[type])
+                : data[type]
+              this.$Message.success('保存成功')
+              this[`${type}Modal`] = false
               this.spinning = false
             })
             .catch(err => {
@@ -379,9 +378,6 @@ export default {
               this.$Message.error(err)
               this.spinning = false
             })
-          // this.formMember[type] = this[`${type}ModalForm`][type]
-          // this.$Message.success('保存成功')
-          // this[`${type}Modal`] = false
         } else {
           this.$Message.error('保存失败')
         }

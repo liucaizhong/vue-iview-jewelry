@@ -1,12 +1,12 @@
 <template>
   <div class="member">
     <div class="header">
-      <Form :model="searchForm" :label-width="80">
+      <Form ref="searchForm" :model="searchForm" :label-width="80">
         <FormItem label="姓名" prop="name">
           <Input v-model="searchForm.name">
           </Input>
         </FormItem>
-        <FormItem>
+        <FormItem prop="idNo">
           <Input v-model="searchForm.idNo">
           <Select slot="prepend" v-model="searchForm.idType" style="width: 80px">
             <Option
@@ -19,13 +19,13 @@
           </Select>
           </Input>
         </FormItem>
-        <FormItem label="手机号">
-          <Input v-model="searchForm.cellPhone">
+        <FormItem label="手机号" prop="phone">
+          <Input v-model="searchForm.phone">
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="primary">搜索</Button>
-          <Button type="error">清空</Button>
+          <Button type="primary" @click.native="search">搜索</Button>
+          <Button type="error" @click.native="reset">清空</Button>
           <!-- <Button type="success" icon="loop">刷新</Button> -->
         </FormItem>
       </Form>
@@ -69,7 +69,7 @@ export default {
         name: '',
         idType: '0',
         idNo: '',
-        cellPhone: '',
+        phone: '',
       },
       tableData: [],
       tableLoading: false,
@@ -189,7 +189,7 @@ export default {
       const url = '/member/'
       this.$fetch(url, config)
         .then(resp => {
-          console.log(resp)
+          // console.log(resp)
           const { count, results } = resp.data
           this.tableData = results
           this.totalCount = count
@@ -220,6 +220,18 @@ export default {
           limit: pageSize,
         }
       })
+    },
+    search () {
+      this.mockTableData({
+        params: {
+          offset: (this.page - 1) * this.pageSize,
+          limit: this.pageSize,
+          ...this.searchForm,
+        }
+      })
+    },
+    reset () {
+      this.$refs.searchForm.resetFields()
     }
   }
 }

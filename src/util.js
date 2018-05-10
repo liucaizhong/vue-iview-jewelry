@@ -52,22 +52,23 @@ export default {
         DEVURL
       const realUrl = baseUrl + url
       const mergeConfig = (!config.method || config.method === 'get')
-        ? Object.assign({}, {
+        ? Object.assign({
+          url: realUrl,
+          method: 'get',
           params: {
             limit: 10,
             offset: 0,
           },
         }, config)
-        : config
+        : Object.assign({
+          url: realUrl,
+          method: 'post',
+        }, config)
 
       return new Promise((resolve, reject) => {
         const request = async () => {
           try {
-            const rsp = await axios({
-              url: realUrl,
-              method: 'get',
-              ...mergeConfig,
-            })
+            const rsp = await axios(mergeConfig)
             resolve(rsp)
           } catch (err) {
             // todo: error handle
