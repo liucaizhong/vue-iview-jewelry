@@ -21,14 +21,14 @@
           <FormItem label="性别" prop="gender">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.gender }}</p>
+              <p>{{ gender }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="证件类型" prop="idType">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ idTypes[formMember.idType].value }}</p>
+              <p>{{ idType }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -134,11 +134,11 @@
           <FormItem label="创建来源" prop="source">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.source }}</p>
+              <p>{{ memberSource }}</p>
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="最后修改时间" prop="lastModified">
+          <!-- <FormItem label="最后修改时间" prop="lastModified">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <p>{{ formMember.lastModified }}</p>
@@ -151,7 +151,7 @@
               <p>{{ formMember.lastModifiedBy }}</p>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> -->
         </div>
       </section>
     </Form>
@@ -251,34 +251,38 @@
         </FormItem>
       </Form>
     </Modal>
+    <Spin v-show="spinning" fix size="large" />
   </div>
 </template>
 
 <script>
-import { IDTYPE, ADDRESSMAXNUM } from '@/constant'
+import { IDTYPE, ADDRESSMAXNUM, MEMBERSOURCE, GENDER } from '@/constant'
 
 export default {
   data () {
     return {
       idTypes: IDTYPE,
       addressMaxNum: ADDRESSMAXNUM,
+      memberSources: MEMBERSOURCE,
+      genders: GENDER,
+      spinning: false,
       formMember: {
-        memberId: 'zz945',
-        name: '黄逼王',
-        gender: '女',
-        idType: 0,
-        idNo: '31023019880231212X',
-        birthday: '19880231',
-        cellPhone: '18812344843',
-        email: '5654545@qq.com',
-        address: ['adff', 'adfd', 'adfd', 'dafdf', 'dafdff'],
-        balance: '123',
-        deposit: '12323',
-        rent: '21312312',
-        createdDate: '2018-04-27',
-        source: '公众号',
-        lastModified: '2018-05-27',
-        lastModifiedBy: 'hsw',
+        memberId: '',
+        name: '',
+        gender: '',
+        idType: '',
+        idNo: '',
+        birthday: '',
+        phone: '',
+        email: '',
+        address: [],
+        balance: '',
+        deposit: '',
+        rent: '',
+        createdDate: '',
+        source: '',
+        lastModified: '',
+        lastModifiedBy: '',
       },
       emailModal: false,
       emailModalForm: {
@@ -296,8 +300,46 @@ export default {
       }
     }
   },
+  computed: {
+    memberSource: function () {
+      const source = this.memberSources.find(cur => cur.key === this.formMember.source) || ''
+      return source && source.value
+    },
+    idType: function () {
+      const idType = this.idTypes.find(cur => cur.key === this.formMember.idType)
+      return idType && idType.value
+    },
+    gender: function () {
+      const gender = this.genders.find(cur => cur.key === this.formMember.gender)
+      return gender && gender.value
+    },
+  },
   created () {
-    console.log(this.$route.params.id)
+    this.spinning = true
+    const url = '/member/'
+    this.formMember.memberId = this.$route.params.id
+    this.$fetch(url, {
+      params: {
+        memberId: this.formMember.memberId,
+      }
+    })
+      .then(resp => {
+        const results = resp.data.results
+        if (results && results.length) {
+          this.formMember = {
+            ...results[0],
+          }
+          this.formMember.address = JSON.parse(this.formMember.address)
+        } else {
+          this.$Message.error('未找到该会员的详细信息')
+        }
+        this.spinning = false
+      })
+      .catch(err => {
+        console.log(err)
+        this.$Message.error(err)
+        this.spinning = false
+      })
   },
   methods: {
     editField (type) {
@@ -309,9 +351,37 @@ export default {
     saveField (type) {
       this.$refs[`${type}ModalForm`].validate(valid => {
         if (valid) {
-          this.formMember[type] = this[`${type}ModalForm`][type]
-          this.$Message.success('保存成功')
-          this[`${type}Modal`] = false
+          const url = '/member/'
+          this.$fetch(url, {
+            params: {
+              memberId: this.formMember.memberId,
+            },
+            data: {
+              [type]: this[`${type}ModalForm`][type],
+            },
+            method: 'post',
+          })
+            .then(resp => {
+              console.log(resp)
+              // const results = resp.data.results
+              // if (results && results.length) {
+              //   this.formMember = {
+              //     ...results[0],
+              //   }
+              //   this.formMember.address = JSON.parse(this.formMember.address)
+              // } else {
+              //   this.$Message.error('未找到该会员的详细信息')
+              // }
+              this.spinning = false
+            })
+            .catch(err => {
+              console.log(err)
+              this.$Message.error(err)
+              this.spinning = false
+            })
+          // this.formMember[type] = this[`${type}ModalForm`][type]
+          // this.$Message.success('保存成功')
+          // this[`${type}Modal`] = false
         } else {
           this.$Message.error('保存失败')
         }

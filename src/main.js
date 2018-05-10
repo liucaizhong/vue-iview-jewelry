@@ -11,12 +11,13 @@ import util from './util'
 
 Vue.config.productionTip = false
 Vue.use(iView)
+Vue.use(util)
 
 // 设置路由拦截
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (util.getCookie('sessionid')) {
+    if (this.$getCookie('sessionid')) {
       next()
     } else {
       next({

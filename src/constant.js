@@ -3,7 +3,7 @@ module.exports = {
   PRODURL: '/api-auth/admin',
   IDTYPE: [{
     key: '0',
-    value: '证件号',
+    value: '身份证',
   }, {
     key: '1',
     value: '护照',
@@ -106,6 +106,13 @@ module.exports = {
   }, {
     key: '2',
     value: '900',
+  }],
+  MEMBERSOURCE: [{
+    key: '0',
+    value: '管理端',
+  }, {
+    key: '1',
+    value: '公众号',
   }],
   BRANDOPTIONS: ['THEIA', '通灵', 'I do'],
   SERIESOPTIONS: ['经典系列', '奢华系列'],

@@ -56,7 +56,6 @@
 
 <script>
 import { IDTYPE, GENDER } from '@/constant'
-import util from '@/util'
 
 export default {
   data () {
@@ -72,16 +71,14 @@ export default {
         idNo: '',
         cellPhone: '',
       },
-      tableData: [{
-        gender: '0'
-      }],
+      tableData: [],
       tableLoading: false,
       tableColumns: [
         {
           title: '会员号',
           key: 'memberId',
           sortable: true,
-          minWidth: 100,
+          minWidth: 150,
         },
         {
           title: '姓名',
@@ -119,37 +116,42 @@ export default {
             return row.idType === value
           },
           minWidth: 100,
+          render (h, params) {
+            const idType = IDTYPE.find(
+              cur => params.row.idType === cur.key).value
+            return h('span', idType)
+          },
         },
         {
           title: '证件号码',
           key: 'idNo',
           sortable: true,
-          minWidth: 100,
+          minWidth: 150,
         },
         {
           title: '手机号',
-          key: 'cellPhone',
+          key: 'phone',
           sortable: true,
-          minWidth: 100,
+          minWidth: 120,
         },
-        {
-          title: '余额',
-          key: 'balance',
-          sortable: true,
-          minWidth: 100,
-        },
-        {
-          title: '押金',
-          key: 'deposit',
-          sortable: true,
-          minWidth: 100,
-        },
-        {
-          title: '租金',
-          key: 'rent',
-          sortable: true,
-          minWidth: 100,
-        },
+        // {
+        //   title: '余额',
+        //   key: 'balance',
+        //   sortable: true,
+        //   minWidth: 100,
+        // },
+        // {
+        //   title: '押金',
+        //   key: 'deposit',
+        //   sortable: true,
+        //   minWidth: 100,
+        // },
+        // {
+        //   title: '租金',
+        //   key: 'rent',
+        //   sortable: true,
+        //   minWidth: 100,
+        // },
         {
           title: '操作',
           key: 'action',
@@ -185,7 +187,7 @@ export default {
     mockTableData (config) {
       this.tableLoading = true
       const url = '/member/'
-      util.fetch(url, config)
+      this.$fetch(url, config)
         .then(resp => {
           console.log(resp)
           const { count, results } = resp.data
