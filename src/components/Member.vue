@@ -100,8 +100,8 @@ export default {
           minWidth: 100,
           render (h, params) {
             const gender = GENDER.find(
-              cur => params.row.gender === cur.key).value
-            return h('span', gender)
+              cur => params.row.gender === cur.key)
+            return h('span', gender && gender.value)
           },
         },
         {
@@ -118,8 +118,8 @@ export default {
           minWidth: 100,
           render (h, params) {
             const idType = IDTYPE.find(
-              cur => params.row.idType === cur.key).value
-            return h('span', idType)
+              cur => params.row.idType === cur.key)
+            return h('span', idType && idType.value)
           },
         },
         {
@@ -232,7 +232,13 @@ export default {
     },
     reset () {
       this.$refs.searchForm.resetFields()
-    }
+      this.mockTableData({
+        params: {
+          offset: (this.page - 1) * this.pageSize,
+          limit: this.pageSize,
+        }
+      })
+    },
   }
 }
 </script>

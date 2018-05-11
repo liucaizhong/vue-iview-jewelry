@@ -62,7 +62,7 @@ export default {
         }, config)
         : Object.assign({
           url: realUrl,
-          method: 'post',
+          // method: 'post',
         }, config)
 
       return new Promise((resolve, reject) => {

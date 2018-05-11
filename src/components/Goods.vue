@@ -1,7 +1,7 @@
 <template>
   <div class="goods">
     <div class="header">
-      <Form :model="searchForm" :label-width="80">
+      <Form ref="searchForm" :model="searchForm" :label-width="80">
         <FormItem label="商品型号" prop="model">
           <Input v-model="searchForm.model">
           </Input>
@@ -16,14 +16,18 @@
           </Badge>
         </FormItem>
         <FormItem>
-          <Button type="primary">搜索</Button>
-          <Button type="error">清空</Button>
-          <Button type="success" icon="loop">导出</Button>
+          <Button type="primary" @click.native="search">搜索</Button>
+          <Button type="error" @click.native="reset">清空</Button>
+          <Button
+            type="success"
+            @click.native="exportCsv"
+          >导出</Button>
         </FormItem>
       </Form>
     </div>
     <div class="body">
       <Table
+        ref="table"
         :data="tableData"
         :columns="tableColumns"
         :loading="tableLoading"
@@ -33,12 +37,13 @@
     <div class="footer">
       <div class="pager" style="float: right;">
         <Page
-          :total="100"
+          :total="totalCount"
           :current="1"
           show-total
           show-elevator
           show-sizer
           @on-change="changePage"
+          @on-page-size-change="changePageSize"
         />
       </div>
     </div>
@@ -116,6 +121,9 @@ export default {
       goldTypes: GOLDTYPE,
       brandOptions: BRANDOPTIONS,
       seriesOptions: SERIESOPTIONS,
+      page: 1,
+      pageSize: 10,
+      totalCount: 0,
       searchForm: {
         category: [],
         model: '',
@@ -132,26 +140,32 @@ export default {
         brand: '',
         series: '',
       },
-      tableData: this.mockTableData1(),
+      tableData: [],
       tableLoading: false,
+      // exportLoading: false,
       tableColumns: [
         {
           title: '商品ID',
-          key: 'yd',
+          key: 'productid',
           sortable: true,
-          minWidth: 100,
+          minWidth: 150,
         },
         {
           title: '商品类别',
           key: 'category',
           sortable: true,
           minWidth: 100,
+          render (h, params) {
+            const category = CATEGORYOFGOOD.find(
+              cur => params.row.category === cur.key)
+            return h('span', category && category.value)
+          },
         },
         {
           title: '商品型号',
           key: 'model',
           sortable: true,
-          minWidth: 100,
+          minWidth: 150,
         },
         {
           title: '商品名称',
@@ -183,6 +197,11 @@ export default {
             return row.goldType === value
           },
           minWidth: 100,
+          render (h, params) {
+            const goldType = GOLDTYPE.find(
+              cur => params.row.goldType === cur.key)
+            return h('span', goldType && goldType.value)
+          },
         },
         {
           title: '材质纯度',
@@ -196,6 +215,11 @@ export default {
             return row.goldPurity === value
           },
           minWidth: 100,
+          render (h, params) {
+            const goldPurity = GOLDPURITY.find(
+              cur => params.row.goldPurity === cur.key)
+            return h('span', goldPurity && goldPurity.value)
+          },
         },
         {
           title: '含金量（克）',
@@ -239,6 +263,11 @@ export default {
             return row.releaseStatus === value
           },
           minWidth: 100,
+          render (h, params) {
+            const releaseStatus = RELEASESTATUS.find(
+              cur => params.row.releaseStatus === cur.key)
+            return h('span', releaseStatus && releaseStatus.value)
+          },
         },
         {
           title: '操作',
@@ -258,7 +287,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push(`goods/${params.row.yd}`)
+                    this.$router.push(`goods/${params.row.productid}`)
                   }
                 }
               }, '详情'),
@@ -267,6 +296,9 @@ export default {
         },
       ]
     }
+  },
+  created () {
+    this.mockTableData()
   },
   methods: {
     expandMoreCond () {
@@ -304,45 +336,104 @@ export default {
           : obj[key])
       }, false)
     },
-    mockTableData1 () {
-      const data = []
-      for (let i = 0; i < 20; i++) {
-        data.push({
-          id: 'test',
-          name: 'Business' + Math.floor(Math.random() * 100 + 1),
-          status: Math.floor(Math.random() * 3 + 1),
-          portrayal: ['City', 'People', 'Cost', 'Life', 'Entertainment'],
-          people: [
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            },
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            },
-            {
-              n: 'People' + Math.floor(Math.random() * 100 + 1),
-              c: Math.floor(Math.random() * 1000000 + 100000)
-            }
-          ],
-          time: Math.floor(Math.random() * 7 + 1),
-          update: new Date()
+    mockTableData (config) {
+      this.tableLoading = true
+      const url = '/product/'
+      this.$fetch(url, config)
+        .then(resp => {
+          console.log(resp)
+          const { count, results } = resp.data
+          this.tableData = results
+          this.totalCount = count
+          this.tableLoading = false
         })
+        .catch(err => {
+          console.log(err)
+          this.$Message.error(err)
+          this.tableLoading = false
+        })
+    },
+    changePage (page) {
+      console.log(page)
+      this.page = page
+      this.mockTableData({
+        params: {
+          offset: (page - 1) * this.pageSize,
+          limit: this.pageSize,
+        }
+      })
+    },
+    changePageSize (pageSize) {
+      console.log(pageSize)
+      this.pageSize = pageSize
+      this.mockTableData({
+        params: {
+          offset: 0,
+          limit: pageSize,
+        }
+      })
+    },
+    search () {
+      console.log(this.formConditions(this.searchForm))
+      this.mockTableData({
+        params: {
+          offset: (this.page - 1) * this.pageSize,
+          limit: this.pageSize,
+          ...this.formConditions(this.searchForm),
+        }
+      })
+    },
+    reset () {
+      this.$refs.searchForm.resetFields()
+      this.moreCondModalForm = {
+        category: [],
+        goldType: [],
+        brand: '',
+        series: '',
       }
-      return data
+      this.searchForm = {
+        category: [],
+        goldType: [],
+        brand: '',
+        series: '',
+      }
+      this.moreCondCount = 0
+      this.mockTableData({
+        params: {
+          offset: (this.page - 1) * this.pageSize,
+          limit: this.pageSize,
+        }
+      })
     },
-    formatDate (date) {
-      const y = date.getFullYear()
-      let m = date.getMonth() + 1
-      m = m < 10 ? '0' + m : m
-      let d = date.getDate()
-      d = d < 10 ? ('0' + d) : d
-      return y + '-' + m + '-' + d
+    exportCsv () {
+      this.$refs.table.exportCsv({
+        filename: '会员信息',
+        columns: this.tableColumns.filter(col => col.key !== 'action'),
+        data: this.tableData,
+      })
     },
-    changePage () {
-      this.tableData1 = this.mockTableData1()
-    }
+    formConditions (form) {
+      const conds = Object.keys(form).reduce((obj, k) => {
+        if (form[k] != false) {
+          if (typeof form[k] === 'object') {
+            obj[k] = [...form[k]]
+          } else {
+            obj[k] = form[k]
+          }
+        }
+        return obj
+      }, {})
+
+      conds.category && (conds.category = conds.category.reduce((cum, cur, i) => {
+        cur && cum.push(this.categoryOfGood[i].key)
+        return cum
+      }, []))
+      conds.goldType && (conds.goldType = conds.goldType.reduce((cum, cur, i) => {
+        cur && cum.push(this.goldTypes[i].key)
+        return cum
+      }, []))
+      return conds
+    },
   }
 }
 </script>

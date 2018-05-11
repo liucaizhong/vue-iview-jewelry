@@ -177,6 +177,7 @@
           <Button
             type="success"
             @click="saveField('email')"
+            :loading="saveLoading"
           >保存</Button>
           <Button
             type="ghost"
@@ -242,6 +243,7 @@
           <Button
             type="success"
             @click="saveField('address')"
+            :loading="saveLoading"
           >保存</Button>
           <Button
             type="ghost"
@@ -266,6 +268,7 @@ export default {
       memberSources: MEMBERSOURCE,
       genders: GENDER,
       spinning: false,
+      saveLoading: false,
       formMember: {
         memberId: '',
         name: '',
@@ -281,8 +284,8 @@ export default {
         rent: '',
         createdDate: '',
         source: '',
-        lastModified: '',
-        lastModifiedBy: '',
+        // lastModified: '',
+        // lastModifiedBy: '',
       },
       emailModal: false,
       emailModalForm: {
@@ -351,6 +354,7 @@ export default {
     saveField (type) {
       this.$refs[`${type}ModalForm`].validate(valid => {
         if (valid) {
+          this.saveLoading = true
           const url = '/member/'
           const postData = this[`${type}ModalForm`][type]
           const isAddress = Array.isArray(postData)
@@ -371,12 +375,12 @@ export default {
                 : data[type]
               this.$Message.success('保存成功')
               this[`${type}Modal`] = false
-              this.spinning = false
+              this.saveLoading = false
             })
             .catch(err => {
               console.log(err)
               this.$Message.error(err)
-              this.spinning = false
+              this.saveLoading = false
             })
         } else {
           this.$Message.error('保存失败')

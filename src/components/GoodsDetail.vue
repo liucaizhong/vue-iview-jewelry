@@ -9,10 +9,10 @@
       <section>
         <header>基本信息</header>
         <div class="section-body">
-          <FormItem v-if="!mode" label="商品ID" prop="yd">
+          <FormItem v-if="!mode" label="商品ID" prop="productid">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.yd }}</p>
+              <p>{{ formGoods.productid }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -255,28 +255,28 @@
           描述信息
         </header>
         <div class="section-body">
-          <!-- <FormItem label="商品图片" prop="mainImage">
+          <!-- <FormItem label="商品图片" prop="MainImage">
             <image-uploader
-              :image-list="formGoods.mainImage"
+              :image-list="formGoods.MainImage"
               multiple
-              :image-max-num="mainImageNum"
+              :image-max-num="MainImageNum"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
             />
           </FormItem> -->
           <FormItem label="商品图片" class="main-images">
             <image-uploader
-              v-for="i in mainImageNum"
+              v-for="i in MainImageNum"
               :key="i - 1"
-              :image-list="formGoods[`mainImage${i - 1}`]"
+              :image-list="formGoods[`MainImage${i - 1}`]"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
             />
           </FormItem>
-          <FormItem label="商品详情图片" prop="detailImage">
+          <FormItem label="商品详情图片" prop="detailImages">
             <image-uploader
-              :image-list="formGoods.detailImage"
+              :image-list="formGoods.detailImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
@@ -342,7 +342,7 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="最后修改时间" prop="lastModified">
+          <!-- <FormItem label="最后修改时间" prop="lastModified">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <p>{{ formGoods.lastModified }}</p>
@@ -355,7 +355,7 @@
               <p>{{ formGoods.lastModifiedBy }}</p>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> -->
           <FormItem>
             <Button
               type="success"
@@ -370,6 +370,7 @@
         </div>
       </section>
     </Form>
+    <Spin v-show="spinning" fix size="large" />
   </div>
 </template>
 
@@ -398,35 +399,36 @@ export default {
       seriesOptions: SERIESOPTIONS,
       releaseStatus: RELEASESTATUS,
       certificates: CERTIFICATES,
-      mainImageNum: MAINIMAGENUM,
+      MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
+      spinning: false,
       formGoodsBak: {},
       formGoods: {
-        yd: 'zz945',
-        category: '0',
-        model: 'dfasdfsdf',
-        title: '黄逼王的大金链子',
-        goldType: 'W',
-        goldPurity: '0',
-        releaseStatus: '0',
-        brand: 'THEIA',
-        series: '经典系列',
-        certificate: '0',
-        size: '大',
-        goldContent: '1.12',
-        diamondWeight: '10.1',
-        sellingPrice: '1230.12',
-        deposit: '12323',
-        rent: '21312312',
-        rentcycle: '7',
-        reletcycle: '7',
-        desc: 'dafadfsd',
-        remark: 'dafadfsd',
-        createdDate: '2018-04-27',
-        createdBy: 'lcz',
-        lastModified: '2018-05-27',
-        lastModifiedBy: 'hsw',
-        // mainImage: [
+        productid: '',
+        category: '',
+        model: '',
+        title: '',
+        goldType: '',
+        goldPurity: '',
+        releaseStatus: '',
+        brand: '',
+        series: '',
+        certificate: '',
+        size: '',
+        goldContent: '',
+        diamondWeight: '',
+        sellingPrice: '',
+        deposit: '',
+        rent: '',
+        rentcycle: '',
+        reletcycle: '',
+        desc: '',
+        remark: '',
+        createdDate: '',
+        createdBy: '',
+        // lastModified: '',
+        // lastModifiedBy: '',
+        // MainImage: [
         //   {
         //     name: 'a42bdcc1178e62b4694c830f028db5c0',
         //     url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
@@ -436,23 +438,25 @@ export default {
         //     url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
         //   },
         // ],
-        mainImage0: [{
-          name: 'a42bdcc1178e62b4694c830f028db5c0',
-          file: null,
-          url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
-          avatar: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
-        }],
-        mainImage1: [{
-          name: 'bc7521e033abdd1e92222d733590f104',
-          file: null,
-          url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
-          avatar: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
-        }],
-        mainImage2: [],
-        mainImage3: [],
-        mainImage4: [],
-        mainImage5: [],
-        detailImage: [],
+        // MainImage0: [{
+        //   name: 'a42bdcc1178e62b4694c830f028db5c0',
+        //   file: null,
+        //   url: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+        //   avatar: 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar',
+        // }],
+        // MainImage1: [{
+        //   name: 'bc7521e033abdd1e92222d733590f104',
+        //   file: null,
+        //   url: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+        //   avatar: 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar',
+        // }],
+        MainImage0: [],
+        MainImage1: [],
+        MainImage2: [],
+        MainImage3: [],
+        MainImage4: [],
+        MainImage5: [],
+        detailImages: [],
       },
       ruleValidate: {
         category: [{
@@ -643,13 +647,75 @@ export default {
     }
   },
   created () {
-    console.log(this.$route.params.id)
+    this.spinning = true
+    const url = '/product/'
+    this.formGoods.productid = this.$route.params.id
+    this.$fetch(url, {
+      params: {
+        productid: this.formGoods.productid,
+      }
+    })
+      .then(resp => {
+        console.log(resp)
+        const results = resp.data.results
+        if (results && results.length) {
+          this.formGoods = {
+            ...results[0],
+          }
+          this.formGoods.MainImage0 = JSON.parse(this.formGoods.MainImage0)
+          this.formGoods.MainImage1 = JSON.parse(this.formGoods.MainImage1)
+          this.formGoods.MainImage2 = JSON.parse(this.formGoods.MainImage2)
+          this.formGoods.MainImage3 = JSON.parse(this.formGoods.MainImage3)
+          this.formGoods.MainImage4 = JSON.parse(this.formGoods.MainImage4)
+          this.formGoods.MainImage5 = JSON.parse(this.formGoods.MainImage5)
+          this.formGoods.detailImages = JSON.parse(this.formGoods.detailImages)
+        } else {
+          this.$Message.error('未找到该商品的详细信息')
+        }
+        this.spinning = false
+      })
+      .catch(err => {
+        console.log(err)
+        this.$Message.error(err)
+        this.spinning = false
+      })
   },
   methods: {
     save () {
       this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          this.$Message.success('保存成功')
+          this.spinning = true
+          const url = '/product/'
+          this.$fetch(url, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            data: {
+              // formdata
+            },
+            method: 'post',
+          })
+            .then(resp => {
+              console.log(resp)
+              const data = resp.data
+              this.formGoods = {
+                ...data,
+              }
+              this.formGoods.MainImage0 = JSON.parse(this.formGoods.MainImage0)
+              this.formGoods.MainImage1 = JSON.parse(this.formGoods.MainImage1)
+              this.formGoods.MainImage2 = JSON.parse(this.formGoods.MainImage2)
+              this.formGoods.MainImage3 = JSON.parse(this.formGoods.MainImage3)
+              this.formGoods.MainImage4 = JSON.parse(this.formGoods.MainImage4)
+              this.formGoods.MainImage5 = JSON.parse(this.formGoods.MainImage5)
+              this.formGoods.detailImages = JSON.parse(this.formGoods.detailImages)
+              this.spinning = false
+              this.$Message.success('保存成功')
+            })
+            .catch(err => {
+              console.log(err)
+              this.$Message.error(err)
+              this.spinning = false
+            })
         } else {
           this.$Message.error('保存失败')
         }

@@ -76,6 +76,8 @@ module.exports = {
     'no-param-reassign': ["error", { "props": false }],
     'func-names': ["error", "never"],
     'linebreak-style': ["error", "unix"],
-    'consistent-return': [0]
+    'consistent-return': [0],
+    'no-unused-expressions': [0],
+    'eqeqeq': [0]
   }
 };

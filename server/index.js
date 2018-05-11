@@ -43,5 +43,11 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/product/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   return router
 }
