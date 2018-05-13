@@ -15,6 +15,10 @@ const BatchImportGoods = () => import('@/components/BatchImportGoods')
 export default new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '*',
+    //   component: NotFound,
+    // },
     {
       path: '/',
       redirect: '/login',
