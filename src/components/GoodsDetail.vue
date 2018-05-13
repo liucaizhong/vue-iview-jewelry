@@ -370,7 +370,6 @@
         </div>
       </section>
     </Form>
-    <Spin v-show="spinning" fix size="large" />
   </div>
 </template>
 
@@ -401,7 +400,6 @@ export default {
       certificates: CERTIFICATES,
       MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
-      spinning: false,
       formGoodsBak: {},
       formGoods: {
         productid: '',
@@ -420,8 +418,8 @@ export default {
         sellingPrice: '',
         deposit: '',
         rent: '',
-        rentcycle: '',
-        reletcycle: '',
+        rentcycle: 0,
+        reletcycle: 0,
         desc: '',
         remark: '',
         createdDate: '',
@@ -599,6 +597,7 @@ export default {
           required: true,
           message: '起租周期不能为空',
           trigger: 'blur',
+          type: 'number',
         }, {
           trigger: 'change',
           validator (rule, value, cb) {
@@ -617,6 +616,7 @@ export default {
           required: true,
           message: '起租周期不能为空',
           trigger: 'blur',
+          type: 'number',
         }, {
           trigger: 'change',
           validator (rule, value, cb) {
@@ -647,7 +647,7 @@ export default {
     }
   },
   created () {
-    this.spinning = true
+    this.$Spin.show()
     const url = '/product/'
     this.formGoods.productid = this.$route.params.id
     this.$fetch(url, {
@@ -659,62 +659,98 @@ export default {
         console.log(resp)
         const results = resp.data.results
         if (results && results.length) {
-          this.formGoods = {
-            ...results[0],
+          const temp = results[0]
+          for (let i = 0; i < this.MainImageNum; ++i) {
+            temp[`MainImage${i}`] =
+              temp[`MainImage${i}`]
+                && [{
+                  ...temp[`MainImage${i}`],
+                }]
+                || []
           }
-          this.formGoods.MainImage0 = JSON.parse(this.formGoods.MainImage0)
-          this.formGoods.MainImage1 = JSON.parse(this.formGoods.MainImage1)
-          this.formGoods.MainImage2 = JSON.parse(this.formGoods.MainImage2)
-          this.formGoods.MainImage3 = JSON.parse(this.formGoods.MainImage3)
-          this.formGoods.MainImage4 = JSON.parse(this.formGoods.MainImage4)
-          this.formGoods.MainImage5 = JSON.parse(this.formGoods.MainImage5)
-          this.formGoods.detailImages = JSON.parse(this.formGoods.detailImages)
+          temp.detailImages = temp.detailImages
+            && [{
+              ...temp.detailImages,
+            }]
+            || []
+          this.formGoods = {
+            ...temp,
+          }
+          this.formGoodsBak = {
+            ...temp,
+          }
         } else {
           this.$Message.error('未找到该商品的详细信息')
         }
-        this.spinning = false
+        this.$Spin.hide()
       })
       .catch(err => {
         console.log(err)
         this.$Message.error(err)
-        this.spinning = false
+        this.$Spin.hide()
       })
   },
   methods: {
+    formPostdata () {
+      // console.log(this.formGoods)
+      const data = new FormData()
+      Object.keys(this.formGoods).forEach(key => {
+        const value = this.formGoods[key]
+        if (key.includes('Image')) {
+          if (value && value[0] && value[0].file) {
+            data.append(key, value[0].file, value[0].name)
+          }
+          if (value && !value.length) {
+            data.append(key, '')
+          }
+        } else {
+          data.append(key, value)
+        }
+      })
+
+      return data
+    },
     save () {
       this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          this.spinning = true
-          const url = '/product/'
+          this.$Spin.show()
+          const url = '/productupdate/'
           this.$fetch(url, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
-            data: {
-              // formdata
-            },
+            data: this.formPostdata(),
             method: 'post',
           })
             .then(resp => {
               console.log(resp)
-              const data = resp.data
-              this.formGoods = {
-                ...data,
+              const temp = resp.data
+              for (let i = 0; i < this.MainImageNum; ++i) {
+                temp[`MainImage${i}`] =
+                  temp[`MainImage${i}`]
+                    && [{
+                      ...temp[`MainImage${i}`],
+                    }]
+                    || []
               }
-              this.formGoods.MainImage0 = JSON.parse(this.formGoods.MainImage0)
-              this.formGoods.MainImage1 = JSON.parse(this.formGoods.MainImage1)
-              this.formGoods.MainImage2 = JSON.parse(this.formGoods.MainImage2)
-              this.formGoods.MainImage3 = JSON.parse(this.formGoods.MainImage3)
-              this.formGoods.MainImage4 = JSON.parse(this.formGoods.MainImage4)
-              this.formGoods.MainImage5 = JSON.parse(this.formGoods.MainImage5)
-              this.formGoods.detailImages = JSON.parse(this.formGoods.detailImages)
-              this.spinning = false
+              temp.detailImages = temp.detailImages
+                && [{
+                  ...temp.detailImages,
+                }]
+                || []
+              this.formGoods = {
+                ...temp,
+              }
+              this.formGoodsBak = {
+                ...temp,
+              }
+              this.$Spin.hide()
               this.$Message.success('保存成功')
             })
             .catch(err => {
               console.log(err)
               this.$Message.error(err)
-              this.spinning = false
+              this.$Spin.hide()
             })
         } else {
           this.$Message.error('保存失败')

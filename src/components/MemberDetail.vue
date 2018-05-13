@@ -253,7 +253,6 @@
         </FormItem>
       </Form>
     </Modal>
-    <Spin v-show="spinning" fix size="large" />
   </div>
 </template>
 
@@ -267,7 +266,6 @@ export default {
       addressMaxNum: ADDRESSMAXNUM,
       memberSources: MEMBERSOURCE,
       genders: GENDER,
-      spinning: false,
       saveLoading: false,
       formMember: {
         memberId: '',
@@ -318,7 +316,7 @@ export default {
     },
   },
   created () {
-    this.spinning = true
+    this.$Spin.show()
     const url = '/member/'
     this.formMember.memberId = this.$route.params.id
     this.$fetch(url, {
@@ -336,12 +334,12 @@ export default {
         } else {
           this.$Message.error('未找到该会员的详细信息')
         }
-        this.spinning = false
+        this.$Spin.hide()
       })
       .catch(err => {
         console.log(err)
         this.$Message.error(err)
-        this.spinning = false
+        this.$Spin.hide()
       })
   },
   methods: {

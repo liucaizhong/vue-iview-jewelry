@@ -2,7 +2,7 @@
   <div class="image-uploader">
     <div class="upload-list" v-for="item in uploadList" :key="item.url">
       <template v-if="item.status === 'finished'">
-        <img :src="item.avatar">
+        <img :src="item.avatar || item.url">
         <div class="upload-list-cover">
           <Icon type="ios-eye-outline" @click.native="handleView(item.name)" />
           <Icon type="ios-trash-outline" @click.native="handleRemove(item)" />
@@ -115,10 +115,29 @@ export default {
       rawImgUrl: '',
     }
   },
-  mounted () {
-    this.uploadList = this.$refs.upload.fileList
-    console.log(this.uploadList)
+  watch: {
+    imageList: {
+      handler (val, oldVal) {
+        val.forEach((cur, i) => {
+          if (cur && !cur.local) {
+            this.uploadList[i] = {
+              ...cur,
+              percentage: 100,
+              status: 'finished',
+            }
+          }
+        })
+        this.$forceUpdate()
+      },
+      deep: true,
+    }
   },
+  mounted () {
+    this.uploadList = this.$refs.upload && this.$refs.upload.fileList || []
+  },
+  // updated () {
+  //   this.uploadList = this.$refs.upload && this.$refs.upload.fileList || []
+  // },
   beforeDestroy () {
     this.uploadList.filter(cur => cur.local).forEach(cur => {
       window.URL.revokeObjectURL(cur.url)
@@ -181,6 +200,7 @@ export default {
           that.imageList.push({
             name: file.name,
             file,
+            local: true,
           })
         }
 

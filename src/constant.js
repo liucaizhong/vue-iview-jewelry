@@ -144,5 +144,5 @@ module.exports = {
   }, {
     key: '6',
     value: 'GemEx®兼美证书',
-  }]
+  }],
 }
