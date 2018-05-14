@@ -143,6 +143,31 @@ export default {
       tableData: [],
       tableLoading: false,
       // exportLoading: false,
+      exportTableColumns: [{
+        title: '商品ID',
+        key: 'productid',
+      }, {
+        title: '商品类别',
+        key: 'category',
+      }, {
+        title: '商品型号',
+        key: 'model',
+      }, {
+        title: '商品名称',
+        key: 'title',
+      }, {
+        title: '品牌',
+        key: 'brand',
+      }, {
+        title: '系列',
+        key: 'series',
+      }, {
+        title: '镶嵌材质',
+        key: 'goldType',
+      }, {
+        title: '材质纯度',
+        key: 'goldPurity',
+      }],
       tableColumns: [
         {
           title: '商品ID',
@@ -410,7 +435,8 @@ export default {
     exportCsv () {
       this.$refs.table.exportCsv({
         filename: '会员信息',
-        columns: this.tableColumns.filter(col => col.key !== 'action'),
+        // columns: this.tableColumns.filter(col => col.key !== 'action'),
+        columns: this.exportTableColumns,
         data: this.tableData,
       })
     },

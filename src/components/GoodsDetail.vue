@@ -481,11 +481,17 @@ export default {
           required: true,
           message: '品牌不能为空',
           trigger: 'blur',
+        }, {
+          message: '品牌不能为空',
+          trigger: 'change',
         }],
         series: [{
           required: true,
           message: '系列不能为空',
           trigger: 'blur',
+        }, {
+          message: '系列不能为空',
+          trigger: 'change',
         }],
         goldType: [{
           required: true,
