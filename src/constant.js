@@ -116,6 +116,13 @@ module.exports = {
   }],
   BRANDOPTIONS: ['THEIA', '通灵', 'I do'],
   SERIESOPTIONS: ['经典系列', '奢华系列'],
+  RELEASEORNOT: [{
+    key: '0',
+    value: '否',
+  }, {
+    key: '1',
+    value: '是',
+  }],
   RELEASESTATUS: [{
     key: '0',
     value: '未发布',

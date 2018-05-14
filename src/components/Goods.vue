@@ -252,7 +252,7 @@ export default {
           minWidth: 100,
         },
         {
-          title: '是否发布',
+          title: '发布状态',
           key: 'releaseStatus',
           filters: RELEASESTATUS.map(t => ({
             label: t.value,

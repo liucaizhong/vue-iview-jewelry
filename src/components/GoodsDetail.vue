@@ -375,7 +375,7 @@
 
 <script>
 import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY, MAINIMAGENUM, MAINIMAGEMAXSIZE,
-  BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS, CERTIFICATES } from '@/constant'
+  BRANDOPTIONS, SERIESOPTIONS, RELEASEORNOT, CERTIFICATES } from '@/constant'
 import ImageUploader from './ImageUploader'
 
 export default {
@@ -396,7 +396,7 @@ export default {
       goldPurity: GOLDPURITY,
       brandOptions: BRANDOPTIONS,
       seriesOptions: SERIESOPTIONS,
-      releaseStatus: RELEASESTATUS,
+      releaseStatus: RELEASEORNOT,
       certificates: CERTIFICATES,
       MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
