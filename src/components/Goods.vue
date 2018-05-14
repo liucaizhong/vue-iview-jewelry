@@ -142,32 +142,6 @@ export default {
       },
       tableData: [],
       tableLoading: false,
-      // exportLoading: false,
-      exportTableColumns: [{
-        title: '商品ID',
-        key: 'productid',
-      }, {
-        title: '商品类别',
-        key: 'category',
-      }, {
-        title: '商品型号',
-        key: 'model',
-      }, {
-        title: '商品名称',
-        key: 'title',
-      }, {
-        title: '品牌',
-        key: 'brand',
-      }, {
-        title: '系列',
-        key: 'series',
-      }, {
-        title: '镶嵌材质',
-        key: 'goldType',
-      }, {
-        title: '材质纯度',
-        key: 'goldPurity',
-      }],
       tableColumns: [
         {
           title: '商品ID',
@@ -179,7 +153,7 @@ export default {
           title: '商品类别',
           key: 'category',
           sortable: true,
-          minWidth: 100,
+          minWidth: 120,
           render (h, params) {
             const category = CATEGORYOFGOOD.find(
               cur => params.row.category === cur.key)
@@ -196,7 +170,7 @@ export default {
           title: '商品名称',
           key: 'title',
           sortable: true,
-          minWidth: 100,
+          minWidth: 120,
         },
         {
           title: '品牌',
@@ -250,19 +224,19 @@ export default {
           title: '含金量（克）',
           key: 'goldContent',
           sortable: true,
-          minWidth: 100,
+          minWidth: 130,
         },
         {
           title: '钻石重量（克）',
           key: 'diamondWeight',
           sortable: true,
-          minWidth: 100,
+          minWidth: 130,
         },
         {
           title: '销售价',
           key: 'sellingPrice',
           sortable: true,
-          minWidth: 100,
+          minWidth: 120,
         },
         {
           title: '租金',
@@ -287,7 +261,7 @@ export default {
           filterMethod (value, row) {
             return row.releaseStatus === value
           },
-          minWidth: 100,
+          minWidth: 130,
           render (h, params) {
             const releaseStatus = RELEASESTATUS.find(
               cur => params.row.releaseStatus === cur.key)
@@ -435,8 +409,7 @@ export default {
     exportCsv () {
       this.$refs.table.exportCsv({
         filename: '会员信息',
-        // columns: this.tableColumns.filter(col => col.key !== 'action'),
-        columns: this.exportTableColumns,
+        columns: this.tableColumns.filter(col => col.key !== 'action'),
         data: this.tableData,
       })
     },

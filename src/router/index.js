@@ -11,6 +11,7 @@ const Goods = () => import('@/components/Goods')
 const GoodsDetail = () => import('@/components/GoodsDetail')
 const NewGoods = () => import('@/components/NewGoods')
 const BatchImportGoods = () => import('@/components/BatchImportGoods')
+const RentService = () => import('@/components/RentService')
 
 export default new Router({
   mode: 'history',
@@ -69,6 +70,9 @@ export default new Router({
         // meta: {
         //   requiresAuth: true,
         // }
+      }, {
+        path: 'rent-service',
+        component: RentService,
       }],
     },
   ],
