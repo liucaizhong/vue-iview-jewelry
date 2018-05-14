@@ -13,6 +13,7 @@
               <Upload
                 ref="uploadCSV"
                 type="drag"
+                name="OriFile"
                 multiple
                 :accept="'.csv'"
                 :format="['csv']"
