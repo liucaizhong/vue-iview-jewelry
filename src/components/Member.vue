@@ -197,7 +197,9 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          this.$Message.error(err)
+          this.$Message.error({
+            content: err,
+          })
           this.tableLoading = false
         })
     },

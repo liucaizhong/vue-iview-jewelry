@@ -72,9 +72,13 @@ export default {
     login (name) {
       this.$refs[name].validate(valid => {
         if (valid) {
-          this.$Message.success('登录成功')
+          this.$Message.success({
+            content: '登录成功',
+          })
         } else {
-          this.$Message.error('登录失败')
+          this.$Message.error({
+            content: '登录失败',
+          })
         }
       })
     }

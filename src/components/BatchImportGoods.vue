@@ -72,7 +72,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { CSVFILEMAXSIZE, ZIPFILEMAXSIZE } from '@/constant'
+import { CSVFILEMAXSIZE, ZIPFILEMAXSIZE, PRODURL, DEVURL } from '@/constant'
 import FileUploadIndicator from './FileUploadIndicator'
 
 export default {
@@ -87,8 +87,8 @@ export default {
         info: [],
         imgs: [],
       },
-      infoAction: '/infoAction',
-      imgsAction: '/imgsAction',
+      infoAction: this.composeActionUrl('/productfile/'),
+      // imgsAction: '',
       importImg: false,
     }
   },
@@ -98,6 +98,12 @@ export default {
     }),
   },
   methods: {
+    composeActionUrl (url) {
+      const baseUrl = process.env.NODE_ENV === 'production' ?
+        PRODURL :
+        DEVURL
+      return baseUrl + url
+    },
     handleCSVFormatError (file) {
       this.$Notice.warning({
         title: '文件格式错误',
@@ -117,7 +123,9 @@ export default {
         name: file.name,
         status: 'success',
       })
-      this.$Message.success('商品信息批量导入成功')
+      this.$Message.success({
+        content: '商品信息批量导入成功',
+      })
     },
     handleCSVProgress (event, file) {
       console.log(file)
@@ -132,7 +140,9 @@ export default {
         name: filelist.name,
         status: 'wrong',
       })
-      this.$Message.error('商品信息批量导入失败')
+      this.$Message.error({
+        content: '商品信息批量导入失败',
+      })
     },
     handleZIPFormatError (file) {
       this.$Notice.warning({

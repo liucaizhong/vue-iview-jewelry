@@ -316,7 +316,6 @@ export default {
     },
   },
   created () {
-    this.$Spin.show()
     const url = '/member/'
     this.formMember.memberId = this.$route.params.id
     this.$fetch(url, {
@@ -332,14 +331,16 @@ export default {
           }
           this.formMember.address = JSON.parse(this.formMember.address)
         } else {
-          this.$Message.error('未找到该会员的详细信息')
+          this.$Message.error({
+            content: '未找到该会员的详细信息',
+          })
         }
-        this.$Spin.hide()
       })
       .catch(err => {
         console.log(err)
-        this.$Message.error(err)
-        this.$Spin.hide()
+        this.$Message.error({
+          content: err,
+        })
       })
   },
   methods: {
@@ -371,17 +372,23 @@ export default {
               this.formMember[type] = isAddress
                 ? JSON.parse(data[type])
                 : data[type]
-              this.$Message.success('保存成功')
+              this.$Message.success({
+                content: '保存成功',
+              })
               this[`${type}Modal`] = false
               this.saveLoading = false
             })
             .catch(err => {
               console.log(err)
-              this.$Message.error(err)
+              this.$Message.error({
+                content: err,
+              })
               this.saveLoading = false
             })
         } else {
-          this.$Message.error('保存失败')
+          this.$Message.error({
+            content: '保存失败',
+          })
         }
       })
     },
@@ -390,14 +397,18 @@ export default {
     },
     addAddressItem () {
       if (this.addressModalForm.address.length === this.addressMaxNum) {
-        this.$Message.error('最多添加5个常用地址')
+        this.$Message.error({
+          content: '最多添加5个常用地址',
+        })
       } else {
         this.addressModalForm.address.push('')
       }
     },
     removeAddressItem (i) {
       if (this.addressModalForm.address.length === 1) {
-        this.$Message.error('至少保留1个常用地址')
+        this.$Message.error({
+          content: '至少保留1个常用地址',
+        })
       } else {
         this.addressModalForm.address.splice(i, 1)
       }

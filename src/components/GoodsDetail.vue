@@ -647,48 +647,51 @@ export default {
     }
   },
   created () {
-    this.$Spin.show()
-    const url = '/product/'
-    this.formGoods.productid = this.$route.params.id
-    this.$fetch(url, {
-      params: {
-        productid: this.formGoods.productid,
-      }
-    })
-      .then(resp => {
-        console.log(resp)
-        const results = resp.data.results
-        if (results && results.length) {
-          const temp = results[0]
-          for (let i = 0; i < this.MainImageNum; ++i) {
-            temp[`MainImage${i}`] =
-              temp[`MainImage${i}`]
-                && [{
-                  ...temp[`MainImage${i}`],
-                }]
-                || []
-          }
-          temp.detailImages = temp.detailImages
-            && [{
-              ...temp.detailImages,
-            }]
-            || []
-          this.formGoods = {
-            ...temp,
-          }
-          this.formGoodsBak = {
-            ...temp,
-          }
-        } else {
-          this.$Message.error('未找到该商品的详细信息')
+    if (!this.modeType) {
+      const url = '/product/'
+      this.formGoods.productid = this.$route.params.id
+      this.$fetch(url, {
+        params: {
+          productid: this.formGoods.productid,
         }
-        this.$Spin.hide()
       })
-      .catch(err => {
-        console.log(err)
-        this.$Message.error(err)
-        this.$Spin.hide()
-      })
+        .then(resp => {
+          console.log(resp)
+          const results = resp.data.results
+          if (results && results.length) {
+            const temp = results[0]
+            for (let i = 0; i < this.MainImageNum; ++i) {
+              temp[`MainImage${i}`] =
+                temp[`MainImage${i}`]
+                  && [{
+                    ...temp[`MainImage${i}`],
+                  }]
+                  || []
+            }
+            temp.detailImages = temp.detailImages
+              && [{
+                ...temp.detailImages,
+              }]
+              || []
+            this.formGoods = {
+              ...temp,
+            }
+            this.formGoodsBak = {
+              ...temp,
+            }
+          } else {
+            this.$Message.error({
+              content: '未找到该商品的详细信息',
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.$Message.error({
+            content: err,
+          })
+        })
+    }
   },
   methods: {
     formPostdata () {
@@ -713,7 +716,6 @@ export default {
     save () {
       this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          this.$Spin.show()
           const url = '/productupdate/'
           this.$fetch(url, {
             headers: {
@@ -744,16 +746,20 @@ export default {
               this.formGoodsBak = {
                 ...temp,
               }
-              this.$Spin.hide()
-              this.$Message.success('保存成功')
+              this.$Message.success({
+                content: '保存成功',
+              })
             })
             .catch(err => {
               console.log(err)
-              this.$Message.error(err)
-              this.$Spin.hide()
+              this.$Message.error({
+                content: err,
+              })
             })
         } else {
-          this.$Message.error('保存失败')
+          this.$Message.error({
+            content: '保存失败',
+          })
         }
       })
     },
@@ -761,7 +767,9 @@ export default {
       this.formGoods = {
         ...this.formGoodsBak,
       }
-      this.$Message.success('重置成功')
+      this.$Message.success({
+        content: '重置成功',
+      })
     },
     filterMethod (value, option) {
       return option.includes(value)

@@ -1,7 +1,11 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import iView from 'iview'
+import { Layout, Sider, Menu, Submenu, Icon, MenuItem, Header, LoadingBar,
+  Dropdown, Avatar, DropdownMenu, DropdownItem, Content, Form, FormItem,
+  Select, Option, Table, Page, Modal, Row, Col, Upload, Progress, Notice,
+  Collapse, Panel, Button, Input, Badge, AutoComplete, Message,
+} from 'iview'
 import 'iview/dist/styles/iview.css'
 import axios from 'axios'
 import App from './App'
@@ -10,12 +14,43 @@ import store from './store'
 import util from './util'
 
 Vue.config.productionTip = false
-Vue.use(iView)
 Vue.use(util)
+Vue.prototype.$Message = Message
+Vue.prototype.$Notice = Notice
+Vue.component('Layout', Layout)
+Vue.component('Sider', Sider)
+Vue.component('Menu', Menu)
+Vue.component('Submenu', Submenu)
+Vue.component('Icon', Icon)
+Vue.component('MenuItem', MenuItem)
+Vue.component('Header', Header)
+Vue.component('LoadingBar', LoadingBar)
+Vue.component('Dropdown', Dropdown)
+Vue.component('Avatar', Avatar)
+Vue.component('DropdownMenu', DropdownMenu)
+Vue.component('DropdownItem', DropdownItem)
+Vue.component('Content', Content)
+Vue.component('Form', Form)
+Vue.component('FormItem', FormItem)
+Vue.component('Select', Select)
+Vue.component('Option', Option)
+Vue.component('Table', Table)
+Vue.component('Page', Page)
+Vue.component('Modal', Modal)
+Vue.component('Row', Row)
+Vue.component('Col', Col)
+Vue.component('Upload', Upload)
+Vue.component('Progress', Progress)
+Vue.component('Collapse', Collapse)
+Vue.component('Panel', Panel)
+Vue.component('Button', Button)
+Vue.component('Input', Input)
+Vue.component('AutoComplete', AutoComplete)
+Vue.component('Badge', Badge)
 
 // 设置路由拦截
 router.beforeEach((to, from, next) => {
-  iView.LoadingBar.start()
+  LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (this.$getCookie('sessionid')) {
       next()
@@ -31,7 +66,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(route => {
-  iView.LoadingBar.finish()
+  LoadingBar.finish()
 })
 
 // 设置axios interceptor

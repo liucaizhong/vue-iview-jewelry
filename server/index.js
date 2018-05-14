@@ -6,7 +6,7 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://iwxdz5.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://js87yv.natappfree.cc/api-auth/admin'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -85,6 +85,23 @@ module.exports = () => {
     let form = formData(null, req.body)
     form = formData(form, req.files, true)
     // console.log('productupdate3', form)
+
+    getHeaders(form).then(headers => {
+      request({
+        url: mapUrl(req.url),
+        method: 'post',
+        data: form,
+        headers,
+      }, req, res)
+    }).catch(err => {
+      console.error('error is', err)
+      res.status(500).send('500 | Internal Server Error')
+    })
+  })
+
+  router.post('/productfile/', (req, res) => {
+    const form = formData(null, req.files, true)
+    console.log('productfile', form)
 
     getHeaders(form).then(headers => {
       request({
