@@ -64,7 +64,7 @@
                   :value="item.key"
                   :key="item.key"
                 >
-                  {{ item.value }}
+                  {{ item.label }}
                 </Option>
               </Select>
               </Col>
@@ -375,7 +375,7 @@
 
 <script>
 import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY, MAINIMAGENUM, MAINIMAGEMAXSIZE,
-  BRANDOPTIONS, SERIESOPTIONS, RELEASEORNOT, CERTIFICATES } from '@/constant'
+  BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS, CERTIFICATES } from '@/constant'
 import ImageUploader from './ImageUploader'
 
 export default {
@@ -396,7 +396,7 @@ export default {
       goldPurity: GOLDPURITY,
       brandOptions: BRANDOPTIONS,
       seriesOptions: SERIESOPTIONS,
-      releaseStatus: RELEASEORNOT,
+      releaseStatus: RELEASESTATUS,
       certificates: CERTIFICATES,
       MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
