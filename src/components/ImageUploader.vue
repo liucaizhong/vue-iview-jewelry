@@ -277,8 +277,8 @@ export default {
 }
 
 .ivu-modal-body {
-  max-height: 800px;
-  overflow: auto;
+  // max-height: 800px;
+  // overflow: auto;
 
   .raw-image {
     width: 100%;
