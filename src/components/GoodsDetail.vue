@@ -595,9 +595,18 @@ export default {
         }],
         rentcycle: [{
           required: true,
-          message: '起租周期不能为空',
           trigger: 'blur',
-          type: 'number',
+          validator (rule, value, cb) {
+            const numFloat = parseFloat(value, 10)
+            const numInt = parseInt(value, 10)
+            if (isNaN(+value) || numFloat !== numInt) {
+              cb(new Error('输入必须为整数'))
+            }
+            if (numInt < 1) {
+              cb(new Error('起租周期至少1天'))
+            }
+            cb()
+          },
         }, {
           trigger: 'change',
           validator (rule, value, cb) {
@@ -614,9 +623,18 @@ export default {
         }],
         reletcycle: [{
           required: true,
-          message: '起租周期不能为空',
           trigger: 'blur',
-          type: 'number',
+          validator (rule, value, cb) {
+            const numFloat = parseFloat(value, 10)
+            const numInt = parseInt(value, 10)
+            if (isNaN(+value) || numFloat !== numInt) {
+              cb(new Error('输入必须为整数'))
+            }
+            if (numInt < 1) {
+              cb(new Error('续租周期至少1天'))
+            }
+            cb()
+          },
         }, {
           trigger: 'change',
           validator (rule, value, cb) {
@@ -626,7 +644,7 @@ export default {
               cb(new Error('输入必须为整数'))
             }
             if (numInt < 1) {
-              cb(new Error('起租周期至少1天'))
+              cb(new Error('续租周期至少1天'))
             }
             cb()
           },
