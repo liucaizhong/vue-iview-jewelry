@@ -119,6 +119,17 @@
           <FormItem label="镶嵌材质" prop="goldType">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
+              <Cascader
+                :data="goldTypePurity"
+                trigger="hover"
+                @on-change="changeGoldTypePurity"
+              />
+              </Col>
+            </Row>
+          </FormItem>
+          <!-- <FormItem label="镶嵌材质" prop="goldType">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
               <Select v-model="formGoods.goldType">
                 <Option
                   v-for="item in goldTypes"
@@ -145,7 +156,7 @@
               </Select>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> -->
           <FormItem label="尺寸" prop="size">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
@@ -374,7 +385,7 @@
 </template>
 
 <script>
-import { CATEGORYOFGOOD, GOLDTYPE, GOLDPURITY, MAINIMAGENUM, MAINIMAGEMAXSIZE,
+import { CATEGORYOFGOOD, MAINIMAGENUM, MAINIMAGEMAXSIZE, GOLDTYPEPURITY,
   BRANDOPTIONS, SERIESOPTIONS, RELEASESTATUS, CERTIFICATES } from '@/constant'
 import ImageUploader from './ImageUploader'
 
@@ -392,14 +403,15 @@ export default {
     return {
       mode: this.modeType, // 0:update, 1:add
       categoryOfGood: CATEGORYOFGOOD,
-      goldTypes: GOLDTYPE,
-      goldPurity: GOLDPURITY,
+      // goldTypes: GOLDTYPE,
+      // goldPurity: GOLDPURITY,
       brandOptions: BRANDOPTIONS,
       seriesOptions: SERIESOPTIONS,
       releaseStatus: RELEASESTATUS,
       certificates: CERTIFICATES,
       MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
+      goldTypePurity: GOLDTYPEPURITY,
       formGoodsBak: {},
       formGoods: {
         productid: '',
@@ -477,32 +489,32 @@ export default {
           message: '发布状态不能为空',
           trigger: 'blur',
         }],
-        brand: [{
-          required: true,
-          message: '品牌不能为空',
-          trigger: 'blur',
-        }, {
-          message: '品牌不能为空',
-          trigger: 'change',
-        }],
-        series: [{
-          required: true,
-          message: '系列不能为空',
-          trigger: 'blur',
-        }, {
-          message: '系列不能为空',
-          trigger: 'change',
-        }],
+        // brand: [{
+        //   required: true,
+        //   message: '品牌不能为空',
+        //   trigger: 'blur',
+        // }, {
+        //   message: '品牌不能为空',
+        //   trigger: 'change',
+        // }],
+        // series: [{
+        //   required: true,
+        //   message: '系列不能为空',
+        //   trigger: 'blur',
+        // }, {
+        //   message: '系列不能为空',
+        //   trigger: 'change',
+        // }],
         goldType: [{
           required: true,
           message: '镶嵌材质不能为空',
           trigger: 'blur',
         }],
-        goldPurity: [{
-          required: true,
-          message: '材质纯度不能为空',
-          trigger: 'blur',
-        }],
+        // goldPurity: [{
+        //   required: true,
+        //   message: '材质纯度不能为空',
+        //   trigger: 'blur',
+        // }],
         certificate: [{
           required: true,
           message: '证书不能为空',
@@ -513,40 +525,46 @@ export default {
           message: '尺寸不能为空',
           trigger: 'blur',
         }],
-        goldContent: [{
-          required: true,
-          message: '含金量不能为空',
-          trigger: 'blur',
-        }, {
-          trigger: 'change',
-          validator (rule, value, cb) {
-            const num = parseFloat(value, 10)
-            if (isNaN(num)) {
-              cb(new Error('输入必须为数值'))
-            }
-            if (num <= 0) {
-              cb(new Error('含金量不能小于0'))
-            }
-            cb()
+        goldContent: [
+          // {
+          //   required: true,
+          //   message: '含金量不能为空',
+          //   trigger: 'blur',
+          // },
+          {
+            trigger: 'change',
+            validator (rule, value, cb) {
+              const num = parseFloat(value, 10)
+              if (isNaN(num)) {
+                cb(new Error('输入必须为数值'))
+              }
+              if (num <= 0) {
+                cb(new Error('含金量不能小于0'))
+              }
+              cb()
+            },
           },
-        }],
-        diamondWeight: [{
-          required: true,
-          message: '钻石重量不能为空',
-          trigger: 'blur',
-        }, {
-          trigger: 'change',
-          validator (rule, value, cb) {
-            if (isNaN(+value)) {
-              cb(new Error('输入必须为数值'))
-            }
-            const num = parseFloat(value, 10)
-            if (num <= 0) {
-              cb(new Error('钻石重量不能小于0'))
-            }
-            cb()
-          },
-        }],
+        ],
+        diamondWeight: [
+          // {
+          //   required: true,
+          //   message: '钻石重量不能为空',
+          //   trigger: 'blur',
+          // },
+          {
+            trigger: 'change',
+            validator (rule, value, cb) {
+              if (isNaN(+value)) {
+                cb(new Error('输入必须为数值'))
+              }
+              const num = parseFloat(value, 10)
+              if (num <= 0) {
+                cb(new Error('钻石重量不能小于0'))
+              }
+              cb()
+            },
+          }
+        ],
         sellingPrice: [{
           required: true,
           message: '销售价不能为空',
@@ -718,6 +736,11 @@ export default {
     }
   },
   methods: {
+    changeGoldTypePurity (value, selectedData) {
+      const [type, purity] = value
+      this.formGoods.goldType = type
+      this.formGoods.goldPurity = purity
+    },
     formPostdata () {
       // console.log(this.formGoods)
       const data = new FormData()

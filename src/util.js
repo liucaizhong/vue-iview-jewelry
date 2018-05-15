@@ -47,6 +47,7 @@ export default {
     }
 
     Vue.prototype.$fetch = function (url, config = {}) {
+      this.$Loading.start()
       const baseUrl = process.env.NODE_ENV === 'production' ?
         PRODURL :
         DEVURL
@@ -75,6 +76,7 @@ export default {
             console.error(err)
             reject(err)
           }
+          this.$Loading.finish()
         }
 
         request()

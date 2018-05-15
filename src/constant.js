@@ -106,6 +106,49 @@ module.exports = {
   }, {
     key: '2',
     value: '900',
+  }, {
+    key: '3',
+    value: '950',
+  }, {
+    key: '4',
+    value: '990',
+  }],
+  GOLDTYPEPURITY: [{
+    label: '白金',
+    value: 'W',
+    children: [{
+      label: '18K',
+      value: '0',
+    }, {
+      label: '24K',
+      value: '1',
+    }],
+  }, {
+    label: '黄金',
+    value: 'Y',
+    children: [{
+      label: '18K',
+      value: '0',
+    }, {
+      label: '24K',
+      value: '1',
+    }],
+  }, {
+    label: '玫瑰金',
+    value: 'R',
+  }, {
+    label: '铂金',
+    value: 'pt',
+    children: [{
+      label: '900',
+      value: '2',
+    }, {
+      label: '950',
+      value: '3',
+    }, {
+      label: '990',
+      value: '4',
+    }],
   }],
   MEMBERSOURCE: [{
     key: '0',
@@ -127,24 +170,27 @@ module.exports = {
   }],
   CERTIFICATES: [{
     key: '0',
-    value: 'IGI证书',
+    value: '无',
   }, {
     key: '1',
-    value: 'GIA证书',
+    value: 'IGI证书',
   }, {
     key: '2',
-    value: 'HRD证书',
+    value: 'GIA证书',
   }, {
     key: '3',
-    value: 'AGS证书',
+    value: 'HRD证书',
   }, {
     key: '4',
-    value: 'EGL证书',
+    value: 'AGS证书',
   }, {
     key: '5',
-    value: 'NGTC证书',
+    value: 'EGL证书',
   }, {
     key: '6',
+    value: 'NGTC证书',
+  }, {
+    key: '7',
     value: 'GemEx®兼美证书',
   }],
 }

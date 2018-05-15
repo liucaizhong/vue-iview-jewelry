@@ -1,7 +1,7 @@
 import { Layout, Sider, Menu, Submenu, Icon, MenuItem, Header, LoadingBar,
   Dropdown, Avatar, DropdownMenu, DropdownItem, Content, Form, FormItem,
   Select, Option, Table, Page, Modal, Row, Col, Upload, Progress, Notice,
-  Collapse, Panel, Button, Input, Badge, AutoComplete, Message,
+  Collapse, Panel, Button, Input, Badge, AutoComplete, Message, Cascader,
 } from 'iview'
 
 export default {
@@ -38,5 +38,6 @@ export default {
     Vue.component('Input', Input)
     Vue.component('AutoComplete', AutoComplete)
     Vue.component('Badge', Badge)
+    Vue.component('Cascader', Cascader)
   }
 }
