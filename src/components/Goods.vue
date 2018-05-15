@@ -392,12 +392,12 @@ export default {
         brand: '',
         series: '',
       }
-      this.searchForm = {
+      this.searchForm = Object.assign(this.searchForm, {
         category: [],
         goldType: [],
         brand: '',
         series: '',
-      }
+      })
       this.moreCondCount = 0
       this.mockTableData({
         params: {

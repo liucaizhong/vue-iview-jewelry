@@ -62,10 +62,6 @@ module.exports = {
       name: '套餐服务',
       icon: 'ios-paper',
       url: '/dashboard/package-service',
-    }, {
-      name: '销售服务',
-      icon: 'android-send',
-      url: '/dashboard/sale-service',
     }],
   }],
   SIDEBARSUBMENUS: {
@@ -76,7 +72,6 @@ module.exports = {
     '/dashboard/batch-import-goods': '1-2',
     '/dashboard/rent-service': '2-0',
     '/dashboard/package-service': '2-1',
-    '/dashboard/sale-service': '2-2',
   },
   CATEGORYOFGOOD: [{
     key: '0',
@@ -211,5 +206,99 @@ module.exports = {
   }, {
     key: '7',
     value: 'GemEx®兼美证书',
+  }],
+  SERVICETYPE: [{
+    key: '0',
+    value: '租赁服务',
+  }, {
+    key: '1',
+    value: '套餐服务',
+  }],
+  SERVICESTATUS: [{
+    key: '0',
+    value: '租赁服务已创建',
+  }, {
+    key: '1',
+    value: '待支付',
+  }, {
+    key: '2',
+    value: '待取货',
+  }, {
+    key: '3',
+    value: '退款中',
+  }, {
+    key: '4',
+    value: '退款失败',
+  }, {
+    key: '5',
+    value: '退款完成',
+  }, {
+    key: '6',
+    value: '服务关闭',
+  }, {
+    key: '7',
+    value: '租赁中',
+  }, {
+    key: '8',
+    value: '赔偿待支付',
+  }, {
+    key: '9',
+    value: '买断待支付',
+  }, {
+    key: '10',
+    value: '租赁完成',
+  }, {
+    key: '11',
+    value: '租转售完成',
+  }, {
+    key: '12',
+    value: '租赁完成（黑名单）',
+  }],
+  BUSINESSSTATUS: [{
+    key: '0',
+    value: '已创建',
+  }, {
+    key: '1',
+    value: '待支付',
+  }, {
+    key: '2',
+    value: '待取货',
+  }, {
+    key: '3',
+    value: '租赁中',
+  }, {
+    key: '4',
+    value: '已完成',
+  }],
+  LEASEHOLDSTATUS: [{
+    key: '0',
+    value: '正常',
+  }, {
+    key: '1',
+    value: '损坏',
+  }],
+  CREDITSTATUS: [{
+    key: '0',
+    value: '正常',
+  }, {
+    key: '1',
+    value: '逾期',
+  }, {
+    key: '2',
+    value: '超限',
+  }],
+  DELIVERYMODE: [{
+    key: '0',
+    value: '邮寄',
+  }, {
+    key: '1',
+    value: '自提',
+  }],
+  COMPLETEMODE: [{
+    key: '0',
+    value: '租赁完成',
+  }, {
+    key: '1',
+    value: '租转售完成',
   }],
 }
