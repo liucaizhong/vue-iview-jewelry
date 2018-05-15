@@ -51,6 +51,22 @@ module.exports = {
       icon: 'social-buffer',
       url: '/dashboard/batch-import-goods',
     }],
+  }, {
+    name: '服务管理',
+    icon: 'ios-filing',
+    items: [{
+      name: '租赁服务',
+      icon: 'ios-paperplane',
+      url: '/dashboard/rent-service',
+    }, {
+      name: '套餐服务',
+      icon: 'ios-paper',
+      url: '/dashboard/package-service',
+    }, {
+      name: '销售服务',
+      icon: 'android-send',
+      url: '/dashboard/sale-service',
+    }],
   }],
   SIDEBARSUBMENUS: {
     '/dashboard/member': '0-0',
@@ -58,6 +74,9 @@ module.exports = {
     '/dashboard/goods': '1-0',
     '/dashboard/new-goods': '1-1',
     '/dashboard/batch-import-goods': '1-2',
+    '/dashboard/rent-service': '2-0',
+    '/dashboard/package-service': '2-1',
+    '/dashboard/sale-service': '2-2',
   },
   CATEGORYOFGOOD: [{
     key: '0',
