@@ -216,46 +216,6 @@ module.exports = {
   }],
   SERVICESTATUS: [{
     key: '0',
-    value: '租赁服务已创建',
-  }, {
-    key: '1',
-    value: '待支付',
-  }, {
-    key: '2',
-    value: '待取货',
-  }, {
-    key: '3',
-    value: '退款中',
-  }, {
-    key: '4',
-    value: '退款失败',
-  }, {
-    key: '5',
-    value: '退款完成',
-  }, {
-    key: '6',
-    value: '服务关闭',
-  }, {
-    key: '7',
-    value: '租赁中',
-  }, {
-    key: '8',
-    value: '赔偿待支付',
-  }, {
-    key: '9',
-    value: '买断待支付',
-  }, {
-    key: '10',
-    value: '租赁完成',
-  }, {
-    key: '11',
-    value: '租转售完成',
-  }, {
-    key: '12',
-    value: '租赁完成（黑名单）',
-  }],
-  BUSINESSSTATUS: [{
-    key: '0',
     value: '已创建',
   }, {
     key: '1',
@@ -265,11 +225,33 @@ module.exports = {
     value: '待取货',
   }, {
     key: '3',
-    value: '租赁中',
+    value: '服务关闭',
   }, {
     key: '4',
-    value: '已完成',
+    value: '租赁中',
+  }, {
+    key: '5',
+    value: '租赁完成',
+  }, {
+    key: '6',
+    value: '租转售完成',
   }],
+  // BUSINESSSTATUS: [{
+  //   key: '0',
+  //   value: '已创建',
+  // }, {
+  //   key: '1',
+  //   value: '待支付',
+  // }, {
+  //   key: '2',
+  //   value: '待取货',
+  // }, {
+  //   key: '3',
+  //   value: '租赁中',
+  // }, {
+  //   key: '4',
+  //   value: '已完成',
+  // }],
   LEASEHOLDSTATUS: [{
     key: '0',
     value: '正常',
@@ -294,11 +276,11 @@ module.exports = {
     key: '1',
     value: '自提',
   }],
-  COMPLETEMODE: [{
-    key: '0',
-    value: '租赁完成',
-  }, {
-    key: '1',
-    value: '租转售完成',
-  }],
+  // COMPLETEMODE: [{
+  //   key: '0',
+  //   value: '租赁完成',
+  // }, {
+  //   key: '1',
+  //   value: '租转售完成',
+  // }],
 }

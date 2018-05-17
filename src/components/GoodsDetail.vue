@@ -2,7 +2,7 @@
   <div id="goods-detail">
     <Form
       ref="goodsForm"
-      :model="formGoods"
+      :model="form"
       :label-width="150"
       :rules="ruleValidate"
     >
@@ -12,17 +12,17 @@
           <FormItem v-if="!mode" label="商品ID" prop="productid">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.productid }}</p>
+              <p>{{ form.productid }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="商品型号" prop="model">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p v-if="!mode">{{ formGoods.model }}</p>
+              <p v-if="!mode">{{ form.model }}</p>
               <Input
                 v-else
-                v-model="formGoods.model"
+                v-model="form.model"
                 placeholder="输入商品型号"
               >
               </Input>
@@ -32,7 +32,7 @@
           <FormItem label="商品类别" prop="category">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <Select v-model="formGoods.category">
+              <Select v-model="form.category">
                 <Option
                   v-for="item in categoryOfGood"
                   :value="item.key"
@@ -48,7 +48,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.title"
+                v-model="form.title"
                 placeholder="输入商品名称"
               >
               </Input>
@@ -58,7 +58,7 @@
           <FormItem label="是否发布" prop="releaseStatus">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <Select v-model="formGoods.releaseStatus">
+              <Select v-model="form.releaseStatus">
                 <Option
                   v-for="item in releaseStatus"
                   :value="item.key"
@@ -81,7 +81,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <AutoComplete
-                v-model="formGoods.brand"
+                v-model="form.brand"
                 :data="brandOptions"
                 :filter-method="filterMethod"
                 placeholder="输入品牌名称"
@@ -93,7 +93,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <AutoComplete
-                v-model="formGoods.series"
+                v-model="form.series"
                 :data="seriesOptions"
                 :filter-method="filterMethod"
                 placeholder="输入系列名称"
@@ -104,7 +104,7 @@
           <FormItem label="证书" prop="certificate">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <Select v-model="formGoods.certificate">
+              <Select v-model="form.certificate">
                 <Option
                   v-for="item in certificates"
                   :value="item.key"
@@ -130,7 +130,7 @@
           <!-- <FormItem label="镶嵌材质" prop="goldType">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <Select v-model="formGoods.goldType">
+              <Select v-model="form.goldType">
                 <Option
                   v-for="item in goldTypes"
                   :value="item.key"
@@ -145,7 +145,7 @@
           <FormItem label="材质纯度" prop="goldPurity">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <Select v-model="formGoods.goldPurity">
+              <Select v-model="form.goldPurity">
                 <Option
                   v-for="item in goldPurity"
                   :value="item.key"
@@ -161,7 +161,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.size"
+                v-model="form.size"
                 placeholder="输入钻石重量"
               >
               </Input>
@@ -172,7 +172,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.diamondWeight"
+                v-model="form.diamondWeight"
                 placeholder="输入钻石重量"
               >
               <span slot="append">克</span>
@@ -184,7 +184,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.goldContent"
+                v-model="form.goldContent"
                 placeholder="输入含金量"
               >
               <span slot="append">克</span>
@@ -203,7 +203,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.sellingPrice"
+                v-model="form.sellingPrice"
                 placeholder="输入销售价"
               >
               <span slot="append">元</span>
@@ -215,7 +215,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.deposit"
+                v-model="form.deposit"
                 placeholder="输入押金"
               >
               <span slot="append">元</span>
@@ -227,7 +227,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.rent"
+                v-model="form.rent"
                 placeholder="输入租金"
               >
               <span slot="append">元</span>
@@ -239,7 +239,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.rentcycle"
+                v-model="form.rentcycle"
                 placeholder="输入起租周期"
               >
               <span slot="append">天</span>
@@ -251,7 +251,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.reletcycle"
+                v-model="form.reletcycle"
                 placeholder="输入续租周期"
               >
               <span slot="append">天</span>
@@ -268,7 +268,7 @@
         <div class="section-body">
           <!-- <FormItem label="商品图片" prop="MainImage">
             <image-uploader
-              :image-list="formGoods.MainImage"
+              :image-list="form.MainImage"
               multiple
               :image-max-num="MainImageNum"
               :image-max-size="imageMaxSize"
@@ -279,7 +279,7 @@
             <image-uploader
               v-for="i in MainImageNum"
               :key="i - 1"
-              :image-list="formGoods[`MainImage${i - 1}`]"
+              :image-list="form[`MainImage${i - 1}`]"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
@@ -287,7 +287,7 @@
           </FormItem>
           <FormItem label="商品详情图片" prop="detailImages">
             <image-uploader
-              :image-list="formGoods.detailImages"
+              :image-list="form.detailImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
@@ -297,7 +297,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.desc"
+                v-model="form.desc"
                 type="textarea"
                 :autosize="{ minRows: 3 }"
                 :maxlength="500"
@@ -311,7 +311,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
-                v-model="formGoods.remark"
+                v-model="form.remark"
                 type="textarea"
                 :autosize="{ minRows: 3 }"
                 :maxlength="500"
@@ -342,28 +342,28 @@
           <FormItem label="创建时间" prop="createdDate">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.createdDate }}</p>
+              <p>{{ form.createdDate }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="创建人" prop="createdBy">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.createdBy }}</p>
+              <p>{{ form.createdBy }}</p>
               </Col>
             </Row>
           </FormItem>
           <!-- <FormItem label="最后修改时间" prop="lastModified">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.lastModified }}</p>
+              <p>{{ form.lastModified }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="最后修改人" prop="lastModifiedBy">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formGoods.lastModifiedBy }}</p>
+              <p>{{ form.lastModifiedBy }}</p>
               </Col>
             </Row>
           </FormItem> -->
@@ -412,8 +412,8 @@ export default {
       MainImageNum: MAINIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
       goldTypePurity: GOLDTYPEPURITY,
-      formGoodsBak: {},
-      formGoods: {
+      formBak: {},
+      form: {
         productid: '',
         category: '',
         model: '',
@@ -691,10 +691,10 @@ export default {
   created () {
     if (!this.modeType) {
       const url = '/product/'
-      this.formGoods.productid = this.$route.params.id
+      this.form.productid = this.$route.params.id
       this.$fetch(url, {
         params: {
-          productid: this.formGoods.productid,
+          productid: this.form.productid,
         }
       })
         .then(resp => {
@@ -715,10 +715,10 @@ export default {
                 ...temp.detailImages,
               }]
               || []
-            this.formGoods = {
+            this.form = {
               ...temp,
             }
-            this.formGoodsBak = {
+            this.formBak = {
               ...temp,
             }
           } else {
@@ -738,14 +738,14 @@ export default {
   methods: {
     changeGoldTypePurity (value, selectedData) {
       const [type, purity] = value
-      this.formGoods.goldType = type
-      this.formGoods.goldPurity = purity
+      this.form.goldType = type
+      this.form.goldPurity = purity
     },
     formPostdata () {
-      // console.log(this.formGoods)
+      // console.log(this.form)
       const data = new FormData()
-      Object.keys(this.formGoods).forEach(key => {
-        const value = this.formGoods[key]
+      Object.keys(this.form).forEach(key => {
+        const value = this.form[key]
         if (key.includes('Image')) {
           if (value && value[0] && value[0].file) {
             data.append(key, value[0].file, value[0].name)
@@ -787,10 +787,10 @@ export default {
                   ...temp.detailImages,
                 }]
                 || []
-              this.formGoods = {
+              this.form = {
                 ...temp,
               }
-              this.formGoodsBak = {
+              this.formBak = {
                 ...temp,
               }
               this.$Message.success({
@@ -811,8 +811,8 @@ export default {
       })
     },
     cancel () {
-      this.formGoods = {
-        ...this.formGoodsBak,
+      this.form = {
+        ...this.formBak,
       }
       this.$Message.success({
         content: '重置成功',
@@ -834,67 +834,6 @@ export default {
 
   * {
     font-size: 14px;
-  }
-
-  .edit-btn {
-    cursor: pointer;
-  }
-
-  section {
-    width: 100%;
-    border: 1px solid #e8e8e8;
-    background: #fff;
-    margin-bottom: 20px;
-
-    header {
-      border-bottom: 1px solid #e8e8e8;
-      background: #f5f5f5;
-      padding: 10px 15px;
-      font-weight: bold;
-
-      .edit-btn {
-        margin-left: 10px;
-      }
-    }
-
-    .section-body {
-      padding: 15px;
-
-      .ivu-form-item {
-
-        &.main-images .ivu-form-item-content {
-          display: flex;
-          flex-wrap: wrap;
-
-          .image-uploader {
-            .upload {
-              margin-right: 4px;
-            }
-          }
-        }
-
-        .ivu-form-item-label {
-          font-weight: bold;
-        }
-
-        .ivu-form-item-error-tip {
-          font-size: 12px;
-        }
-      }
-
-      .ivu-row {
-        padding: 0 15px;
-
-        p {
-          padding: 1px 0;
-          display: inline-block;
-
-          & + i {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
   }
 }
 </style>

@@ -230,7 +230,7 @@ export default {
           title: '钻石重量（克）',
           key: 'diamondWeight',
           sortable: true,
-          minWidth: 130,
+          minWidth: 150,
         },
         {
           title: '销售价',

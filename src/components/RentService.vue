@@ -56,35 +56,35 @@
       v-model="moreCondModal"
       title="更多筛选条件"
       :mask-closable="false"
-      :width="550"
+      :width="600"
     >
       <Form
         :model="moreCondModalForm"
-        :label-width="70"
+        :label-width="100"
       >
-        <FormItem label="租赁创建时间" prop="rentCreateDate">
+        <FormItem label="服务单创建时间" prop="createTime">
           <DatePicker
             type="daterange"
             placement="bottom-end"
-            placeholder="选择租赁创建时间区间"
-            @on-change="changeRentCreateDate"
+            placeholder="选择服务单创建时间区间"
+            @on-change="changecreateTime"
           />
         </FormItem>
-        <FormItem label="租赁结束时间" prop="rentDueDate">
+        <FormItem label="服务单结束时间" prop="finishDate">
           <DatePicker
             type="daterange"
             placement="bottom-end"
-            placeholder="选择租赁结束时间区间"
-            @on-change="changeRentDueDate"
+            placeholder="选择服务单结束时间区间"
+            @on-change="changefinishDate"
           />
         </FormItem>
-        <FormItem label="业务状态" prop="businessStatus">
+        <!-- <FormItem label="业务状态" prop="businessStatus">
           <enum-selector
             :selected="moreCondModalForm.businessStatus"
             :items="businessStatus"
             :single="false"
           />
-        </FormItem>
+        </FormItem> -->
         <FormItem label="物品状态" prop="leaseholdStatus">
           <enum-selector
             :selected="moreCondModalForm.leaseholdStatus"
@@ -127,8 +127,8 @@
 </template>
 
 <script>
-import { SERVICETYPE, BUSINESSSTATUS, LEASEHOLDSTATUS, CREDITSTATUS,
-  DELIVERYMODE, COMPLETEMODE } from '@/constant'
+import { SERVICETYPE, LEASEHOLDSTATUS, CREDITSTATUS,
+  DELIVERYMODE } from '@/constant'
 import EnumSelector from './EnumSelector'
 
 export default {
@@ -138,11 +138,9 @@ export default {
   data () {
     return {
       serviceType: SERVICETYPE,
-      businessStatus: BUSINESSSTATUS,
       leaseholdStatus: LEASEHOLDSTATUS,
       creditStatus: CREDITSTATUS,
       deliveryMode: DELIVERYMODE,
-      completeMode: COMPLETEMODE,
       page: 1,
       pageSize: 10,
       totalCount: 0,
@@ -150,9 +148,9 @@ export default {
         serviceNo: '',
         name: '',
         phone: '',
-        rentCreateDate: [],
-        rentDueDate: [],
-        businessStatus: [],
+        createTime: [],
+        finishDate: [],
+        // businessStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -161,9 +159,9 @@ export default {
       moreCondModal: false,
       moreCondCount: 0,
       moreCondModalForm: {
-        rentCreateDate: [],
-        rentDueDate: [],
-        businessStatus: [],
+        createTime: [],
+        finishDate: [],
+        // businessStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -214,16 +212,16 @@ export default {
           minWidth: 120,
         },
         {
-          title: '租赁创建时间',
-          key: 'rentCreateDate',
+          title: '服务单创建时间',
+          key: 'createTime',
           sortable: true,
-          minWidth: 130,
+          minWidth: 150,
         },
         {
-          title: '租赁结束时间',
-          key: 'rentDueDate',
+          title: '服务单结束时间',
+          key: 'finishDate',
           sortable: true,
-          minWidth: 130,
+          minWidth: 150,
         },
         {
           title: '实际计费时长',
@@ -231,24 +229,24 @@ export default {
           sortable: true,
           minWidth: 130,
         },
-        {
-          title: '业务状态',
-          key: 'businessStatus',
-          filters: BUSINESSSTATUS.map(t => ({
-            label: t.value,
-            value: t.key,
-          })),
-          filterMultiple: true,
-          filterMethod (value, row) {
-            return row.businessStatus === value
-          },
-          minWidth: 100,
-          render (h, params) {
-            const businessStatus = BUSINESSSTATUS.find(
-              cur => params.row.businessStatus === cur.key)
-            return h('span', businessStatus && businessStatus.value)
-          },
-        },
+        // {
+        //   title: '业务状态',
+        //   key: 'businessStatus',
+        //   filters: BUSINESSSTATUS.map(t => ({
+        //     label: t.value,
+        //     value: t.key,
+        //   })),
+        //   filterMultiple: true,
+        //   filterMethod (value, row) {
+        //     return row.businessStatus === value
+        //   },
+        //   minWidth: 100,
+        //   render (h, params) {
+        //     const businessStatus = BUSINESSSTATUS.find(
+        //       cur => params.row.businessStatus === cur.key)
+        //     return h('span', businessStatus && businessStatus.value)
+        //   },
+        // },
         {
           title: '物品状态',
           key: 'leaseholdStatus',
@@ -345,12 +343,12 @@ export default {
       this.moreCondModal = true
     },
     saveMoreCond () {
-      const { rentCreateDate, rentDueDate, businessStatus, leaseholdStatus,
+      const { createTime, finishDate, leaseholdStatus,
         creditStatus, deliveryStore, deliveryMode } = this.moreCondModalForm
       this.searchForm = Object.assign(this.searchForm, {
-        rentCreateDate: [...rentCreateDate],
-        rentDueDate: [...rentDueDate],
-        businessStatus: [...businessStatus],
+        createTime: [...createTime],
+        finishDate: [...finishDate],
+        // businessStatus: [...businessStatus],
         leaseholdStatus: [...leaseholdStatus],
         creditStatus: [...creditStatus],
         deliveryStore,
@@ -360,12 +358,12 @@ export default {
       this.moreCondModal = false
     },
     cancelMoreCond () {
-      const { rentCreateDate, rentDueDate, businessStatus, leaseholdStatus,
+      const { createTime, finishDate, leaseholdStatus,
         creditStatus, deliveryStore, deliveryMode } = this.searchForm
       this.moreCondModalForm = {
-        rentCreateDate: [...rentCreateDate],
-        rentDueDate: [...rentDueDate],
-        businessStatus: [...businessStatus],
+        createTime: [...createTime],
+        finishDate: [...finishDate],
+        // businessStatus: [...businessStatus],
         leaseholdStatus: [...leaseholdStatus],
         creditStatus: [...creditStatus],
         deliveryStore,
@@ -384,13 +382,13 @@ export default {
           : obj[key])
       }, false)
     },
-    changeRentCreateDate (daterange) {
-      console.log('changeRentCreateDate', daterange)
-      this.moreCondModalForm.rentCreateDate = [...daterange]
+    changecreateTime (daterange) {
+      console.log('changecreateTime', daterange)
+      this.moreCondModalForm.createTime = [...daterange]
     },
-    changeRentDueDate (daterange) {
-      console.log('changeRentDueDate', daterange)
-      this.moreCondModalForm.changeRentDueDate = [...daterange]
+    changefinishDate (daterange) {
+      console.log('changefinishDate', daterange)
+      this.moreCondModalForm.changefinishDate = [...daterange]
     },
     mockTableData (config) {
       this.tableLoading = true
@@ -444,18 +442,18 @@ export default {
     reset () {
       this.$refs.searchForm.resetFields()
       this.moreCondModalForm = {
-        rentCreateDate: [],
-        rentDueDate: [],
-        businessStatus: [],
+        createTime: [],
+        finishDate: [],
+        // businessStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
         deliveryMode: [],
       }
       this.searchForm = Object.assign(this.searchForm, {
-        rentCreateDate: [],
-        rentDueDate: [],
-        businessStatus: [],
+        createTime: [],
+        finishDate: [],
+        // businessStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -488,10 +486,11 @@ export default {
         return obj
       }, {})
 
-      conds.businessStatus && (conds.businessStatus = conds.businessStatus.reduce((cum, cur, i) => {
-        cur && cum.push(this.businessStatus[i].key)
-        return cum
-      }, []))
+      // conds.businessStatus && (conds.businessStatus =
+      // conds.businessStatus.reduce((cum, cur, i) => {
+      //   cur && cum.push(this.businessStatus[i].key)
+      //   return cum
+      // }, []))
       conds.leaseholdStatus && (conds.leaseholdStatus =
       conds.leaseholdStatus.reduce((cum, cur, i) => {
         cur && cum.push(this.leaseholdStatuss[i].key)

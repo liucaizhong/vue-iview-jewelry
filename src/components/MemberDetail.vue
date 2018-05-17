@@ -1,20 +1,20 @@
 <template>
   <div id="member-detail">
-    <Form :model="formMember" :label-width="150">
+    <Form :model="form" :label-width="150">
       <section>
         <header>基本信息</header>
         <div class="section-body">
           <FormItem label="会员号" prop="memberId">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.memberId }}</p>
+              <p>{{ form.memberId }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="姓名" prop="name">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.name }}</p>
+              <p>{{ form.name }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -35,28 +35,28 @@
           <FormItem label="证件号码" prop="idNo">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.idNo }}</p>
+              <p>{{ form.idNo }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="生日" prop="birthday">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.birthday }}</p>
+              <p>{{ form.birthday }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="手机号" prop="cellPhone">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.cellPhone }}</p>
+              <p>{{ form.cellPhone }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="邮箱" prop="email">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.email }}</p>
+              <p>{{ form.email }}</p>
               <Icon
                 class="edit-btn"
                 type="edit"
@@ -78,7 +78,7 @@
         </header>
         <div class="section-body">
           <FormItem
-            v-for="(ad, seq) in formMember.address"
+            v-for="(ad, seq) in form.address"
             :key="seq"
             :label="`地址${seq+1}`"
             prop="address"
@@ -99,21 +99,21 @@
           <FormItem label="余额" prop="balance">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.balance + ' 元' }}</p>
+              <p>{{ form.balance + ' 元' }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="押金" prop="deposit">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.deposit + ' 元' }}</p>
+              <p>{{ form.deposit + ' 元' }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="租金" prop="rent">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.rent + ' 元' }}</p>
+              <p>{{ form.rent + ' 元' }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -127,7 +127,7 @@
           <FormItem label="创建时间" prop="createdDate">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.createdDate }}</p>
+              <p>{{ form.createdDate }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -141,14 +141,14 @@
           <!-- <FormItem label="最后修改时间" prop="lastModified">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.lastModified }}</p>
+              <p>{{ form.lastModified }}</p>
               </Col>
             </Row>
           </FormItem>
           <FormItem label="最后修改人" prop="lastModifiedBy">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ formMember.lastModifiedBy }}</p>
+              <p>{{ form.lastModifiedBy }}</p>
               </Col>
             </Row>
           </FormItem> -->
@@ -267,7 +267,7 @@ export default {
       memberSources: MEMBERSOURCE,
       genders: GENDER,
       saveLoading: false,
-      formMember: {
+      form: {
         memberId: '',
         name: '',
         gender: '',
@@ -303,33 +303,33 @@ export default {
   },
   computed: {
     memberSource: function () {
-      const source = this.memberSources.find(cur => cur.key === this.formMember.source) || ''
+      const source = this.memberSources.find(cur => cur.key === this.form.source) || ''
       return source && source.value
     },
     idType: function () {
-      const idType = this.idTypes.find(cur => cur.key === this.formMember.idType)
+      const idType = this.idTypes.find(cur => cur.key === this.form.idType)
       return idType && idType.value
     },
     gender: function () {
-      const gender = this.genders.find(cur => cur.key === this.formMember.gender)
+      const gender = this.genders.find(cur => cur.key === this.form.gender)
       return gender && gender.value
     },
   },
   created () {
     const url = '/member/'
-    this.formMember.memberId = this.$route.params.id
+    this.form.memberId = this.$route.params.id
     this.$fetch(url, {
       params: {
-        memberId: this.formMember.memberId,
+        memberId: this.form.memberId,
       }
     })
       .then(resp => {
         const results = resp.data.results
         if (results && results.length) {
-          this.formMember = {
+          this.form = {
             ...results[0],
           }
-          this.formMember.address = JSON.parse(this.formMember.address)
+          this.form.address = JSON.parse(this.form.address)
         } else {
           this.$Message.error({
             content: '未找到该会员的详细信息',
@@ -345,9 +345,9 @@ export default {
   },
   methods: {
     editField (type) {
-      this[`${type}ModalForm`][type] = typeof this.formMember[type] === 'string'
-        ? this.formMember[type]
-        : [...this.formMember[type]]
+      this[`${type}ModalForm`][type] = typeof this.form[type] === 'string'
+        ? this.form[type]
+        : [...this.form[type]]
       this[`${type}Modal`] = true
     },
     saveField (type) {
@@ -359,7 +359,7 @@ export default {
           const isAddress = Array.isArray(postData)
           this.$fetch(url, {
             data: {
-              memberId: this.formMember.memberId,
+              memberId: this.form.memberId,
               [type]: isAddress
                 ? JSON.stringify(postData)
                 : postData,
@@ -369,7 +369,7 @@ export default {
             .then(resp => {
               console.log(resp)
               const data = resp.data
-              this.formMember[type] = isAddress
+              this.form[type] = isAddress
                 ? JSON.parse(data[type])
                 : data[type]
               this.$Message.success({
@@ -426,66 +426,6 @@ export default {
 
   * {
     font-size: 14px;
-  }
-
-  .edit-btn {
-    cursor: pointer;
-  }
-
-  section {
-    width: 100%;
-    border: 1px solid #e8e8e8;
-    background: #fff;
-    margin-bottom: 20px;
-
-    header {
-      border-bottom: 1px solid #e8e8e8;
-      background: #f5f5f5;
-      padding: 10px 15px;
-      font-weight: bold;
-
-      .edit-btn {
-        margin-left: 10px;
-      }
-    }
-
-    .section-body {
-      padding: 15px;
-
-      .ivu-form-item {
-        margin-bottom: 0;
-        padding: 5px 0;
-
-        .ivu-form-item-label {
-          font-weight: bold;
-        }
-      }
-
-      .ivu-row {
-        padding: 0 15px;
-
-        p {
-          padding: 1px 0;
-          display: inline-block;
-
-          & + i {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-  }
-}
-.edit-field-modal {
-  .ivu-form {
-    height: 100%;
-
-    .ivu-form-item:last-child {
-      margin-bottom: 0;
-    }
-  }
-  .ivu-modal-footer {
-    display: none;
   }
 }
 </style>

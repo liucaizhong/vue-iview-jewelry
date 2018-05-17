@@ -12,6 +12,7 @@ const GoodsDetail = () => import('@/components/GoodsDetail')
 const NewGoods = () => import('@/components/NewGoods')
 const BatchImportGoods = () => import('@/components/BatchImportGoods')
 const RentService = () => import('@/components/RentService')
+const RentServiceDetail = () => import('@/components/RentServiceDetail')
 
 export default new Router({
   mode: 'history',
@@ -73,6 +74,9 @@ export default new Router({
       }, {
         path: 'rent-service',
         component: RentService,
+      }, {
+        path: 'rent-service/:id',
+        component: RentServiceDetail,
       }],
     },
   ],

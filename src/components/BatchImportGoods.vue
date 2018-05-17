@@ -1,7 +1,7 @@
 <template>
   <div id="batch-import-goods">
     <Form
-      :model="formGoods"
+      :model="form"
       :label-width="150"
     >
       <section>
@@ -84,7 +84,7 @@ export default {
     return {
       csvFileMaxSize: CSVFILEMAXSIZE,
       zipFileMaxSize: ZIPFILEMAXSIZE,
-      formGoods: {
+      form: {
         info: [],
         imgs: [],
       },
@@ -177,51 +177,5 @@ export default {
   justify-content: flex-start;
   background: #f7f7f7;
   overflow: auto;
-
-  section {
-    width: 100%;
-    border: 1px solid #e8e8e8;
-    background: #fff;
-    margin-bottom: 20px;
-
-    header {
-      border-bottom: 1px solid #e8e8e8;
-      background: #f5f5f5;
-      padding: 10px 15px;
-      font-weight: bold;
-
-      .edit-btn {
-        margin-left: 10px;
-      }
-    }
-
-    .section-body {
-      padding: 15px;
-
-      .ivu-form-item {
-
-        .ivu-form-item-label {
-          font-weight: bold;
-        }
-
-        .ivu-form-item-error-tip {
-          font-size: 12px;
-        }
-      }
-
-      .ivu-row {
-        padding: 0 15px;
-
-        p {
-          padding: 1px 0;
-          // display: inline-block;
-
-          & + i {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-  }
 }
 </style>
