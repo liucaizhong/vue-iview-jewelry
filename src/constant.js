@@ -225,15 +225,12 @@ module.exports = {
     value: '待取货',
   }, {
     key: '3',
-    value: '服务关闭',
-  }, {
-    key: '4',
     value: '租赁中',
   }, {
-    key: '5',
+    key: '4',
     value: '租赁完成',
   }, {
-    key: '6',
+    key: '5',
     value: '租转售完成',
   }],
   // BUSINESSSTATUS: [{

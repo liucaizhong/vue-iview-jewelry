@@ -167,6 +167,158 @@
             </Col>
           </Row>
           <div class="dotted-line" />
+          <FormItem label="商品ID" prop="productid" :style="{ 'margin-top': '10px'}">
+            <Row>
+              <Col :xs="12" :md="10" :lg="8">
+              <Input
+                type="text"
+                v-model="form.productid"
+                placeholder="请填写取货的商品ID"
+                :disabled="disableProductid"
+              >
+              <Button
+                slot="append"
+                icon="ios-search"
+                @click="searchProductid"
+                :disabled="disableProductid"
+                :loading="searchProductLoading"
+              />
+              </Input>
+              </Col>
+              <Button
+                type="primary"
+                size="small"
+                :style="{ 'margin-left': '25px' }"
+                @click="clickDeliveryBtn"
+              >
+                {{ disableProductid ? '修改' : '取货' }}
+              </Button>
+            </Row>
+          </FormItem>
+          <div class="delivery-container">
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品类别" prop="category">
+                <p>{{ category }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品型号" prop="model">
+                <p>{{ form.model }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品品牌" prop="brand">
+                <p>{{ form.brand }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品系列" prop="series">
+                <p>{{ form.series }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品名称" prop="title">
+                <p>{{ form.title }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="商品销售价" prop="sellingPrice">
+                <p>{{ form.sellingPrice }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+          </div>
+          <Tabs value="confirmDelivery" :style="{ 'margin-bottom': '10px' }">
+            <TabPane label="取货信息" name="confirmDelivery">
+              <FormItem label="商品编号" prop="serialNumber">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.serialNumber"
+                    placeholder="请填写取货的商品编号"
+                  >
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="提货方式" prop="deliveryMode">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12" :style="{ position: 'relative' }">
+                  <Select v-model="form.deliveryMode">
+                    <Option
+                      v-for="item in deliveryModes"
+                      :value="item.key"
+                      :key="item.key"
+                    >
+                      {{ item.value }}
+                    </Option>
+                  </Select>
+                  </Col>
+                </Row>
+              </FormItem>
+              <div v-if="form.deliveryMode === '0'">
+                <FormItem label="物流公司" prop="logisticsCompany">
+                  <Row>
+                    <Col :xs="24" :md="16" :lg="12">
+                    <Input
+                      type="text"
+                      v-model="form.logisticsCompany"
+                      placeholder="请填写物流公司"
+                    >
+                    </Input>
+                    </Col>
+                  </Row>
+                </FormItem>
+                <FormItem label="运单号" prop="trackingNumber">
+                  <Row>
+                    <Col :xs="24" :md="16" :lg="12">
+                    <Input
+                      type="text"
+                      v-model="form.trackingNumber"
+                      placeholder="请填写运单号"
+                    >
+                    </Input>
+                    </Col>
+                  </Row>
+                </FormItem>
+              </div>
+              <div v-else>
+                <FormItem label="取货门店" prop="deliveryStore">
+                  <Row>
+                    <Col :xs="24" :md="16" :lg="12">
+                    <p>{{ form.deliveryStore }}</p>
+                    </Col>
+                  </Row>
+                </FormItem>
+              </div>
+              <FormItem label="提货经办人" prop="deliveryOperator">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.deliveryOperator }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem>
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Button
+                    type="success"
+                    @click="confirmDelivery"
+                    :loading="confirmDeliveryLoading"
+                    long
+                  >确认取货</Button>
+                  </Col>
+                </Row>
+              </FormItem>
+            </TabPane>
+          </Tabs>
+          <div class="dotted-line" />
         </div>
       </section>
     </Form>
@@ -176,8 +328,12 @@
 <script>
 import { SERVICETYPE, SERVICESTATUS, LEASEHOLDSTATUS, CATEGORYOFGOOD,
   CREDITSTATUS, DELIVERYMODE } from '@/constant'
+import IconTooltip from './IconTooltip'
 
 export default {
+  components: {
+    IconTooltip,
+  },
   data () {
     return {
       serviceTypes: SERVICETYPE,
@@ -186,10 +342,11 @@ export default {
       creditStatuss: CREDITSTATUS,
       deliveryModes: DELIVERYMODE,
       categoryOfGood: CATEGORYOFGOOD,
-      saveLoading: false,
+      confirmDeliveryLoading: false,
       curStep: 0,
-      steps: [],
       stepStatus: 'process',
+      disableProductid: true,
+      searchProductLoading: false,
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -207,7 +364,7 @@ export default {
         realChargingTime: '',
         residualRent: '',
         residualDeposit: '',
-        serviceStatus: '0',
+        serviceStatus: '5',
         productId: '',
         category: '1',
         model: '',
@@ -252,14 +409,33 @@ export default {
       const creditStatus = this.creditStatuss.find(cur => cur.key === this.form.creditStatus)
       return creditStatus && creditStatus.value
     },
+    category: function () {
+      const category = this.categoryOfGood.find(cur =>
+        cur.key === this.form.category)
+      return category && category.value
+    },
     reservedCategory: function () {
       const reservedCategory = this.categoryOfGood.find(cur =>
         cur.key === this.form.reservedCategory)
       return reservedCategory && reservedCategory.value
     },
+    steps: function () {
+      const len = this.serviceStatuss.length
+      const temp = this.serviceStatuss.slice(0, len - 2)
+      const finshStatus = {
+        title: '已完成',
+      }
+      if (this.form.serviceStatus === this.serviceStatuss[len - 2].key
+        || this.form.serviceStatus === this.serviceStatuss[len - 1].key) {
+        finshStatus.title = this.serviceStatuss[this.form.serviceStatus].value
+      }
+
+      return temp.map(cur => ({
+        title: cur.value,
+      })).concat([finshStatus])
+    },
   },
   created () {
-    this.steps = this.formSteps(this.serviceStatuss)
     this.form.servieNo = this.$route.params.id
     // const url = '/rentservice/'
     // this.$fetch(url, {
@@ -288,84 +464,42 @@ export default {
     //   })
   },
   methods: {
-    formSteps (serviceStatus) {
-      const temp = serviceStatus.slice(0, serviceStatus.length - 2)
-      return temp.map(cur => ({
-        title: cur.value,
-        content: '',
-      })).concat({
-        title: '完成',
-        content: '',
-      })
-    },
-    editField (type) {
-      this[`${type}ModalForm`][type] = typeof this.form[type] === 'string'
-        ? this.form[type]
-        : [...this.form[type]]
-      this[`${type}Modal`] = true
-    },
-    saveField (type) {
-      this.$refs[`${type}ModalForm`].validate(valid => {
-        if (valid) {
-          this.saveLoading = true
-          const url = '/member/'
-          const postData = this[`${type}ModalForm`][type]
-          const isAddress = Array.isArray(postData)
-          this.$fetch(url, {
-            data: {
-              memberId: this.form.memberId,
-              [type]: isAddress
-                ? JSON.stringify(postData)
-                : postData,
-            },
-            method: 'post',
-          })
-            .then(resp => {
-              console.log(resp)
-              const data = resp.data
-              this.form[type] = isAddress
-                ? JSON.parse(data[type])
-                : data[type]
-              this.$Message.success({
-                content: '保存成功',
-              })
-              this[`${type}Modal`] = false
-              this.saveLoading = false
-            })
-            .catch(err => {
-              console.log(err)
-              this.$Message.error({
-                content: err,
-              })
-              this.saveLoading = false
-            })
-        } else {
-          this.$Message.error({
-            content: '保存失败',
-          })
+    searchProductid () {
+      this.searchProductLoading = true
+      const url = '/product/'
+      this.$fetch(url, {
+        params: {
+          productid: this.form.productid,
         }
       })
-    },
-    cancelSaveField (type) {
-      this[`${type}Modal`] = false
-    },
-    addAddressItem () {
-      if (this.addressModalForm.address.length === this.addressMaxNum) {
-        this.$Message.error({
-          content: '最多添加5个常用地址',
+        .then(resp => {
+          console.log(resp)
+          const results = resp.data.results
+          if (results && results.length) {
+            const { category, model, title, brand, series, sellingPrice } = results[0]
+            this.form = Object.assign({}, this.form, {
+              category, model, title, brand, series, sellingPrice,
+            })
+          } else {
+            this.$Message.error({
+              content: '未找到该商品的详细信息',
+            })
+          }
+          this.searchProductLoading = false
         })
-      } else {
-        this.addressModalForm.address.push('')
-      }
-    },
-    removeAddressItem (i) {
-      if (this.addressModalForm.address.length === 1) {
-        this.$Message.error({
-          content: '至少保留1个常用地址',
+        .catch(err => {
+          console.log(err)
+          this.$Message.error({
+            content: err,
+          })
+          this.searchProductLoading = false
         })
-      } else {
-        this.addressModalForm.address.splice(i, 1)
-      }
+    },
+    clickDeliveryBtn () {
+      this.disableProductid = !this.disableProductid
+    },
+    confirmDelivery () {
+      console.log('confirmDelivery')
     },
   },
 }
@@ -376,7 +510,7 @@ export default {
   padding: 15px;
   justify-content: flex-start;
   background: #f7f7f7;
-  overflow: auto;
+  // overflow: auto;
 
   .steps {
     background: #fff;
@@ -384,12 +518,27 @@ export default {
     padding: 15px;
     // margin-bottom: 15px;
     border: 1px solid #e8e8e8;
-    border-bottom: none;
+    // border-bottom: none;
   }
 
   .form {
+    overflow: auto;
+    display: block;
+    border: 1px solid #e8e8e8;
+    border-top: none;
+    background: #fff;
+
     * {
       font-size: 14px;
+    }
+
+    section {
+      border: none;
+      background: transparent;
+
+      .delivery-container {
+        position: relative;
+      }
     }
   }
 }

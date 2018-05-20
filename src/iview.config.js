@@ -2,7 +2,7 @@ import { Layout, Sider, Menu, Submenu, Icon, MenuItem, Header, LoadingBar,
   Dropdown, Avatar, DropdownMenu, DropdownItem, Content, Form, FormItem,
   Select, Option, Table, Page, Modal, Row, Col, Upload, Progress, Notice,
   Collapse, Panel, Button, Input, Badge, AutoComplete, Message, Cascader,
-  DatePicker, Steps, Step,
+  DatePicker, Steps, Step, Spin, Tabs, TabPane, Tooltip,
 } from 'iview'
 
 export default {
@@ -43,5 +43,9 @@ export default {
     Vue.component('DatePicker', DatePicker)
     Vue.component('Steps', Steps)
     Vue.component('Step', Step)
+    Vue.component('Spin', Spin)
+    Vue.component('Tabs', Tabs)
+    Vue.component('TabPane', TabPane)
+    Vue.component('Tooltip', Tooltip)
   }
 }

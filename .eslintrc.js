@@ -52,6 +52,7 @@ module.exports = {
     'vue/no-parsing-error': [0, {
       'x-invalid-end-tag': false
     }],
+    'vue/require-default-prop': [0],
     "vue/max-attributes-per-line": [2, {
       "singleline": 5,
       "multiline": {
