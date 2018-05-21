@@ -17,10 +17,10 @@
     >
       <section>
         <div class="section-body">
-          <FormItem label="服务单号" prop="servieNo">
+          <FormItem label="服务单号" prop="serviceNo">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ form.servieNo }}</p>
+              <p>{{ form.serviceNo }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -427,6 +427,20 @@
                   </Col>
                 </Row>
               </FormItem>
+              <FormItem label="备注" prop="remark">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    v-model="form.remark"
+                    type="textarea"
+                    :autosize="{ minRows: 3 }"
+                    :maxlength="500"
+                    placeholder="输入备注信息(不超过500字符)"
+                  >
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
               <FormItem>
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
@@ -499,6 +513,20 @@
                   </Col>
                 </Row>
               </FormItem>
+              <FormItem label="备注" prop="remark">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    v-model="form.remark"
+                    type="textarea"
+                    :autosize="{ minRows: 3 }"
+                    :maxlength="500"
+                    placeholder="输入备注信息(不超过500字符)"
+                  >
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
               <FormItem>
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
@@ -515,7 +543,7 @@
             </TabPane>
           </Tabs>
           <div
-            v-if="form.relatedOrders.length"
+            v-if="form.relatedOrders && form.relatedOrders.length"
             class="dotted-line"
           />
           <FormItem
@@ -570,22 +598,22 @@ export default {
         receiverName: '',
         receiverPhone: '',
         address: '',
-        initialRent: '111',
-        initialDeposit: '22',
+        initialRent: '',
+        initialDeposit: '',
         rentPeriod: '',
         rentStartDate: '',
         rentDueDate: '',
         realChargingTime: '',
         residualRent: '',
-        residualDeposit: '100',
-        serviceStatus: '3',
+        residualDeposit: '',
+        serviceStatus: '0',
         productid: '',
         category: '1',
         model: '',
         title: '',
         brand: '',
         series: '',
-        sellingPrice: '20',
+        sellingPrice: '',
         leaseholdStatus: '0',
         creditStatus: '0',
         remarks: '',
@@ -723,6 +751,12 @@ export default {
             }
           },
         }],
+        remark: [{
+          trigger: 'change',
+          type: 'string',
+          max: 500,
+          message: '备注至多500字符',
+        }],
       },
     }
   },
@@ -782,11 +816,11 @@ export default {
     },
   },
   created () {
-    this.form.servieNo = this.$route.params.id
+    this.form.serviceNo = this.$route.params.id
     const url = '/RentalService/'
     this.$fetch(url, {
       params: {
-        servieNo: this.form.servieNo,
+        serviceNo: this.form.serviceNo,
       }
     })
       .then(resp => {
@@ -796,7 +830,6 @@ export default {
           this.form = {
             ...results[0],
           }
-          this.form.address = JSON.parse(this.form.address)
         } else {
           this.$Message.error({
             content: '未找到该服务单的详细信息',
