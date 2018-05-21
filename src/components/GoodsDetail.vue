@@ -835,5 +835,16 @@ export default {
   * {
     font-size: 14px;
   }
+
+  .main-images {
+    .ivu-form-item-content {
+      display: flex;
+      flex-wrap: wrap;
+
+      .image-uploader {
+        margin-right: 10px;
+      }
+    }
+  }
 }
 </style>

@@ -6,7 +6,7 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://js87yv.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://hq8gn6.natappfree.cc/api-auth/admin'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -61,14 +61,6 @@ function request ({ url, method = 'get', ...args }, req, res) {
 }
 
 module.exports = () => {
-  router.post('/member/', (req, res) => {
-    request({
-      url: mapUrl(req.url),
-      method: 'post',
-      data: req.body
-    }, req, res)
-  })
-
   router.get('/member/', (req, res) => {
     request({
       url: mapUrl(req.url),
@@ -78,6 +70,20 @@ module.exports = () => {
   router.get('/product/', (req, res) => {
     request({
       url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/RentalService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/member/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body
     }, req, res)
   })
 

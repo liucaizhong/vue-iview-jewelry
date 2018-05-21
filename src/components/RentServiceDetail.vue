@@ -8,7 +8,13 @@
         :content="item.content"
       />
     </Steps>
-    <Form class="form" :model="form" :label-width="120">
+    <Form
+      ref="form"
+      class="form"
+      :model="form"
+      :label-width="180"
+      :rules="ruleValidate"
+    >
       <section>
         <div class="section-body">
           <FormItem label="服务单号" prop="servieNo">
@@ -94,8 +100,8 @@
             </FormItem>
             </Col>
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="信用状态" prop="creditStatus">
-              <p>{{ creditStatus }}</p>
+            <FormItem label="已付金额" prop="realChargingRent">
+              <p>{{ form.realChargingRent }}</p>
             </FormItem>
             </Col>
           </Row>
@@ -123,6 +129,13 @@
             </FormItem>
             </Col>
           </Row>
+          <FormItem label="信用状态" prop="creditStatus">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <p>{{ creditStatus }}</p>
+              </Col>
+            </Row>
+          </FormItem>
           <FormItem label="预约商品ID" prop="reservedProductid">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
@@ -167,32 +180,37 @@
             </Col>
           </Row>
           <div class="dotted-line" />
-          <FormItem label="商品ID" prop="productid" :style="{ 'margin-top': '10px'}">
+          <FormItem
+            label="商品ID"
+            prop="productid"
+            :style="{ 'margin-top': '10px' }"
+          >
             <Row>
-              <Col :xs="12" :md="10" :lg="8">
+              <Col :xs="24" :md="16" :lg="12">
               <Input
                 type="text"
                 v-model="form.productid"
                 placeholder="请填写取货的商品ID"
-                :disabled="disableProductid"
+                :disabled="deliveryDone"
               >
               <Button
                 slot="append"
                 icon="ios-search"
                 @click="searchProductid"
-                :disabled="disableProductid"
+                :disabled="deliveryDone"
                 :loading="searchProductLoading"
               />
               </Input>
               </Col>
-              <Button
-                type="primary"
-                size="small"
-                :style="{ 'margin-left': '25px' }"
-                @click="clickDeliveryBtn"
-              >
-                {{ disableProductid ? '修改' : '取货' }}
-              </Button>
+            <!-- <Button
+              type="primary"
+              size="small"
+              :style="{ 'margin-left': '25px' }"
+              @click="clickDeliveryBtn"
+              :disabled="deliveryDone"
+            >
+              {{ disableProductid ? '修改' : '取货' }}
+            </Button> -->
             </Row>
           </FormItem>
           <div class="delivery-container">
@@ -233,15 +251,21 @@
               </Col>
             </Row>
           </div>
-          <Tabs value="confirmDelivery" :style="{ 'margin-bottom': '10px' }">
+          <Tabs
+            value="confirmDelivery"
+          >
             <TabPane label="取货信息" name="confirmDelivery">
-              <FormItem label="商品编号" prop="serialNumber">
+              <FormItem
+                label="商品编号"
+                prop="serialNumber"
+              >
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <Input
                     type="text"
                     v-model="form.serialNumber"
                     placeholder="请填写取货的商品编号"
+                    :disabled="deliveryDone"
                   >
                   </Input>
                   </Col>
@@ -250,7 +274,7 @@
               <FormItem label="提货方式" prop="deliveryMode">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12" :style="{ position: 'relative' }">
-                  <Select v-model="form.deliveryMode">
+                  <Select v-model="form.deliveryMode" :disabled="deliveryDone">
                     <Option
                       v-for="item in deliveryModes"
                       :value="item.key"
@@ -270,6 +294,7 @@
                       type="text"
                       v-model="form.logisticsCompany"
                       placeholder="请填写物流公司"
+                      :disabled="deliveryDone"
                     >
                     </Input>
                     </Col>
@@ -282,6 +307,7 @@
                       type="text"
                       v-model="form.trackingNumber"
                       placeholder="请填写运单号"
+                      :disabled="deliveryDone"
                     >
                     </Input>
                     </Col>
@@ -308,17 +334,205 @@
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <Button
-                    type="success"
+                    type="primary"
                     @click="confirmDelivery"
                     :loading="confirmDeliveryLoading"
                     long
-                  >确认取货</Button>
+                    :disabled="deliveryDone"
+                  >{{ deliveryDone ? '已取货' : '确认取货' }}</Button>
                   </Col>
                 </Row>
               </FormItem>
             </TabPane>
           </Tabs>
-          <div class="dotted-line" />
+          <div v-if="deliveryDone" class="dotted-line" />
+          <Tabs
+            v-if="deliveryDone"
+            value="rentClose"
+            :animated="false"
+            @on-click="switchRentCloseTab"
+          >
+            <TabPane label="租赁完成" name="rentClose">
+              <FormItem
+                label="实际计费时长"
+                prop="realChargingTime"
+              >
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.realChargingTime"
+                    placeholder="请填写服务的实际计费时长"
+                    :disabled="finishDone"
+                  >
+                  <span slot="append">天</span>
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="物品状态" prop="leaseholdStatus">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12" :style="{ position: 'relative' }">
+                  <Select v-model="form.leaseholdStatus" :disabled="finishDone">
+                    <Option
+                      v-for="item in leaseholdStatuss"
+                      :value="item.key"
+                      :key="item.key"
+                    >
+                      {{ item.value }}
+                    </Option>
+                  </Select>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem v-if="form.leaseholdStatus === '1'" label="赔偿金额" prop="compensation">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.compensation"
+                    placeholder="请填写物品损坏的赔偿金额"
+                    :disabled="finishDone"
+                  >
+                  <span slot="append">元</span>
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="应退款" prop="returnDeposit">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.returnDeposit"
+                    placeholder="请填写应退款金额"
+                    :disabled="finishDone"
+                  >
+                  <span slot="append">元</span>
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="还货门店" prop="returnStore">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.returnStore }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="服务完成人" prop="serviceCloseOpertator">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.serviceCloseOpertator }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem>
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Button
+                    type="primary"
+                    @click="confirmFinish('4')"
+                    :loading="confirmFinishLoading"
+                    long
+                    :disabled="finishDone"
+                  >{{ finishDone ? '已完成' : '确认完成' }}</Button>
+                  </Col>
+                </Row>
+              </FormItem>
+            </TabPane>
+            <TabPane label="租转售完成" name="rentToSaleClose">
+              <FormItem label="物品状态" prop="leaseholdStatus">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12" :style="{ position: 'relative' }">
+                  <Select v-model="form.leaseholdStatus" :disabled="finishDone">
+                    <Option
+                      v-for="item in leaseholdStatuss"
+                      :value="item.key"
+                      :key="item.key"
+                    >
+                      {{ item.value }}
+                    </Option>
+                  </Select>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="补差金额" prop="adjustmentAmount">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.adjustmentAmount"
+                    placeholder="请填写租转售补差金额"
+                    :disabled="finishDone"
+                  >
+                  <span slot="append">元</span>
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="应退款" prop="returnDeposit">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.returnDeposit"
+                    placeholder="请填写应退款金额"
+                    :disabled="finishDone"
+                  >
+                  <span slot="append">元</span>
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="还货门店" prop="returnStore">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.returnStore }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="服务完成人" prop="serviceCloseOpertator">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.serviceCloseOpertator }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem>
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Button
+                    type="primary"
+                    @click="confirmFinish('5')"
+                    :loading="confirmFinishLoading"
+                    long
+                    :disabled="finishDone"
+                  >{{ finishDone ? '已完成' : '确认完成' }}</Button>
+                  </Col>
+                </Row>
+              </FormItem>
+            </TabPane>
+          </Tabs>
+          <div
+            v-if="form.relatedOrders.length"
+            class="dotted-line"
+          />
+          <FormItem
+            v-for="(order, i) in form.relatedOrders"
+            :label="`关联订单${i+1}`"
+            :key="order.id"
+          >
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <router-link
+                :to="{ path: '/order', params: { id: order.id }}"
+              >
+                {{ order.id }}
+              </router-link>
+              </Col>
+            </Row>
+          </FormItem>
         </div>
       </section>
     </Form>
@@ -343,9 +557,9 @@ export default {
       deliveryModes: DELIVERYMODE,
       categoryOfGood: CATEGORYOFGOOD,
       confirmDeliveryLoading: false,
-      curStep: 0,
+      confirmFinishLoading: false,
       stepStatus: 'process',
-      disableProductid: true,
+      // disableProductid: true,
       searchProductLoading: false,
       form: {
         serviceNo: '',
@@ -356,22 +570,22 @@ export default {
         receiverName: '',
         receiverPhone: '',
         address: '',
-        initialRent: '',
-        initialDeposit: '',
+        initialRent: '111',
+        initialDeposit: '22',
         rentPeriod: '',
         rentStartDate: '',
         rentDueDate: '',
         realChargingTime: '',
         residualRent: '',
-        residualDeposit: '',
-        serviceStatus: '5',
-        productId: '',
+        residualDeposit: '100',
+        serviceStatus: '3',
+        productid: '',
         category: '1',
         model: '',
         title: '',
         brand: '',
         series: '',
-        sellingPrice: '',
+        sellingPrice: '20',
         leaseholdStatus: '0',
         creditStatus: '0',
         remarks: '',
@@ -398,6 +612,118 @@ export default {
         compensation: '',
         relatedOrders: [],
       },
+      ruleValidate: {
+        productid: [{
+          required: true,
+          message: '商品ID不能为空',
+          trigger: 'blur',
+        }],
+        serialNumber: [{
+          required: true,
+          message: '商品编号不能为空',
+          trigger: 'blur',
+        }],
+        realChargingTime: [{
+          trigger: 'blur',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('实际计费时长必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('实际计费时长必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }],
+        returnDeposit: [{
+          trigger: 'blur',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('应退款必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('应退款必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }],
+        adjustmentAmount: [{
+          trigger: 'blur',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('补差金额必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('补差金额必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }],
+        compensation: [{
+          trigger: 'blur',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('赔偿金额必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }, {
+          trigger: 'change',
+          validator (rule, value, cb) {
+            if (value) {
+              const numFloat = parseFloat(value, 10)
+              const numInt = parseInt(value, 10)
+              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
+                cb(new Error('赔偿金额必须为正整数'))
+              }
+              cb()
+            }
+          },
+        }],
+      },
     }
   },
   computed: {
@@ -423,10 +749,9 @@ export default {
       const len = this.serviceStatuss.length
       const temp = this.serviceStatuss.slice(0, len - 2)
       const finshStatus = {
-        title: '已完成',
+        title: this.serviceStatuss[len - 2].value,
       }
-      if (this.form.serviceStatus === this.serviceStatuss[len - 2].key
-        || this.form.serviceStatus === this.serviceStatuss[len - 1].key) {
+      if (this.form.serviceStatus === this.serviceStatuss[len - 1].key) {
         finshStatus.title = this.serviceStatuss[this.form.serviceStatus].value
       }
 
@@ -434,73 +759,141 @@ export default {
         title: cur.value,
       })).concat([finshStatus])
     },
+    deliveryDone: function () {
+      return +this.form.serviceStatus > 2
+    },
+    finishDone: function () {
+      return +this.form.serviceStatus > 3
+    },
+    curStep: function () {
+      const status = +this.form.serviceStatus
+      return status > 3 ? status + 1 : status
+    },
+  },
+  watch: {
+    'form.compensation': function (val, oldVal) {
+      const { residualDeposit } = this.form
+      const amount = +val - +residualDeposit
+      if (amount > 0) {
+        this.form.returnDeposit = '0'
+      } else {
+        this.form.returnDeposit = Math.abs(amount).toString()
+      }
+    },
   },
   created () {
     this.form.servieNo = this.$route.params.id
-    // const url = '/rentservice/'
-    // this.$fetch(url, {
-    //   params: {
-    //     servieNo: this.form.servieNo,
-    //   }
-    // })
-    //   .then(resp => {
-    //     const results = resp.data.results
-    //     if (results && results.length) {
-    //       this.form = {
-    //         ...results[0],
-    //       }
-    //       this.form.address = JSON.parse(this.form.address)
-    //     } else {
-    //       this.$Message.error({
-    //         content: '未找到该服务单的详细信息',
-    //       })
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //     this.$Message.error({
-    //       content: err,
-    //     })
-    //   })
+    const url = '/RentalService/'
+    this.$fetch(url, {
+      params: {
+        servieNo: this.form.servieNo,
+      }
+    })
+      .then(resp => {
+        console.log(resp)
+        const results = resp.data.results
+        if (results && results.length) {
+          this.form = {
+            ...results[0],
+          }
+          this.form.address = JSON.parse(this.form.address)
+        } else {
+          this.$Message.error({
+            content: '未找到该服务单的详细信息',
+          })
+        }
+        this.$Loading.finish()
+      })
+      .catch(err => {
+        console.log(err)
+        this.$Message.error({
+          content: err,
+        })
+      })
   },
   methods: {
     searchProductid () {
-      this.searchProductLoading = true
-      const url = '/product/'
-      this.$fetch(url, {
-        params: {
-          productid: this.form.productid,
-        }
-      })
-        .then(resp => {
-          console.log(resp)
-          const results = resp.data.results
-          if (results && results.length) {
-            const { category, model, title, brand, series, sellingPrice } = results[0]
-            this.form = Object.assign({}, this.form, {
-              category, model, title, brand, series, sellingPrice,
-            })
-          } else {
-            this.$Message.error({
-              content: '未找到该商品的详细信息',
-            })
+      if (this.form.productid) {
+        this.searchProductLoading = true
+        const url = '/product/'
+        this.$fetch(url, {
+          params: {
+            productid: this.form.productid,
           }
-          this.searchProductLoading = false
         })
-        .catch(err => {
-          console.log(err)
-          this.$Message.error({
-            content: err,
+          .then(resp => {
+            console.log(resp)
+            const results = resp.data.results
+            if (results && results.length) {
+              const { category, model, title, brand, series, sellingPrice } = results[0]
+              this.form = Object.assign({}, this.form, {
+                category, model, title, brand, series, sellingPrice,
+              })
+            } else {
+              this.$Message.error({
+                content: '未找到该商品的详细信息',
+              })
+            }
+            this.searchProductLoading = false
           })
-          this.searchProductLoading = false
-        })
+          .catch(err => {
+            console.log(err)
+            this.$Message.error({
+              content: err,
+            })
+            this.searchProductLoading = false
+          })
+      } else {
+        this.$Message.error('商品ID不能为空')
+      }
     },
-    clickDeliveryBtn () {
-      this.disableProductid = !this.disableProductid
-    },
+    // clickDeliveryBtn () {
+    //   this.disableProductid = !this.disableProductid
+    // },
     confirmDelivery () {
-      console.log('confirmDelivery')
+      if (this.form.serialNumber) {
+        this.confirmDeliveryLoading = true
+        setTimeout(() => {
+          this.form.serviceStatus = 3
+          this.confirmDeliveryLoading = false
+        }, 2000)
+      } else {
+        this.$Message.error('商品编号不能为空')
+      }
     },
+    confirmFinish (status) {
+      this.confirmFinishLoading = true
+      setTimeout(() => {
+        this.form.serviceStatus = status
+        this.confirmFinishLoading = false
+      }, 2000)
+    },
+    switchRentCloseTab (name) {
+      switch (name) {
+        case 'rentClose': {
+          const { compensation, residualDeposit } = this.form
+          const amount = +compensation - +residualDeposit
+          if (amount > 0) {
+            this.form.returnDeposit = '0'
+          } else {
+            this.form.returnDeposit = Math.abs(amount).toString()
+          }
+          break
+        }
+        case 'rentToSaleClose': {
+          const { sellingPrice, initialRent, initialDeposit } = this.form
+          const amount = +sellingPrice - +initialRent - +initialDeposit
+          if (amount > 0) {
+            this.form.returnDeposit = '0'
+            this.form.adjustmentAmount = amount.toString()
+          } else {
+            this.form.returnDeposit = Math.abs(amount).toString()
+            this.form.adjustmentAmount = '0'
+          }
+          break
+        }
+      }
+    }
   },
 }
 </script>
@@ -535,6 +928,10 @@ export default {
     section {
       border: none;
       background: transparent;
+
+      .ivu-form-item {
+        margin-bottom: 14px;
+      }
 
       .delivery-container {
         position: relative;

@@ -15,6 +15,10 @@ export default {
   box-sizing: border-box;
 }
 
+.ivu-input {
+  height: 33px;
+}
+
 .edit-field-modal {
   .ivu-form {
     height: 100%;
@@ -70,11 +74,17 @@ export default {
       padding: 15px;
 
       .ivu-form-item {
-        margin-bottom: 0;
+        margin-bottom: 14px;
         padding: 5px 0;
 
         .ivu-form-item-label {
           font-weight: bold;
+        }
+
+        .ivu-form-item-content {
+          .ivu-form-item-error-tip {
+            font-size: 12px;
+          }
         }
       }
 

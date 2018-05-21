@@ -427,6 +427,10 @@ export default {
   * {
     font-size: 14px;
   }
+
+  .ivu-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>
 

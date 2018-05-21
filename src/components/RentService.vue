@@ -62,12 +62,12 @@
         :model="moreCondModalForm"
         :label-width="100"
       >
-        <FormItem label="服务单创建时间" prop="createTime">
+        <FormItem label="服务单创建时间" prop="createDate">
           <DatePicker
             type="daterange"
             placement="bottom-end"
             placeholder="选择服务单创建时间区间"
-            @on-change="changecreateTime"
+            @on-change="changecreateDate"
           />
         </FormItem>
         <FormItem label="服务单结束时间" prop="finishDate">
@@ -148,7 +148,7 @@ export default {
         serviceNo: '',
         name: '',
         phone: '',
-        createTime: [],
+        createDate: [],
         finishDate: [],
         // businessStatus: [],
         leaseholdStatus: [],
@@ -159,7 +159,7 @@ export default {
       moreCondModal: false,
       moreCondCount: 0,
       moreCondModalForm: {
-        createTime: [],
+        createDate: [],
         finishDate: [],
         // businessStatus: [],
         leaseholdStatus: [],
@@ -209,11 +209,11 @@ export default {
           title: '租赁时长(天)',
           key: 'rentPeriod',
           sortable: true,
-          minWidth: 120,
+          minWidth: 140,
         },
         {
           title: '服务单创建时间',
-          key: 'createTime',
+          key: 'createDate',
           sortable: true,
           minWidth: 150,
         },
@@ -302,6 +302,7 @@ export default {
           },
           minWidth: 130,
           render (h, params) {
+            console.log()
             const deliveryMode = DELIVERYMODE.find(
               cur => params.row.deliveryMode === cur.key)
             return h('span', deliveryMode && deliveryMode.value)
@@ -325,7 +326,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push(`rentservice/${params.row.serviceNo}`)
+                    this.$router.push(`rent-service/${params.row.serviceNo}`)
                   }
                 }
               }, '详情'),
@@ -343,10 +344,10 @@ export default {
       this.moreCondModal = true
     },
     saveMoreCond () {
-      const { createTime, finishDate, leaseholdStatus,
+      const { createDate, finishDate, leaseholdStatus,
         creditStatus, deliveryStore, deliveryMode } = this.moreCondModalForm
       this.searchForm = Object.assign(this.searchForm, {
-        createTime: [...createTime],
+        createDate: [...createDate],
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
         leaseholdStatus: [...leaseholdStatus],
@@ -358,10 +359,10 @@ export default {
       this.moreCondModal = false
     },
     cancelMoreCond () {
-      const { createTime, finishDate, leaseholdStatus,
+      const { createDate, finishDate, leaseholdStatus,
         creditStatus, deliveryStore, deliveryMode } = this.searchForm
       this.moreCondModalForm = {
-        createTime: [...createTime],
+        createDate: [...createDate],
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
         leaseholdStatus: [...leaseholdStatus],
@@ -382,9 +383,9 @@ export default {
           : obj[key])
       }, false)
     },
-    changecreateTime (daterange) {
-      console.log('changecreateTime', daterange)
-      this.moreCondModalForm.createTime = [...daterange]
+    changecreateDate (daterange) {
+      console.log('changecreateDate', daterange)
+      this.moreCondModalForm.createDate = [...daterange]
     },
     changefinishDate (daterange) {
       console.log('changefinishDate', daterange)
@@ -392,7 +393,7 @@ export default {
     },
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/rentservice/'
+      const url = '/RentalService/'
       this.$fetch(url, config)
         .then(resp => {
           console.log(resp)
@@ -442,7 +443,7 @@ export default {
     reset () {
       this.$refs.searchForm.resetFields()
       this.moreCondModalForm = {
-        createTime: [],
+        createDate: [],
         finishDate: [],
         // businessStatus: [],
         leaseholdStatus: [],
@@ -451,7 +452,7 @@ export default {
         deliveryMode: [],
       }
       this.searchForm = Object.assign(this.searchForm, {
-        createTime: [],
+        createDate: [],
         finishDate: [],
         // businessStatus: [],
         leaseholdStatus: [],
