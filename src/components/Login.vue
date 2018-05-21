@@ -72,6 +72,7 @@ export default {
     login (name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          // userid, password, /UserLogin/
           this.$Message.success({
             content: '登录成功',
           })
