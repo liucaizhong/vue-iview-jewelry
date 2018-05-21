@@ -12,7 +12,7 @@
       >
         <FormItem prop="user">
           <Input
-            v-model="loginForm.user"
+            v-model="loginForm.userid"
             type="text"
             placeholder="输入注册手机号"
           >
@@ -37,6 +37,7 @@
             class="login-btn"
             type="primary"
             @click="login('loginForm')"
+            :loading="loginLoading"
           >
             账号登录
           </Button>
@@ -51,19 +52,24 @@ export default {
   data () {
     return {
       loginForm: {
-        user: '',
+        userid: '',
         password: '',
         remember: false,
       },
       loginRules: {
-        user: [
+        userid: [
           { required: true, message: '账号不能为空！', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空！', trigger: 'blur' },
         ]
-      }
+      },
+      loginLoading: false,
+      redirectUrl: '',
     }
+  },
+  created () {
+    this.redirectUrl = this.$route.query.redirect
   },
   methods: {
     forgetPassword () {
@@ -72,10 +78,35 @@ export default {
     login (name) {
       this.$refs[name].validate(valid => {
         if (valid) {
+          this.loginLoading = true
           // userid, password, /UserLogin/
-          this.$Message.success({
-            content: '登录成功',
+          const { userid, password } = this.loginForm
+          const url = '/UserLogin/'
+          this.$fetch(url, {
+            data: {
+              userid,
+              password,
+            },
+            method: 'post',
           })
+            .then(resp => {
+              console.log(resp)
+              if (resp.data === 'success') {
+                this.loginLoading = false
+                this.$Message.success({
+                  content: '登录成功',
+                })
+                // console.log(this.redirectUrl)
+                this.$router.push(this.redirectUrl)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              this.$Message.error({
+                content: err,
+              })
+              this.loginLoading = false
+            })
         } else {
           this.$Message.error({
             content: '登录失败',

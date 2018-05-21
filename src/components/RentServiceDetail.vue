@@ -136,10 +136,10 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="预约商品ID" prop="reservedProductid">
+          <FormItem label="预约商品ID" prop="reservedProduct.productid">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ form.reservedProductid }}</p>
+              <p>{{ form.reservedProduct.productid }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -150,46 +150,46 @@
             </FormItem>
             </Col>
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品型号" prop="reservedModel">
-              <p>{{ form.reservedModel }}</p>
+            <FormItem label="预约商品型号" prop="reservedProduct.model">
+              <p>{{ form.reservedProduct.model }}</p>
             </FormItem>
             </Col>
           </Row>
           <Row :style="{ 'padding-left': 0 }">
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品品牌" prop="reservedBrand">
-              <p>{{ form.reservedBrand }}</p>
+            <FormItem label="预约商品品牌" prop="reservedProduct.brand">
+              <p>{{ form.reservedProduct.brand }}</p>
             </FormItem>
             </Col>
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品系列" prop="reservedSeries">
-              <p>{{ form.reservedSeries }}</p>
+            <FormItem label="预约商品系列" prop="reservedProduct.series">
+              <p>{{ form.reservedProduct.series }}</p>
             </FormItem>
             </Col>
           </Row>
           <Row :style="{ 'padding-left': 0 }">
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品名称" prop="reservedTitle">
-              <p>{{ form.reservedTitle }}</p>
+            <FormItem label="预约商品名称" prop="reservedProduct.title">
+              <p>{{ form.reservedProduct.title }}</p>
             </FormItem>
             </Col>
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品销售价" prop="reservedSellingPrice">
-              <p>{{ form.reservedSellingPrice }}</p>
+            <FormItem label="预约商品销售价" prop="reservedProduct.sellingPrice">
+              <p>{{ form.reservedProduct.sellingPrice }}</p>
             </FormItem>
             </Col>
           </Row>
           <div class="dotted-line" />
           <FormItem
             label="商品ID"
-            prop="productid"
+            prop="product.productid"
             :style="{ 'margin-top': '10px' }"
           >
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
                 type="text"
-                v-model="form.productid"
+                v-model="form.product.productid"
                 placeholder="请填写取货的商品ID"
                 :disabled="deliveryDone"
               >
@@ -221,32 +221,32 @@
               </FormItem>
               </Col>
               <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品型号" prop="model">
-                <p>{{ form.model }}</p>
+              <FormItem label="商品型号" prop="product.model">
+                <p>{{ form.product.model }}</p>
               </FormItem>
               </Col>
             </Row>
             <Row :style="{ 'padding-left': 0 }">
               <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品品牌" prop="brand">
-                <p>{{ form.brand }}</p>
+              <FormItem label="商品品牌" prop="product.brand">
+                <p>{{ form.product.brand }}</p>
               </FormItem>
               </Col>
               <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品系列" prop="series">
-                <p>{{ form.series }}</p>
+              <FormItem label="商品系列" prop="product.series">
+                <p>{{ form.product.series }}</p>
               </FormItem>
               </Col>
             </Row>
             <Row :style="{ 'padding-left': 0 }">
               <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品名称" prop="title">
-                <p>{{ form.title }}</p>
+              <FormItem label="商品名称" prop="product.title">
+                <p>{{ form.product.title }}</p>
               </FormItem>
               </Col>
               <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品销售价" prop="sellingPrice">
-                <p>{{ form.sellingPrice }}</p>
+              <FormItem label="商品销售价" prop="product.sellingPrice">
+                <p>{{ form.product.sellingPrice }}</p>
               </FormItem>
               </Col>
             </Row>
@@ -564,6 +564,32 @@
         </div>
       </section>
     </Form>
+    <Modal v-model="confirmDeliveryModal" width="360">
+      <p slot="header" style="color: #19be6b;text-align: center">
+        <Icon type="ios-information" />
+        <span>确认取货</span>
+      </p>
+      <div style="text-align:center">
+        <p>确认取货后，所选租赁商品将不得再修改。</p>
+        <p>是否确认取货?</p>
+      </div>
+      <div slot="footer">
+        <Button type="success" long @click="handleConfirmDeliveryModal">确认</Button>
+      </div>
+    </Modal>
+    <Modal v-model="confirmFinishModal" width="360">
+      <p slot="header" style="color: #19be6b;text-align: center">
+        <Icon type="ios-information" />
+        <span>服务完成</span>
+      </p>
+      <div style="text-align:center">
+        <p>确认服务完成后，服务将可能被关闭。</p>
+        <p>是否确认服务完成?</p>
+      </div>
+      <div slot="footer">
+        <Button type="success" long @click="handleConfirmFinishModal">确认</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -586,9 +612,12 @@ export default {
       categoryOfGood: CATEGORYOFGOOD,
       confirmDeliveryLoading: false,
       confirmFinishLoading: false,
+      confirmDeliveryModal: false,
+      confirmFinishModal: false,
       stepStatus: 'process',
       // disableProductid: true,
       searchProductLoading: false,
+      serviceFinishStatus: '',
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -607,23 +636,34 @@ export default {
         residualRent: '',
         residualDeposit: '',
         serviceStatus: '0',
-        productid: '',
-        category: '1',
-        model: '',
-        title: '',
-        brand: '',
-        series: '',
-        sellingPrice: '',
+        product: {
+          productid: '',
+          category: '1',
+          model: '',
+          title: '',
+          brand: '',
+          series: '',
+          sellingPrice: '',
+        },
         leaseholdStatus: '0',
         creditStatus: '0',
         remarks: '',
-        reservedProductid: '',
-        reservedCategory: '0',
-        reservedModel: '',
-        reservedTitle: '',
-        reservedBrand: '',
-        reservedSeries: '',
-        reservedSellingPrice: '',
+        reservedProduct: {
+          productid: '',
+          category: '1',
+          model: '',
+          title: '',
+          brand: '',
+          series: '',
+          sellingPrice: '',
+        },
+        // reservedProductid: '',
+        // reservedCategory: '0',
+        // reservedModel: '',
+        // reservedTitle: '',
+        // reservedBrand: '',
+        // reservedSeries: '',
+        // reservedSellingPrice: '',
         createDate: '',
         finishDate: '',
         deliveryOperator: '',
@@ -641,7 +681,7 @@ export default {
         relatedOrders: [],
       },
       ruleValidate: {
-        productid: [{
+        'product.productid': [{
           required: true,
           message: '商品ID不能为空',
           trigger: 'blur',
@@ -771,12 +811,12 @@ export default {
     },
     category: function () {
       const category = this.categoryOfGood.find(cur =>
-        cur.key === this.form.category)
+        cur.key === this.form.product.category)
       return category && category.value
     },
     reservedCategory: function () {
       const reservedCategory = this.categoryOfGood.find(cur =>
-        cur.key === this.form.reservedCategory)
+        cur.key === this.form.reservedProduct.reservedCategory)
       return reservedCategory && reservedCategory.value
     },
     steps: function () {
@@ -830,6 +870,11 @@ export default {
           this.form = {
             ...results[0],
           }
+          if (!this.form.product) {
+            this.form.product = {
+              ...this.form.reservedProduct,
+            }
+          }
         } else {
           this.$Message.error({
             content: '未找到该服务单的详细信息',
@@ -846,22 +891,25 @@ export default {
   },
   methods: {
     searchProductid () {
-      if (this.form.productid) {
+      if (this.form.product.productid) {
         this.searchProductLoading = true
         const url = '/product/'
         this.$fetch(url, {
           params: {
-            productid: this.form.productid,
+            productid: this.form.product.productid,
           }
         })
           .then(resp => {
             console.log(resp)
             const results = resp.data.results
             if (results && results.length) {
-              const { category, model, title, brand, series, sellingPrice } = results[0]
-              this.form = Object.assign({}, this.form, {
-                category, model, title, brand, series, sellingPrice,
-              })
+              // const { category, model, title, brand, series, sellingPrice } = results[0]
+              // this.form = Object.assign({}, this.form., {
+              //   category, model, title, brand, series, sellingPrice,
+              // })
+              this.form.product = {
+                ...results[0],
+              }
             } else {
               this.$Message.error({
                 content: '未找到该商品的详细信息',
@@ -885,19 +933,28 @@ export default {
     // },
     confirmDelivery () {
       if (this.form.serialNumber) {
-        this.confirmDeliveryLoading = true
-        setTimeout(() => {
-          this.form.serviceStatus = 3
-          this.confirmDeliveryLoading = false
-        }, 2000)
+        this.confirmDeliveryModal = true
       } else {
         this.$Message.error('商品编号不能为空')
       }
     },
+    handleConfirmDeliveryModal () {
+      this.confirmDeliveryModal = false
+      this.confirmDeliveryLoading = true
+      setTimeout(() => {
+        this.form.serviceStatus = 3
+        this.confirmDeliveryLoading = false
+      }, 2000)
+    },
     confirmFinish (status) {
+      this.confirmFinishModal = true
+      this.serviceFinishStatus = status
+    },
+    handleConfirmFinishModal () {
+      this.confirmFinishModal = false
       this.confirmFinishLoading = true
       setTimeout(() => {
-        this.form.serviceStatus = status
+        this.form.serviceStatus = this.serviceFinishStatus
         this.confirmFinishLoading = false
       }, 2000)
     },
@@ -905,7 +962,7 @@ export default {
       switch (name) {
         case 'rentClose': {
           const { compensation, residualDeposit } = this.form
-          const amount = +compensation - +residualDeposit
+          const amount = (+compensation || 0) - (+residualDeposit || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'
           } else {
@@ -915,7 +972,8 @@ export default {
         }
         case 'rentToSaleClose': {
           const { sellingPrice, initialRent, initialDeposit } = this.form
-          const amount = +sellingPrice - +initialRent - +initialDeposit
+          const amount = (+sellingPrice || 0) - (+initialRent || 0)
+            - (+initialDeposit || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'
             this.form.adjustmentAmount = amount.toString()

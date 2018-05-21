@@ -49,6 +49,7 @@ function request ({ url, method = 'get', ...args }, req, res) {
   axios({
     method,
     url,
+    withCredentials: true,
     ...args,
     responseType: 'stream',
   }).then(resp => {

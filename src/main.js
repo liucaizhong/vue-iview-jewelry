@@ -19,6 +19,7 @@ router.beforeEach((to, from, next) => {
   LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (Vue.prototype.$getCookie('sessionid')) {
+      console.log('start loading')
       next()
     } else {
       next({

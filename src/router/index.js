@@ -38,45 +38,51 @@ export default new Router({
       }, {
         path: 'member',
         component: Member,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'member/:id',
         component: MemberDetail,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'goods',
         component: Goods,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'goods/:id',
         component: GoodsDetail,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'new-goods',
         component: NewGoods,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'batch-import-goods',
         component: BatchImportGoods,
-        // meta: {
-        //   requiresAuth: true,
-        // }
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'rent-service',
         component: RentService,
+        meta: {
+          requiresAuth: true,
+        },
       }, {
         path: 'rent-service/:id',
         component: RentServiceDetail,
+        meta: {
+          requiresAuth: true,
+        },
       }],
     },
   ],

@@ -60,10 +60,12 @@ export default {
             limit: 10,
             offset: 0,
           },
+          withCredentials: true,
         }, config)
         : Object.assign({
           url: realUrl,
           // method: 'post',
+          withCredentials: true,
         }, config)
 
       return new Promise((resolve, reject) => {
