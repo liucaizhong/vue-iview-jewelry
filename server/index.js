@@ -46,19 +46,16 @@ function getHeaders (form) {
 // }
 
 function request ({ url, method = 'get', ...args }, req, res) {
-  console.log('set-cookie', req.getHeader('set-cookie'))
-
   axios({
     method,
     url,
     withCredentials: true,
-    headers: {
-      'set-cookie': req.getHeader('set-cookie'),
-    },
+    headers: req.headers,
     ...args,
     responseType: 'stream',
   }).then(resp => {
-    res.setHeader('set-cookie', resp.getHeader('set-cookie'))
+    console.log('resp headers', resp.headers)
+    // res.setHeader('set-cookie', resp.getHeader('set-cookie'))
     resp.data.pipe(res)
   }).catch(err => {
     console.error('error is', err)

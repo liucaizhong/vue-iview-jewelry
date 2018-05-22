@@ -1,6 +1,6 @@
 module.exports = {
-  DEVURL: 'http://localhost:3000/api-auth/admin',
-  PRODURL: '/api-auth/admin',
+  // DEVURL: 'http://localhost:3000/api-auth/admin',
+  // PRODURL: '/api-auth/admin',
   IDTYPE: [{
     key: '0',
     value: '身份证',

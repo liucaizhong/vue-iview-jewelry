@@ -48,9 +48,10 @@ export default {
 
     Vue.prototype.$fetch = function (url, config = {}) {
       this.$Loading.start()
-      const baseUrl = process.env.NODE_ENV === 'production' ?
-        PRODURL :
-        DEVURL
+      // const baseUrl = process.env.NODE_ENV === 'production' ?
+      //   PRODURL :
+      //   DEVURL
+      const baseUrl = '/api-auth/admin'
       const realUrl = baseUrl + url
       const mergeConfig = (!config.method || config.method === 'get')
         ? Object.assign({
