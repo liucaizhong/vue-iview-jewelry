@@ -19,9 +19,10 @@ router.beforeEach((to, from, next) => {
   LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (Vue.prototype.$getCookie('sessionid')) {
-      console.log('start loading')
+      console.log('sessionid find')
       next()
     } else {
+      console.log('redirect login')
       next({
         path: '/login',
         query: { redirect: to.fullPath }

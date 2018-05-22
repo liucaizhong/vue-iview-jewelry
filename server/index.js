@@ -46,14 +46,19 @@ function getHeaders (form) {
 // }
 
 function request ({ url, method = 'get', ...args }, req, res) {
+  console.log('set-cookie', req.getHeader('set-cookie'))
+
   axios({
     method,
     url,
     withCredentials: true,
+    headers: {
+      'set-cookie': req.getHeader('set-cookie'),
+    },
     ...args,
     responseType: 'stream',
   }).then(resp => {
-    // console.log('resp is', resp)
+    res.setHeader('set-cookie', resp.getHeader('set-cookie'))
     resp.data.pipe(res)
   }).catch(err => {
     console.error('error is', err)
@@ -92,7 +97,7 @@ module.exports = () => {
     request({
       url: mapUrl(req.url),
       method: 'post',
-      data: req.body
+      data: req.body,
     }, req, res)
   })
 

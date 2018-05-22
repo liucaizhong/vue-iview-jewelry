@@ -136,10 +136,10 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="预约商品ID" prop="reservedProduct.productid">
+          <FormItem label="预约商品ID" prop="reservedProductid">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ form.reservedProduct.productid }}</p>
+              <p>{{ form.reservedProductid }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -182,14 +182,14 @@
           <div class="dotted-line" />
           <FormItem
             label="商品ID"
-            prop="product.productid"
+            prop="productid"
             :style="{ 'margin-top': '10px' }"
           >
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
                 type="text"
-                v-model="form.product.productid"
+                v-model="form.productid"
                 placeholder="请填写取货的商品ID"
                 :disabled="deliveryDone"
               >
@@ -636,9 +636,9 @@ export default {
         residualRent: '',
         residualDeposit: '',
         serviceStatus: '0',
+        productid: '',
         product: {
-          productid: '',
-          category: '1',
+          category: '',
           model: '',
           title: '',
           brand: '',
@@ -648,8 +648,8 @@ export default {
         leaseholdStatus: '0',
         creditStatus: '0',
         remarks: '',
+        reservedProductid: '',
         reservedProduct: {
-          productid: '',
           category: '1',
           model: '',
           title: '',
@@ -681,7 +681,7 @@ export default {
         relatedOrders: [],
       },
       ruleValidate: {
-        'product.productid': [{
+        productid: [{
           required: true,
           message: '商品ID不能为空',
           trigger: 'blur',
@@ -874,6 +874,7 @@ export default {
             this.form.product = {
               ...this.form.reservedProduct,
             }
+            this.form.productid = this.form.reservedProductid
           }
         } else {
           this.$Message.error({
@@ -891,12 +892,12 @@ export default {
   },
   methods: {
     searchProductid () {
-      if (this.form.product.productid) {
+      if (this.form.productid) {
         this.searchProductLoading = true
         const url = '/product/'
         this.$fetch(url, {
           params: {
-            productid: this.form.product.productid,
+            productid: this.form.productid,
           }
         })
           .then(resp => {

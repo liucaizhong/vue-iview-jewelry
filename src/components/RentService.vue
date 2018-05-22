@@ -229,6 +229,12 @@ export default {
           sortable: true,
           minWidth: 130,
         },
+        {
+          title: '预约商品ID',
+          key: 'reservedProductid',
+          sortable: true,
+          minWidth: 150,
+        },
         // {
         //   title: '业务状态',
         //   key: 'businessStatus',
