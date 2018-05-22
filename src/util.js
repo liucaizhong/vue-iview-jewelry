@@ -1,9 +1,10 @@
 import axios from 'axios'
-import { DEVURL, PRODURL } from './constant'
+// import { DEVURL, PRODURL } from './constant'
 
 export default {
   install (Vue, options) {
     Vue.prototype.$getCookie = function (name) {
+      console.dir(document)
       if (document.cookie.length > 0) {
         let start = document
           .cookie

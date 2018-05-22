@@ -69,7 +69,7 @@ export default {
     }
   },
   created () {
-    this.redirectUrl = this.$route.query.redirect
+    this.redirectUrl = this.$route.query.redirect || '/dashboard'
   },
   methods: {
     forgetPassword () {

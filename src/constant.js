@@ -280,4 +280,46 @@ module.exports = {
   //   key: '1',
   //   value: '租转售完成',
   // }],
+  ORDERTYPE: [{
+    key: '0',
+    value: '租赁订单',
+  }, {
+    key: '1',
+    value: '套餐订单',
+  }, {
+    key: '2',
+    value: '补差订单',
+  }, {
+    key: '3',
+    value: '赔偿订单',
+  }, {
+    key: '4',
+    value: '补押订单',
+  }, {
+    key: '5',
+    value: '补贴订单',
+  }],
+  PAYMENTTYPE: [{
+    key: '0',
+    value: '微信',
+  }, {
+    key: '1',
+    value: '线下POS',
+  }],
+  ORDERSTATUS: [{
+    key: '0',
+    value: '待支付',
+  }, {
+    key: '1',
+    value: '已支付',
+  }, {
+    key: '2',
+    value: '退款中',
+  }, {
+    key: '3',
+    value: '已退款',
+  }, {
+    key: '4',
+    value: '订单关闭',
+  }],
 }

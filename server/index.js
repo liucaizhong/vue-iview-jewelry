@@ -45,18 +45,27 @@ function getHeaders (form) {
 //   'Content-Length': Buffer.byteLength(data),
 // }
 
-function request ({ url, method = 'get', ...args }, req, res) {
+function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
+  // console.log('req.headers', req.headers)
+  if (req.headers.cookie) {
+    Object.assign(headers, {
+      cookie: req.headers.cookie,
+    })
+  }
+  console.log('headers', headers)
   axios({
     method,
     url,
-    withCredentials: true,
-    headers: req.headers,
+    // withCredentials: true,
+    headers,
     ...args,
     responseType: 'stream',
   }).then(resp => {
-    console.log('resp headers', resp.headers)
-    // res.setHeader('set-cookie', resp.getHeader('set-cookie'))
+    console.log('resp.headers', resp.headers)
     resp.data.pipe(res)
+    if (resp.headers['set-cookie']) {
+      res.setHeader('set-cookie', resp.headers['set-cookie'])
+    }
   }).catch(err => {
     console.error('error is', err)
     res.status(500).send('500 | Internal Server Error')

@@ -18,8 +18,8 @@ iviewConfig.initComponents(Vue)
 router.beforeEach((to, from, next) => {
   LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (Vue.prototype.$getCookie('sessionid')) {
-      console.log('sessionid find')
+    if (Vue.prototype.$getCookie('logged') === '0') {
+      console.log('logged in')
       next()
     } else {
       console.log('redirect login')
