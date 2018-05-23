@@ -60,7 +60,7 @@
                   shape="circle"
                   icon="person"
                 />
-                <span class="user-name">{{ login.name }}</span>
+                <span v-if="login.name" class="user-name">{{ login.name }}</span>
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem name="person">
@@ -271,9 +271,12 @@ export default {
     margin-right: 10px;
 
     .user-dropdown {
-
       &:hover{
         background: #d0ecf9;
+      }
+
+      .ivu-dropdown-rel {
+        padding-right: 10px;
       }
 
       a:first-child {
@@ -283,7 +286,7 @@ export default {
       .user-name {
         color: rgba(0,0,0,.6);
         font-size: 16px;
-        padding: 0 10px 0 5px;
+        padding-left: 10px;
         vertical-align: middle;
       }
     }

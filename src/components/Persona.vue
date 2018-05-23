@@ -47,9 +47,11 @@
             }, {
               trigger: 'blur',
               validator (rule, value, cb) {
-                if (value == login.userid) {
-                  cb('新密码格式不正确')
-                }
+                if (value == login.userid || value.length < 8
+                  || !/[A-Z]+/g.test(value) || !/[a-z]+/g.test(value)
+                  || !/[0-9]/g.test(value)) {
+                    cb('新密码格式不正确')
+                  }
                 cb()
               },
             }]"
