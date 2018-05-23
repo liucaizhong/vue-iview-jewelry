@@ -730,7 +730,7 @@ export default {
         .catch(err => {
           console.log(err)
           this.$Message.error({
-            content: err,
+            content: '未找到该商品的详细信息',
           })
         })
     }
@@ -800,7 +800,7 @@ export default {
             .catch(err => {
               console.log(err)
               this.$Message.error({
-                content: err,
+                content: '保存失败',
               })
             })
         } else {

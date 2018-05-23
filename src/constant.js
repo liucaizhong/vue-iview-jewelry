@@ -228,10 +228,16 @@ module.exports = {
     value: '租赁中',
   }, {
     key: '4',
-    value: '租赁完成',
+    value: '待完成',
   }, {
     key: '5',
+    value: '租赁完成',
+  }, {
+    key: '6',
     value: '租转售完成',
+  }, {
+    key: '7',
+    value: '服务关闭',
   }],
   // BUSINESSSTATUS: [{
   //   key: '0',

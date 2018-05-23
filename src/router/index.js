@@ -14,17 +14,20 @@ const BatchImportGoods = () => import('@/components/BatchImportGoods')
 const RentService = () => import('@/components/RentService')
 const RentServiceDetail = () => import('@/components/RentServiceDetail')
 const RentOrder = () => import('@/components/RentOrder')
+const RentOrderDetail = () => import('@/components/RentOrderDetail')
+const NotFound = () => import('@/components/NotFound')
+const Persona = () => import('@/components/Persona')
 
 export default new Router({
   mode: 'history',
   routes: [
-    // {
-    //   path: '*',
-    //   component: NotFound,
-    // },
+    {
+      path: '*',
+      component: NotFound,
+    },
     {
       path: '/',
-      redirect: '/login',
+      redirect: '/dashboard',
     },
     {
       path: '/login',
@@ -87,9 +90,22 @@ export default new Router({
       }, {
         path: 'rent-order',
         component: RentOrder,
-        // meta: {
-        //   requiresAuth: true,
-        // },
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'rent-order/:id',
+        component: RentOrderDetail,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'persona',
+        alias: '/persona',
+        component: Persona,
+        meta: {
+          requiresAuth: true,
+        },
       }],
     },
   ],

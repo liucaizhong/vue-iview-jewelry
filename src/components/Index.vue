@@ -50,20 +50,24 @@
             @click.native="collapsedSider"
           />
           <div class="header-bar">
-            <Dropdown class="user-dropdown" placement="bottom-end">
+            <Dropdown
+              class="user-dropdown"
+              placement="bottom-end"
+              @on-click="clickPersona"
+            >
               <a href="javascript:void(0)">
                 <Avatar
                   shape="circle"
                   icon="person"
                 />
-                <span class="user-name">{{ userName }}</span>
+                <span class="user-name">{{ login.name }}</span>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem>
+                <DropdownItem name="person">
                   <Icon type="android-person" />
                   个人中心
                 </DropdownItem>
-                <DropdownItem divided>
+                <DropdownItem divided name="logout">
                   <Icon type="log-out" />
                   退出登录
                 </DropdownItem>
@@ -80,6 +84,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { SIDEBARMENUS, SIDEBARSUBMENUS } from '@/constant'
 
 export default {
@@ -87,7 +92,7 @@ export default {
   data () {
     return {
       isCollapsed: false,
-      userName: 'Te Yu',
+      // userName: 'Te Yu',
       openNames: ['0'],
       activeName: '0-0',
       sidebarMenus: SIDEBARMENUS,
@@ -106,6 +111,9 @@ export default {
         this.isCollapsed ? 'collapsed-menu' : ''
       ]
     },
+    ...mapState([
+      'login',
+    ]),
   },
   created () {
     const activeName = SIDEBARSUBMENUS[this.$route.path.split`/`.slice(0, 3).join`/`]
@@ -123,6 +131,36 @@ export default {
       const navToUrl = this.sidebarMenus[menu].items[submenu].url
       this.$router.push(navToUrl)
     },
+    clickPersona (name) {
+      console.log('name', name)
+      switch (name) {
+        case 'person': {
+          this.$router.push('/persona')
+          break
+        }
+        case 'logout': {
+          const url = '/UserLogout/'
+          this.$fetch(url, {
+            method: 'post',
+          })
+            .then(resp => {
+              console.log(resp)
+
+              this.$Message.success({
+                content: '登出成功',
+              })
+              this.$router.push('/login')
+            })
+            .catch(err => {
+              console.log(err)
+              this.$Message.error({
+                content: '登出失败',
+              })
+            })
+          break
+        }
+      }
+    }
   }
 }
 </script>

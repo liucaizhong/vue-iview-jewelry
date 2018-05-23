@@ -4,7 +4,6 @@ import axios from 'axios'
 export default {
   install (Vue, options) {
     Vue.prototype.$getCookie = function (name) {
-      console.dir(document)
       if (document.cookie.length > 0) {
         let start = document
           .cookie

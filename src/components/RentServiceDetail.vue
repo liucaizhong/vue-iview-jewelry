@@ -1,6 +1,6 @@
 <template>
   <div id="rentservice-detail">
-    <Steps class="steps" :current="curStep" size="small" :status="stepStatus">
+    <Steps class="steps" :current="curStep" size="small" :status="curStepStatus">
       <Step
         v-for="(item, k) in steps"
         :key="k"
@@ -554,7 +554,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <router-link
-                :to="{ path: '/order', params: { id: order.id }}"
+                :to="{ path: '/rent-order', params: { id: order.id }}"
               >
                 {{ order.id }}
               </router-link>
@@ -614,7 +614,7 @@ export default {
       confirmFinishLoading: false,
       confirmDeliveryModal: false,
       confirmFinishModal: false,
-      stepStatus: 'process',
+      // stepStatus: 'process',
       // disableProductid: true,
       searchProductLoading: false,
       serviceFinishStatus: '',
@@ -821,17 +821,26 @@ export default {
     },
     steps: function () {
       const len = this.serviceStatuss.length
-      const temp = this.serviceStatuss.slice(0, len - 2)
-      const finshStatus = {
-        title: this.serviceStatuss[len - 2].value,
-      }
+      let temp = []
+      let finishStatus = {}
       if (this.form.serviceStatus === this.serviceStatuss[len - 1].key) {
-        finshStatus.title = this.serviceStatuss[this.form.serviceStatus].value
+        temp = this.serviceStatuss.slice(0, 2)
+        finishStatus = {
+          title: this.serviceStatuss[len - 1].value,
+        }
+      } else {
+        temp = this.serviceStatuss.slice(0, len - 3)
+        finishStatus = {
+          title: this.serviceStatuss[len - 3].value,
+        }
+        if (this.form.serviceStatus === this.serviceStatuss[len - 2].key) {
+          finishStatus.title = this.serviceStatuss[this.form.serviceStatus].value
+        }
       }
 
       return temp.map(cur => ({
         title: cur.value,
-      })).concat([finshStatus])
+      })).concat([finishStatus])
     },
     deliveryDone: function () {
       return +this.form.serviceStatus > 2
@@ -841,7 +850,12 @@ export default {
     },
     curStep: function () {
       const status = +this.form.serviceStatus
-      return status > 3 ? status + 1 : status
+      return status > 4 ? status === 7 ? 2 : status + 1 : status
+    },
+    curStepStatus: function () {
+      const len = this.serviceStatuss.length
+      return this.form.serviceStatus === this.serviceStatuss[len - 1].key
+        ? 'error' : 'process'
     },
   },
   watch: {
@@ -886,7 +900,7 @@ export default {
       .catch(err => {
         console.log(err)
         this.$Message.error({
-          content: err,
+          content: '未找到该服务单的详细信息',
         })
       })
   },
@@ -921,7 +935,7 @@ export default {
           .catch(err => {
             console.log(err)
             this.$Message.error({
-              content: err,
+              content: '未找到该商品的详细信息',
             })
             this.searchProductLoading = false
           })

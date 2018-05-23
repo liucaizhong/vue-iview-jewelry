@@ -107,6 +107,14 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.post('/UserLogout/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
   router.post('/productupdate/', multipartMiddleware, (req, res) => {
     let form = formData(null, req.body)
     form = formData(form, req.files, true)

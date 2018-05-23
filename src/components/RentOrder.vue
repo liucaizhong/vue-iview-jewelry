@@ -3,11 +3,20 @@
     <div class="header">
       <Form ref="searchForm" :model="searchForm" :label-width="100">
         <FormItem label="订单单号" prop="orderNo">
-          <Input v-model="searchForm.orderNo">
+          <Input v-model="searchForm.orderNo" style="width:260px">
           </Input>
         </FormItem>
+        <FormItem label="订单创建时间" prop="createDate">
+          <DatePicker
+            type="daterange"
+            placement="bottom-end"
+            placeholder="选择订单创建时间区间"
+            @on-change="changecreateDate"
+            style="width:260px"
+          />
+        </FormItem>
         <FormItem label="订单类型" prop="orderType">
-          <Select v-model="searchForm.orderType" multiple style="width:260px">
+          <Select v-model="searchForm.orderType" multiple style="width:150px">
             <Option
               v-for="item in orderType"
               :value="item.key"
@@ -18,7 +27,7 @@
           </Select>
         </FormItem>
         <FormItem label="订单状态" prop="orderStatus">
-          <Select v-model="searchForm.orderStatus" multiple style="width:260px">
+          <Select v-model="searchForm.orderStatus" multiple style="width:150px">
             <Option
               v-for="item in orderStatus"
               :value="item.key"
@@ -27,14 +36,6 @@
               {{ item.value }}
             </Option>
           </Select>
-        </FormItem>
-        <FormItem label="订单创建时间" prop="createDate">
-          <DatePicker
-            type="daterange"
-            placement="bottom-end"
-            placeholder="选择订单创建时间区间"
-            @on-change="changecreateDate"
-          />
         </FormItem>
         <FormItem>
           <Button type="primary" @click.native="search">搜索</Button>
@@ -117,6 +118,24 @@ export default {
           },
         },
         {
+          title: '订单状态',
+          key: 'orderStatus',
+          filters: ORDERSTATUS.map(t => ({
+            label: t.value,
+            value: t.key,
+          })),
+          filterMultiple: true,
+          filterMethod (value, row) {
+            return row.orderStatus === value
+          },
+          minWidth: 120,
+          render (h, params) {
+            const orderStatus = ORDERSTATUS.find(
+              cur => params.row.orderStatus === cur.key)
+            return h('span', orderStatus && orderStatus.value)
+          },
+        },
+        {
           title: '订单金额',
           key: 'amount',
           sortable: true,
@@ -147,102 +166,109 @@ export default {
           },
         },
         {
-          title: '订单状态',
-          key: 'orderStatus',
-          filters: ORDERSTATUS.map(t => ({
-            label: t.value,
-            value: t.key,
-          })),
-          filterMultiple: true,
-          filterMethod (value, row) {
-            return row.orderStatus === value
-          },
-          minWidth: 120,
-          render (h, params) {
-            const orderStatus = ORDERSTATUS.find(
-              cur => params.row.orderStatus === cur.key)
-            return h('span', orderStatus && orderStatus.value)
-          },
-        },
-        {
           title: '订单创建时间',
           key: 'createDate',
           sortable: true,
           minWidth: 150,
         },
+        // {
+        //   title: '订单创建人',
+        //   key: 'createdBy',
+        //   sortable: true,
+        //   minWidth: 130,
+        // },
+        // {
+        //   title: '关联服务单',
+        //   key: 'relatedServiceOrders',
+        //   render: (h, params) => {
+        //     return h('Poptip', {
+        //       props: {
+        //         trigger: 'hover',
+        //         placement: 'top',
+        //       }
+        //     }, [
+        //       h('Tag', params.row.relatedServiceOrders
+        //         && params.row.relatedServiceOrders.length || 0),
+        //       h('div', {
+        //         slot: 'content',
+        //       }, [
+        //         h('ul', params.row.relatedServiceOrders
+        //           && params.row.relatedServiceOrders.map((serviceNo, i) => {
+        //             return h('li', {
+        //               style: {
+        //                 textAlign: 'center',
+        //                 padding: '4px',
+        //               },
+        //             }, h('router-link', {
+        //               props: {
+        //                 to: {
+        //                   path: '/dashboard/rent-service',
+        //                   params: {
+        //                     id: serviceNo,
+        //                   },
+        //                 },
+        //               },
+        //               serviceNo,
+        //             }))
+        //           }))
+        //       ])
+        //     ])
+        //   }
+        // },
+        // {
+        //   title: '关联支付订单',
+        //   key: 'relatedPaymentOrders',
+        //   render: (h, params) => {
+        //     return h('Poptip', {
+        //       props: {
+        //         trigger: 'hover',
+        //         placement: 'top',
+        //       }
+        //     }, [
+        //       h('Tag', params.row.relatedPaymentOrders
+        //         && params.row.relatedPaymentOrders.length || 0),
+        //       h('div', {
+        //         slot: 'content',
+        //       }, [
+        //         h('ul', params.row.relatedPaymentOrders
+        //           && params.row.relatedPaymentOrders.map((paymentOrderNo, i) => {
+        //             return h('li', {
+        //               style: {
+        //                 textAlign: 'center',
+        //                 padding: '4px',
+        //               },
+        //             },
+        //             paymentOrderNo)
+        //           }))
+        //       ])
+        //     ])
+        //   },
+        // },
         {
-          title: '订单创建人',
-          key: 'createdBy',
-          sortable: true,
-          minWidth: 130,
-        },
-        {
-          title: '关联服务单',
-          key: 'relatedServiceOrders',
+          title: '操作',
+          key: 'action',
+          width: 100,
+          align: 'center',
           render: (h, params) => {
-            return h('Poptip', {
-              props: {
-                trigger: 'hover',
-                placement: 'top',
-              }
-            }, [
-              h('Tag', params.row.relatedServiceOrders
-                && params.row.relatedServiceOrders.length || 0),
-              h('div', {
-                slot: 'content',
-              }, [
-                h('ul', params.row.relatedServiceOrders
-                  && params.row.relatedServiceOrders.map((serviceNo, i) => {
-                    return h('li', {
-                      style: {
-                        textAlign: 'center',
-                        padding: '4px',
-                      },
-                    }, h('router-link', {
-                      props: {
-                        to: {
-                          path: '/dashboard/rent-service',
-                          params: {
-                            id: serviceNo,
-                          },
-                        },
-                      },
-                      serviceNo,
-                    }))
-                  }))
-              ])
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    // console.log(params)
+                    this.$router.push(`rent-order/${params.row.orderNo}`)
+                  }
+                }
+              }, '详情'),
             ])
           }
         },
-        {
-          title: '关联支付订单',
-          key: 'relatedPaymentOrders',
-          render: (h, params) => {
-            return h('Poptip', {
-              props: {
-                trigger: 'hover',
-                placement: 'top',
-              }
-            }, [
-              h('Tag', params.row.relatedPaymentOrders
-                && params.row.relatedPaymentOrders.length || 0),
-              h('div', {
-                slot: 'content',
-              }, [
-                h('ul', params.row.relatedPaymentOrders
-                  && params.row.relatedPaymentOrders.map((paymentOrderNo, i) => {
-                    return h('li', {
-                      style: {
-                        textAlign: 'center',
-                        padding: '4px',
-                      },
-                    },
-                    paymentOrderNo)
-                  }))
-              ])
-            ])
-          },
-        }
       ]
     }
   },
@@ -271,7 +297,7 @@ export default {
         .catch(err => {
           console.log(err)
           this.$Message.error({
-            content: err,
+            content: '查询失败',
           })
           this.tableLoading = false
         })

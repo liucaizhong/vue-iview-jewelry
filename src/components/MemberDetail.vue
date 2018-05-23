@@ -339,7 +339,7 @@ export default {
       .catch(err => {
         console.log(err)
         this.$Message.error({
-          content: err,
+          content: '未找到该会员的详细信息',
         })
       })
   },
@@ -381,7 +381,7 @@ export default {
             .catch(err => {
               console.log(err)
               this.$Message.error({
-                content: err,
+                content: '保存失败',
               })
               this.saveLoading = false
             })
@@ -428,8 +428,12 @@ export default {
     font-size: 14px;
   }
 
-  .ivu-form-item {
-    margin-bottom: 0;
+  section {
+    .section-body {
+      .ivu-form-item {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 </style>

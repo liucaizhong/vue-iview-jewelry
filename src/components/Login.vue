@@ -91,19 +91,21 @@ export default {
           })
             .then(resp => {
               console.log(resp)
-              if (resp.data === 'success') {
-                this.loginLoading = false
-                this.$Message.success({
-                  content: '登录成功',
-                })
-                // console.log(this.redirectUrl)
-                this.$router.push(this.redirectUrl)
-              }
+              const loginInfo = Object.assign({}, resp.data, {
+                userid,
+                password,
+              })
+              this.$store.commit('userLogin', loginInfo)
+              this.loginLoading = false
+              this.$Message.success({
+                content: '登录成功',
+              })
+              this.$router.push(this.redirectUrl)
             })
             .catch(err => {
               console.log(err)
               this.$Message.error({
-                content: err,
+                content: '登录失败',
               })
               this.loginLoading = false
             })

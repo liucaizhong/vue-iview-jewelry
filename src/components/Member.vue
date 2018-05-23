@@ -198,7 +198,7 @@ export default {
         .catch(err => {
           console.log(err)
           this.$Message.error({
-            content: err,
+            content: '查询失败',
           })
           this.tableLoading = false
         })
