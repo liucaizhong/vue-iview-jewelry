@@ -37,7 +37,7 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem
+          <!-- <FormItem
             label="新密码"
             prop="newPassword"
             :rules="[{
@@ -54,6 +54,15 @@
                   }
                 cb()
               },
+            }]"
+          > -->
+          <FormItem
+            label="新密码"
+            prop="newPassword"
+            :rules="[{
+              required: true,
+              trigger: 'blur',
+              message: '新密码不能为空',
             }]"
           >
             <Row>
@@ -157,14 +166,32 @@ export default {
     modifyPassword () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          // todo: post
           this.modifyPasswordLoading = true
-          setTimeout(() => {
+          const { oldPassword, newPassword, confirmNewPassword } = this.form
+          const url = '/ChangePasswd/'
+          this.$fetch(url, {
+            data: {
+              old_password: oldPassword,
+              new_password1: newPassword,
+              new_password2: confirmNewPassword,
+            },
+            method: 'post',
+          }).then(resp => {
+            console.log('resp', resp)
+            this.form.oldPassword = ''
+            this.form.newPassword = ''
+            this.form.confirmNewPassword = ''
             this.modifyPasswordLoading = false
             this.$Message.success({
               content: '密码修改成功',
             })
-          }, 2000)
+          }).catch(err => {
+            console.log(err)
+            this.modifyPasswordLoading = false
+            this.$Message.error({
+              content: '密码修改失败',
+            })
+          })
         }
       })
     }

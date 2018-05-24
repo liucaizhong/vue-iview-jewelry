@@ -105,13 +105,13 @@ export default {
             .catch(err => {
               console.log(err)
               this.$Message.error({
-                content: '登录失败',
+                content: '用户名或密码错误',
               })
               this.loginLoading = false
             })
         } else {
           this.$Message.error({
-            content: '登录失败',
+            content: '用户名或密码错误',
           })
         }
       })

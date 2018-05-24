@@ -275,10 +275,6 @@ export default {
         background: #d0ecf9;
       }
 
-      .ivu-dropdown-rel {
-        padding-right: 10px;
-      }
-
       a:first-child {
         padding-left: 10px;
       }
@@ -286,7 +282,7 @@ export default {
       .user-name {
         color: rgba(0,0,0,.6);
         font-size: 16px;
-        padding-left: 10px;
+        margin: 0 10px;
         vertical-align: middle;
       }
     }
