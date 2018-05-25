@@ -143,7 +143,7 @@ export default {
         },
         {
           title: '支付时间',
-          key: 'paymentDate',
+          key: 'paymentDatetime',
           sortable: true,
           minWidth: 120,
         },

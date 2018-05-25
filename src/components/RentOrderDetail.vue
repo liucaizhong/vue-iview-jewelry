@@ -37,10 +37,10 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="支付时间" prop="paymentDate">
+          <FormItem label="支付时间" prop="paymentDatetime">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ form.paymentDate }}</p>
+              <p>{{ form.paymentDatetime }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -115,7 +115,7 @@ export default {
         orderNo: '',
         orderType: '',
         amount: '',
-        paymentDate: '',
+        paymentDatetime: '',
         paymentType: '',
         orderStatus: '',
         createDate: '',
