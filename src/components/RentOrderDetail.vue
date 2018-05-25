@@ -70,17 +70,13 @@
       <section>
         <header>关联信息</header>
         <div class="section-body">
-          <FormItem
-            v-for="(order, i) in form.relatedServiceOrders"
-            :label="`服务单${i+1}`"
-            :key="order.id"
-          >
+          <FormItem label="服务单" prop="relatedServiceOrder">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <router-link
-                :to="{ path: '/rent-service', params: { id: order.id }}"
+                :to="{ path: '/rent-service', params: { id: form.relatedServiceOrder }}"
               >
-                {{ order.id }}
+                {{ form.relatedServiceOrder }}
               </router-link>
               </Col>
             </Row>
@@ -88,11 +84,11 @@
           <FormItem
             v-for="(order, i) in form.relatedPaymentOrders"
             :label="`支付订单${i+1}`"
-            :key="order.id"
+            :key="order"
           >
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ order.id }}</p>
+              <p>{{ order }}</p>
               </Col>
             </Row>
           </FormItem>
@@ -120,7 +116,7 @@ export default {
         orderStatus: '',
         createDate: '',
         createdBy: '',
-        relatedServiceOrders: [],
+        relatedServiceOrder: '',
         relatedPaymentOrders: [],
       },
     }

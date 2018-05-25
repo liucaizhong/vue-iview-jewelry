@@ -549,14 +549,14 @@
           <FormItem
             v-for="(order, i) in form.relatedOrders"
             :label="`关联订单${i+1}`"
-            :key="order.id"
+            :key="order"
           >
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <router-link
-                :to="{ path: '/rent-order', params: { id: order.id }}"
+                :to="{ path: '/rent-order', params: { id: order }}"
               >
-                {{ order.id }}
+                {{ order }}
               </router-link>
               </Col>
             </Row>
