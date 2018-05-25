@@ -121,6 +121,7 @@ export default {
       this.activeName = activeName
       this.openNames = [activeName[0]]
     }
+    // this.login.name = 'lcz'
   },
   methods: {
     collapsedSider () {

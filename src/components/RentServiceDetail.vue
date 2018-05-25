@@ -19,8 +19,14 @@
         <div class="section-body">
           <FormItem label="服务单号" prop="serviceNo">
             <Row>
-              <Col :xs="24" :md="16" :lg="12">
+              <Col :xs="24" :md="18" :lg="16">
               <p>{{ form.serviceNo }}</p>
+              <Button
+                style="margin-left: 30px;"
+                type="primary"
+                @click="checkRelatedOrders"
+                size="small"
+              >查看关联订单</Button>
               </Col>
             </Row>
           </FormItem>
@@ -542,7 +548,7 @@
               </FormItem>
             </TabPane>
           </Tabs>
-          <div
+          <!-- <div
             v-if="form.relatedOrders && form.relatedOrders.length"
             class="dotted-line"
           />
@@ -560,7 +566,7 @@
               </router-link>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> -->
         </div>
       </section>
     </Form>
@@ -678,7 +684,7 @@ export default {
         returnDeposit: '',
         adjustmentAmount: '',
         compensation: '',
-        relatedOrders: [],
+        // relatedOrders: [],
       },
       ruleValidate: {
         productid: [{
@@ -905,6 +911,15 @@ export default {
       })
   },
   methods: {
+    checkRelatedOrders () {
+      // console.log(this.form.serviceNo)
+      this.$router.push({
+        path: '/dashboard/rent-order/',
+        query: {
+          serviceNo: this.form.serviceNo,
+        }
+      })
+    },
     searchProductid () {
       if (this.form.productid) {
         this.searchProductLoading = true

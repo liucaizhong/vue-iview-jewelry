@@ -64,7 +64,8 @@
       >
         <FormItem label="服务单创建时间" prop="createDate">
           <DatePicker
-            type="daterange"
+            type="datetimerange"
+            format="yyyy-MM-dd HH:mm:ss"
             placement="bottom-end"
             placeholder="选择服务单创建时间区间"
             @on-change="changecreateDate"
@@ -72,7 +73,8 @@
         </FormItem>
         <FormItem label="服务单结束时间" prop="finishDate">
           <DatePicker
-            type="daterange"
+            type="datetimerange"
+            format="yyyy-MM-dd HH:mm:ss"
             placement="bottom-end"
             placeholder="选择服务单结束时间区间"
             @on-change="changefinishDate"
@@ -389,13 +391,13 @@ export default {
           : obj[key])
       }, false)
     },
-    changecreateDate (daterange) {
-      console.log('changecreateDate', daterange)
-      this.moreCondModalForm.createDate = [...daterange]
+    changecreateDate (datetimerange) {
+      console.log('changecreateDate', datetimerange)
+      this.moreCondModalForm.createDate = [...datetimerange]
     },
-    changefinishDate (daterange) {
-      console.log('changefinishDate', daterange)
-      this.moreCondModalForm.changefinishDate = [...daterange]
+    changefinishDate (datetimerange) {
+      console.log('changefinishDate', datetimerange)
+      this.moreCondModalForm.changefinishDate = [...datetimerange]
     },
     mockTableData (config) {
       this.tableLoading = true

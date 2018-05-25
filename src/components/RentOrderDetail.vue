@@ -81,7 +81,7 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem
+          <!-- <FormItem
             v-for="(order, i) in form.relatedPaymentOrders"
             :label="`支付订单${i+1}`"
             :key="order"
@@ -91,7 +91,7 @@
               <p>{{ order }}</p>
               </Col>
             </Row>
-          </FormItem>
+          </FormItem> -->
         </div>
       </section>
     </Form>
@@ -117,7 +117,7 @@ export default {
         createDate: '',
         createdBy: '',
         relatedServiceOrder: '',
-        relatedPaymentOrders: [],
+        // relatedPaymentOrders: [],
       },
     }
   },

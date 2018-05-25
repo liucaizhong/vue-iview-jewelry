@@ -8,7 +8,8 @@
         </FormItem>
         <FormItem label="订单创建时间" prop="createDate">
           <DatePicker
-            type="daterange"
+            type="datetimerange"
+            format="yyyy-MM-dd HH:mm:ss"
             placement="bottom-end"
             placeholder="选择订单创建时间区间"
             @on-change="changecreateDate"
@@ -36,6 +37,10 @@
               {{ item.value }}
             </Option>
           </Select>
+        </FormItem>
+        <FormItem label="关联服务单号" prop="relatedServiceOrder">
+          <Input v-model="searchForm.relatedServiceOrder" style="width:260px">
+          </Input>
         </FormItem>
         <FormItem>
           <Button type="primary" @click.native="search">搜索</Button>
@@ -89,6 +94,7 @@ export default {
         orderType: [],
         orderStatus: [],
         createDate: [],
+        relatedServiceOrder: '',
       },
       tableData: [],
       tableLoading: false,
@@ -170,6 +176,12 @@ export default {
           key: 'createDate',
           sortable: true,
           minWidth: 150,
+        },
+        {
+          title: '关联服务单号',
+          key: 'relatedServiceOrder',
+          sortable: true,
+          minWidth: 200,
         },
         // {
         //   title: '订单创建人',
@@ -273,15 +285,20 @@ export default {
     }
   },
   created () {
-    this.mockTableData()
+    this.searchForm.relatedServiceOrder = this.$route.query.serviceNo
+    this.mockTableData({
+      params: {
+        ...this.formConditions(this.searchForm),
+      }
+    })
   },
   methods: {
     filterMethod (value, option) {
       return option.includes(value)
     },
-    changecreateDate (daterange) {
-      console.log('changecreateDate', daterange)
-      this.searchForm.createDate = [...daterange]
+    changecreateDate (datetimerange) {
+      console.log('changecreateDate', datetimerange)
+      this.searchForm.createDate = [...datetimerange]
     },
     mockTableData (config) {
       this.tableLoading = true
