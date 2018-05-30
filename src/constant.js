@@ -303,7 +303,7 @@ module.exports = {
     value: '补押订单',
   }, {
     key: '5',
-    value: '补贴订单',
+    value: '销售订单',
   }],
   PAYMENTTYPE: [{
     key: '0',

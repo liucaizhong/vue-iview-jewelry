@@ -361,6 +361,7 @@ export default {
         params: {
           offset: (page - 1) * this.pageSize,
           limit: this.pageSize,
+          ...this.formConditions(this.searchForm),
         }
       })
     },
@@ -371,6 +372,7 @@ export default {
         params: {
           offset: 0,
           limit: pageSize,
+          ...this.formConditions(this.searchForm),
         }
       })
     },
