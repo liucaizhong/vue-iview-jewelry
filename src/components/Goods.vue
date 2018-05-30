@@ -53,6 +53,7 @@
       title="更多筛选条件"
       :mask-closable="false"
       :width="700"
+      :closable="false"
     >
       <Form
         :model="moreCondModalForm"

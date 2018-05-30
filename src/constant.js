@@ -62,8 +62,21 @@ module.exports = {
       name: '套餐服务',
       icon: 'ios-paper',
       url: '/dashboard/package-service',
+    }, {
+      name: '销售服务',
+      icon: 'card',
+      url: '/dashboard/sale-service',
+    }],
+  }, {
+    name: '订单管理',
+    icon: 'drag',
+    items: [{
+      name: '订单查询',
+      icon: 'search',
+      url: '/dashboard/rent-order',
     }],
   }],
+
   SIDEBARSUBMENUS: {
     '/dashboard/member': '0-0',
     '/dashboard/booking': '0-1',
@@ -72,6 +85,8 @@ module.exports = {
     '/dashboard/batch-import-goods': '1-2',
     '/dashboard/rent-service': '2-0',
     '/dashboard/package-service': '2-1',
+    '/dashboard/sale-service': '2-2',
+    '/dashboard/rent-order': '3-0',
   },
   CATEGORYOFGOOD: [{
     key: '0',
