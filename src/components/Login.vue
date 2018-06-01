@@ -6,29 +6,31 @@
       </div>
       <Form
         ref="loginForm"
-        :model="loginForm"
-        :rules="loginRules"
+        :model="form"
+        :rules="rules"
         class="login-form"
       >
-        <FormItem prop="user">
+        <FormItem prop="userid">
           <Input
-            v-model="loginForm.userid"
+            v-model="form.userid"
             type="text"
             placeholder="输入注册手机号"
+            @on-enter="login"
           >
           </Input>
         </FormItem>
         <FormItem prop="password">
           <Input
-            v-model="loginForm.password"
+            v-model="form.password"
             type="password"
             placeholder="输入密码"
+            @on-enter="login"
           >
           </Input>
         </FormItem>
         <FormItem class="login-actions">
           <!-- <div class="remember">
-            <Checkbox v-model="loginForm.remember">七日内免登录</Checkbox>
+            <Checkbox v-model="form.remember">七日内免登录</Checkbox>
             <strong>
               <a href="javascript:void(0)" @click="forgetPassword">忘记密码?</a>
             </strong>
@@ -36,7 +38,7 @@
           <Button
             class="login-btn"
             type="primary"
-            @click="login('loginForm')"
+            @click="login"
             :loading="loginLoading"
           >
             账号登录
@@ -51,18 +53,18 @@
 export default {
   data () {
     return {
-      loginForm: {
+      form: {
         userid: '',
         password: '',
         remember: false,
       },
-      loginRules: {
+      rules: {
         userid: [
           { required: true, message: '账号不能为空！', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空！', trigger: 'blur' },
-        ]
+        ],
       },
       loginLoading: false,
       redirectUrl: '',
@@ -75,8 +77,8 @@ export default {
     forgetPassword () {
       console.log('forget password')
     },
-    login (name) {
-      this.$refs[name].validate(valid => {
+    login () {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loginLoading = true
           // userid, password, /UserLogin/
