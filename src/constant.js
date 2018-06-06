@@ -228,6 +228,9 @@ module.exports = {
   }, {
     key: '1',
     value: '套餐服务',
+  }, {
+    key: '2',
+    value: '销售服务',
   }],
   SERVICESTATUS: [{
     key: '0',
@@ -309,7 +312,7 @@ module.exports = {
     value: '套餐订单',
   }, {
     key: '2',
-    value: '补差订单',
+    value: '销售订单',
   }, {
     key: '3',
     value: '赔偿订单',
@@ -318,7 +321,13 @@ module.exports = {
     value: '补押订单',
   }, {
     key: '5',
-    value: '销售订单',
+    value: '补差订单',
+  }, {
+    key: '6',
+    value: '套餐租赁转售订单',
+  }, {
+    key: '7',
+    value: '单品租赁转售订单',
   }],
   PAYMENTTYPE: [{
     key: '0',
