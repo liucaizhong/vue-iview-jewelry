@@ -79,10 +79,10 @@ export default {
     },
     login () {
       this.$refs.loginForm.validate(valid => {
+        console.log('valid', valid)
         if (valid) {
           this.loginLoading = true
-          // userid, password, /UserLogin/
-          const { userid, password } = this.loginForm
+          const { userid, password } = this.form
           const url = '/UserLogin/'
           this.$fetch(url, {
             data: {
