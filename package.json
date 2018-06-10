@@ -41,6 +41,7 @@
     "body-parser": "^1.18.2",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
+    "clean-webpack-plugin": "^0.1.19",
     "connect-multiparty": "^2.1.0",
     "cookie-parser": "^1.4.3",
     "copy-webpack-plugin": "^4.0.1",
