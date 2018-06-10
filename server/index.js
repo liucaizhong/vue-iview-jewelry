@@ -6,7 +6,7 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://hq8gn6.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://n4pfs5.natappfree.cc/api-auth/admin'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -116,6 +116,14 @@ module.exports = () => {
   })
 
   router.post('/ChangePasswd/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
+  router.post('/ClaimGoods/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

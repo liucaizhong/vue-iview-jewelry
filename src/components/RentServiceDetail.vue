@@ -68,7 +68,7 @@
             </FormItem>
             </Col>
           </Row>
-          <FormItem label="地址" prop="address">
+          <FormItem label="收货人地址" prop="address">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <p>{{ form.address }}</p>
@@ -151,7 +151,7 @@
           </FormItem>
           <Row :style="{ 'padding-left': 0 }">
             <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="预约商品类别" prop="reservedCategory">
+            <FormItem label="预约商品类别" prop="reservedProduct.category">
               <p>{{ reservedCategory }}</p>
             </FormItem>
             </Col>
@@ -680,10 +680,10 @@ export default {
         logisticsCompany: '',
         trackingNumber: '',
         returnStore: '',
-        realChargingRent: '',
-        returnDeposit: '',
-        adjustmentAmount: '',
-        compensation: '',
+        realChargingRent: '0',
+        returnDeposit: '0',
+        adjustmentAmount: '0',
+        compensation: '0',
         // relatedOrders: [],
       },
       ruleValidate: {
@@ -822,7 +822,7 @@ export default {
     },
     reservedCategory: function () {
       const reservedCategory = this.categoryOfGood.find(cur =>
-        cur.key === this.form.reservedProduct.reservedCategory)
+        cur.key === this.form.reservedProduct.category)
       return reservedCategory && reservedCategory.value
     },
     steps: function () {
@@ -867,7 +867,7 @@ export default {
   watch: {
     'form.compensation': function (val, oldVal) {
       const { residualDeposit } = this.form
-      const amount = +val - +residualDeposit
+      const amount = parseFloat(val || '0') - parseFloat(residualDeposit)
       if (amount > 0) {
         this.form.returnDeposit = '0'
       } else {
@@ -890,6 +890,7 @@ export default {
           this.form = {
             ...results[0],
           }
+          this.form.serviceType || (this.form.serviceType = '0')
           if (!this.form.product) {
             this.form.product = {
               ...this.form.reservedProduct,
@@ -971,10 +972,53 @@ export default {
     handleConfirmDeliveryModal () {
       this.confirmDeliveryModal = false
       this.confirmDeliveryLoading = true
-      setTimeout(() => {
-        this.form.serviceStatus = 3
-        this.confirmDeliveryLoading = false
-      }, 2000)
+      // setTimeout(() => {
+      //   this.form.serviceStatus = 3
+      //   this.confirmDeliveryLoading = false
+      // }, 2000)
+      const { serviceNo, serviceType, productid, deliveryMode, deliveryOperator,
+        deliveryStore, logisticsCompany, trackingNumber } = this.form
+      const options = deliveryMode === '0' ? {
+        logisticsCompany,
+        trackingNumber,
+      } : {
+        deliveryStore,
+      }
+      const url = '/ClaimGoods/'
+      this.$fetch(url, {
+        data: {
+          serviceNo,
+          serviceType,
+          productid,
+          deliveryMode,
+          deliveryOperator,
+          ...options,
+        },
+        method: 'post',
+      })
+        .then(resp => {
+          console.log(resp)
+          const { claimResult, serviceStatus } = resp.data
+          if (claimResult === '0') {
+            this.form.serviceStatus = serviceStatus
+            this.confirmDeliveryLoading = false
+            this.$Message.success({
+              content: '提货成功',
+            })
+          } else {
+            this.confirmDeliveryLoading = false
+            this.$Message.error({
+              content: '提货失败',
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.confirmDeliveryLoading = false
+          this.$Message.error({
+            content: '提货失败',
+          })
+        })
     },
     confirmFinish (status) {
       this.confirmFinishModal = true
@@ -992,7 +1036,7 @@ export default {
       switch (name) {
         case 'rentClose': {
           const { compensation, residualDeposit } = this.form
-          const amount = (+compensation || 0) - (+residualDeposit || 0)
+          const amount = (parseFloat(compensation) || 0) - (parseFloat(residualDeposit) || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'
           } else {
@@ -1002,7 +1046,8 @@ export default {
         }
         case 'rentToSaleClose': {
           const { sellingPrice, initialRent, initialDeposit } = this.form
-          const amount = (+sellingPrice || 0) - (+initialRent || 0)
+          const amount = (parseFloat(sellingPrice) || 0) -
+            (parseFloat(initialRent) || 0)
             - (+initialDeposit || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'

@@ -187,7 +187,7 @@ export default {
           render (h, params) {
             const serviceType = SERVICETYPE.find(
               cur => params.row.serviceType === cur.key)
-            return h('span', serviceType && serviceType.value)
+            return h('span', serviceType && serviceType.value || SERVICETYPE[0].value)
           },
         },
         {
