@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
   LoadingBar.start()
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (Vue.prototype.$getCookie('logged') === '0') {
-      console.log('logged in')
+      console.log('to', to)
       next()
     } else {
       console.log('redirect login')

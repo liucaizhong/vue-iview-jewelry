@@ -6,7 +6,7 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://n4pfs5.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://vtejpj.natappfree.cc/api-auth/admin'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl

@@ -69,7 +69,7 @@ module.exports = {
     }],
   }, {
     name: '订单管理',
-    icon: 'drag',
+    icon: 'navicon',
     items: [{
       name: '订单查询',
       icon: 'search',

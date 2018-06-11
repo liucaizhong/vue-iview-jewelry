@@ -20,6 +20,7 @@ const Persona = () => import('@/components/Persona')
 
 export default new Router({
   mode: 'history',
+  base: '/B/',
   routes: [
     {
       path: '*',
