@@ -100,7 +100,7 @@
           padding-left: 20px;
 
           li {
-            line-height:2.5em;
+            line-height: 2.5em;
           }
         }
 
