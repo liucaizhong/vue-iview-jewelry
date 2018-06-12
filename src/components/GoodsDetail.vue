@@ -534,12 +534,14 @@ export default {
           {
             trigger: 'change',
             validator (rule, value, cb) {
-              const num = parseFloat(value, 10)
-              if (isNaN(num)) {
-                cb(new Error('输入必须为数值'))
-              }
-              if (num <= 0) {
-                cb(new Error('含金量不能小于0'))
+              if (value) {
+                const num = parseFloat(value, 10)
+                if (isNaN(num)) {
+                  cb(new Error('输入必须为数值'))
+                }
+                if (num <= 0) {
+                  cb(new Error('含金量不能小于0'))
+                }
               }
               cb()
             },
@@ -554,12 +556,14 @@ export default {
           {
             trigger: 'change',
             validator (rule, value, cb) {
-              if (isNaN(+value)) {
-                cb(new Error('输入必须为数值'))
-              }
-              const num = parseFloat(value, 10)
-              if (num <= 0) {
-                cb(new Error('钻石重量不能小于0'))
+              if (value) {
+                if (isNaN(+value)) {
+                  cb(new Error('输入必须为数值'))
+                }
+                const num = parseFloat(value, 10)
+                if (num <= 0) {
+                  cb(new Error('钻石重量不能小于0'))
+                }
               }
               cb()
             },
@@ -754,7 +758,7 @@ export default {
             data.append(key, '')
           }
         } else {
-          data.append(key, value)
+          value && data.append(key, value)
         }
       })
 
