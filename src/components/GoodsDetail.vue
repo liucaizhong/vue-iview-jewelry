@@ -414,7 +414,7 @@ export default {
       goldTypePurity: GOLDTYPEPURITY,
       formBak: {},
       form: {
-        productid: '',
+        // productid: '',
         category: '',
         model: '',
         title: '',

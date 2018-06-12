@@ -88,7 +88,7 @@ export default {
         info: [],
         imgs: [],
       },
-      infoAction: this.composeActionUrl('/productfile/'),
+      infoAction: '/api-auth/admin/productfile/',
       // imgsAction: '',
       importImg: false,
     }
@@ -99,12 +99,12 @@ export default {
     }),
   },
   methods: {
-    composeActionUrl (url) {
-      const baseUrl = process.env.NODE_ENV === 'production' ?
-        PRODURL :
-        DEVURL
-      return baseUrl + url
-    },
+    // composeActionUrl (url) {
+    //   const baseUrl = process.env.NODE_ENV === 'production' ?
+    //     PRODURL :
+    //     DEVURL
+    //   return baseUrl + url
+    // },
     handleCSVFormatError (file) {
       this.$Notice.warning({
         title: '文件格式错误',
