@@ -113,7 +113,8 @@ export default {
 
   .body {
     border: 1px solid #dddee1;
-    min-height: 300px;
+    // border-bottom: none;
+    min-height: 500px;
     flex: 1;
 
     .ivu-table-wrapper {
@@ -140,7 +141,7 @@ export default {
 
       .ivu-table-body {
         // margin-top: 40px;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
       }
 
       // @media screen and (max-width: 768px){
@@ -150,7 +151,7 @@ export default {
       // }
 
       .ivu-table-tip {
-        top: 40px;
+        // top: 40px;
         position: relative;
 
         table {

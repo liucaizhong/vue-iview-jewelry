@@ -88,6 +88,13 @@
             :single="false"
           />
         </FormItem> -->
+        <FormItem label="服务单状态" prop="serviceStatus">
+          <enum-selector
+            :selected="moreCondModalForm.serviceStatus"
+            :items="serviceStatus"
+            :single="false"
+          />
+        </FormItem>
         <FormItem label="物品状态" prop="leaseholdStatus">
           <enum-selector
             :selected="moreCondModalForm.leaseholdStatus"
@@ -131,7 +138,7 @@
 
 <script>
 import { SERVICETYPE, LEASEHOLDSTATUS, CREDITSTATUS,
-  DELIVERYMODE } from '@/constant'
+  DELIVERYMODE, SERVICESTATUS } from '@/constant'
 import EnumSelector from './EnumSelector'
 
 export default {
@@ -144,6 +151,7 @@ export default {
       leaseholdStatus: LEASEHOLDSTATUS,
       creditStatus: CREDITSTATUS,
       deliveryMode: DELIVERYMODE,
+      serviceStatus: SERVICESTATUS,
       page: 1,
       pageSize: 10,
       totalCount: 0,
@@ -154,6 +162,7 @@ export default {
         createDate: [],
         finishDate: [],
         // businessStatus: [],
+        serviceStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -183,11 +192,22 @@ export default {
           title: '服务类型',
           key: 'serviceType',
           sortable: true,
-          minWidth: 120,
+          minWidth: 140,
           render (h, params) {
             const serviceType = SERVICETYPE.find(
               cur => params.row.serviceType === cur.key)
             return h('span', serviceType && serviceType.value || SERVICETYPE[0].value)
+          },
+        },
+        {
+          title: '服务单状态',
+          key: 'serviceStatus',
+          sortable: true,
+          minWidth: 120,
+          render (h, params) {
+            const serviceStatus = SERVICESTATUS.find(
+              cur => params.row.serviceStatus === cur.key)
+            return h('span', serviceStatus && serviceStatus.value || SERVICESTATUS[0].value)
           },
         },
         {
@@ -226,12 +246,12 @@ export default {
           sortable: true,
           minWidth: 150,
         },
-        {
-          title: '实际计费时长',
-          key: 'realChargingTime',
-          sortable: true,
-          minWidth: 130,
-        },
+        // {
+        //   title: '实际计费时长',
+        //   key: 'realChargingTime',
+        //   sortable: true,
+        //   minWidth: 130,
+        // },
         {
           title: '预约商品ID',
           key: 'reservedProductid',
@@ -353,12 +373,13 @@ export default {
       this.moreCondModal = true
     },
     saveMoreCond () {
-      const { createDate, finishDate, leaseholdStatus,
+      const { createDate, finishDate, leaseholdStatus, serviceStatus,
         creditStatus, deliveryStore, deliveryMode } = this.moreCondModalForm
       this.searchForm = Object.assign(this.searchForm, {
         createDate: [...createDate],
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
+        serviceStatus: [...serviceStatus],
         leaseholdStatus: [...leaseholdStatus],
         creditStatus: [...creditStatus],
         deliveryStore,
@@ -368,12 +389,13 @@ export default {
       this.moreCondModal = false
     },
     cancelMoreCond () {
-      const { createDate, finishDate, leaseholdStatus,
+      const { createDate, finishDate, leaseholdStatus, serviceStatus,
         creditStatus, deliveryStore, deliveryMode } = this.searchForm
       this.moreCondModalForm = {
         createDate: [...createDate],
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
+        serviceStatus: [...serviceStatus],
         leaseholdStatus: [...leaseholdStatus],
         creditStatus: [...creditStatus],
         deliveryStore,
@@ -457,6 +479,7 @@ export default {
         createDate: [],
         finishDate: [],
         // businessStatus: [],
+        serviceStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -466,6 +489,7 @@ export default {
         createDate: [],
         finishDate: [],
         // businessStatus: [],
+        serviceStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
@@ -503,6 +527,11 @@ export default {
       //   cur && cum.push(this.businessStatus[i].key)
       //   return cum
       // }, []))
+      conds.serviceStatus && (conds.serviceStatus =
+      conds.serviceStatus.reduce((cum, cur, i) => {
+        cur && cum.push(this.serviceStatus[i].key)
+        return cum
+      }, []))
       conds.leaseholdStatus && (conds.leaseholdStatus =
       conds.leaseholdStatus.reduce((cum, cur, i) => {
         cur && cum.push(this.leaseholdStatuss[i].key)

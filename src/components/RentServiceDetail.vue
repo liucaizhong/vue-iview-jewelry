@@ -258,6 +258,7 @@
             </Row>
           </div>
           <Tabs
+            v-if="toDelivery"
             value="confirmDelivery"
           >
             <TabPane label="取货信息" name="confirmDelivery">
@@ -848,6 +849,9 @@ export default {
         title: cur.value,
       })).concat([finishStatus])
     },
+    toDelivery: function () {
+      return +this.form.serviceStatus > 1
+    },
     deliveryDone: function () {
       return +this.form.serviceStatus > 2
     },
@@ -1048,7 +1052,7 @@ export default {
           const { sellingPrice, initialRent, initialDeposit } = this.form
           const amount = (parseFloat(sellingPrice) || 0) -
             (parseFloat(initialRent) || 0)
-            - (+initialDeposit || 0)
+            - (parseFloat(initialDeposit) || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'
             this.form.adjustmentAmount = amount.toString()

@@ -173,26 +173,44 @@ export default {
   position: relative;
   overflow: hidden;
 
-  .ivu-layout-content {
+  .ivu-layout {
     position: relative;
-    background: #fff;
-    min-height: 260px;
+    overflow: hidden;
 
-    > div {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      left: 0;
-      top: 0;
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      justify-content: space-around;
+    // .layout-header-bar {
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      // width: 100%;
+      // z-index: 999;
+    // }
 
-      .ivu-form {
+    .ivu-layout-content {
+      position: relative;
+      // background: #fff;
+      // min-height: calc(100% - 64px);
+      // margin-top: 64px;
+      overflow: auto;
+
+      > div {
+        position: absolute;
+        background: #fff;
+        // height: 100%;
+        height: auto;
+        min-height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        padding: 20px 10px;
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+
+        .ivu-form {
+          display: flex;
+          flex-wrap: wrap;
+        }
       }
     }
   }
