@@ -162,7 +162,7 @@
               <Col :xs="24" :md="16" :lg="12">
               <Input
                 v-model="form.size"
-                placeholder="输入钻石重量"
+                placeholder="输入尺寸"
               >
               </Input>
               </Col>
@@ -223,12 +223,12 @@
               </Col>
             </Row>
           </FormItem>
-          <FormItem label="租金" prop="rent">
+          <FormItem label="日租金" prop="rent">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <Input
                 v-model="form.rent"
-                placeholder="输入租金"
+                placeholder="输入日租金"
               >
               <span slot="append">元</span>
               </Input>
@@ -505,26 +505,26 @@ export default {
         //   message: '系列不能为空',
         //   trigger: 'change',
         // }],
-        goldType: [{
-          required: true,
-          message: '镶嵌材质不能为空',
-          trigger: 'blur',
-        }],
+        // goldType: [{
+        //   required: true,
+        //   message: '镶嵌材质不能为空',
+        //   trigger: 'blur',
+        // }],
         // goldPurity: [{
         //   required: true,
         //   message: '材质纯度不能为空',
         //   trigger: 'blur',
         // }],
-        certificate: [{
-          required: true,
-          message: '证书不能为空',
-          trigger: 'blur',
-        }],
-        size: [{
-          required: true,
-          message: '尺寸不能为空',
-          trigger: 'blur',
-        }],
+        // certificate: [{
+        //   required: true,
+        //   message: '证书不能为空',
+        //   trigger: 'blur',
+        // }],
+        // size: [{
+        //   required: true,
+        //   message: '尺寸不能为空',
+        //   trigger: 'blur',
+        // }],
         goldContent: [
           // {
           //   required: true,

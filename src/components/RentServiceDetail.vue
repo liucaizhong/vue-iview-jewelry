@@ -1050,8 +1050,8 @@ export default {
         }
         case 'rentToSaleClose': {
           const { sellingPrice, initialRent, initialDeposit } = this.form
-          const amount = (parseFloat(sellingPrice) || 0) -
-            (parseFloat(initialRent) || 0)
+          const amount = (parseFloat(sellingPrice) || 0)
+            - (parseFloat(initialRent) || 0)
             - (parseFloat(initialDeposit) || 0)
           if (amount > 0) {
             this.form.returnDeposit = '0'
