@@ -140,7 +140,7 @@ export default {
           break
         }
         case 'logout': {
-          const url = '/UserLogout/'
+          const url = '/admin/UserLogout/'
           this.$fetch(url, {
             method: 'post',
           })

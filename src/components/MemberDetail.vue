@@ -316,7 +316,7 @@ export default {
     },
   },
   created () {
-    const url = '/member/'
+    const url = '/admin/member/'
     this.form.memberId = this.$route.params.id
     this.$fetch(url, {
       params: {
@@ -354,7 +354,7 @@ export default {
       this.$refs[`${type}ModalForm`].validate(valid => {
         if (valid) {
           this.saveLoading = true
-          const url = '/member/'
+          const url = '/admin/member/'
           const postData = this[`${type}ModalForm`][type]
           const isAddress = Array.isArray(postData)
           this.$fetch(url, {

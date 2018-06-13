@@ -6,7 +6,8 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://vtejpj.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://m2uz8t.natappfree.cc/api-auth'
+// const baseUrl = 'http://120.55.55.106/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -73,25 +74,32 @@ function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
 }
 
 module.exports = () => {
-  router.get('/member/', (req, res) => {
+  router.get('/admin/member/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)
   })
 
-  router.get('/product/', (req, res) => {
+  router.get('/admin/product/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)
   })
 
-  router.get('/RentalService/', (req, res) => {
+  router.get('/admin/RentalService/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)
   })
 
-  router.post('/member/', (req, res) => {
+  router.get('/common/backendorder/', (req, res) => {
+    console.log('req.url', req.url)
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/admin/member/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -99,7 +107,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/UserLogin/', (req, res) => {
+  router.post('/admin/UserLogin/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -107,7 +115,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/UserLogout/', (req, res) => {
+  router.post('/admin/UserLogout/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -115,7 +123,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/ChangePasswd/', (req, res) => {
+  router.post('/admin/ChangePasswd/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -123,7 +131,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/ClaimGoods/', (req, res) => {
+  router.post('/admin/ClaimGoods/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -131,7 +139,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/productupdate/', multipartMiddleware, (req, res) => {
+  router.post('/admin/productupdate/', multipartMiddleware, (req, res) => {
     let form = formData(null, req.body)
     form = formData(form, req.files, true)
     // console.log('productupdate3', form)
@@ -149,7 +157,7 @@ module.exports = () => {
     })
   })
 
-  router.post('/productfile/', (req, res) => {
+  router.post('/admin/productfile/', (req, res) => {
     const form = formData(null, req.files, true)
     console.log('productfile', form)
 

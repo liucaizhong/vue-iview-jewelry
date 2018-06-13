@@ -3,7 +3,7 @@ import { Layout, Sider, Menu, Submenu, Icon, MenuItem, Header, LoadingBar,
   Select, Option, Table, Page, Modal, Row, Col, Upload, Progress, Notice,
   Collapse, Panel, Button, Input, Badge, AutoComplete, Message, Cascader,
   DatePicker, Steps, Step, Spin, Tabs, TabPane, Tooltip, Poptip, Tag,
-} from 'iview'
+  Switch } from 'iview'
 
 export default {
   initComponents (Vue) {
@@ -49,5 +49,6 @@ export default {
     Vue.component('Tooltip', Tooltip)
     Vue.component('Poptip', Poptip)
     Vue.component('Tag', Tag)
+    Vue.component('iSwitch', Switch)
   }
 }

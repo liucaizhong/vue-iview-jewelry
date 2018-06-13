@@ -21,11 +21,15 @@ export default {
   props: {
     selected: {
       type: Array,
-      default: [],
+      default: function () {
+        return []
+      },
     },
     items: {
       type: Array,
-      default: [],
+      default: function () {
+        return []
+      },
     },
     single: {
       type: Boolean,

@@ -338,7 +338,7 @@ export default {
     },
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/product/'
+      const url = '/admin/product/'
       this.$fetch(url, config)
         .then(resp => {
           console.log(resp)

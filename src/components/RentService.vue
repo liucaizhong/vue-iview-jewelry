@@ -226,7 +226,7 @@ export default {
           title: '手机号',
           key: 'phone',
           sortable: true,
-          minWidth: 100,
+          minWidth: 130,
         },
         {
           title: '租赁时长(天)',
@@ -424,7 +424,7 @@ export default {
     },
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/RentalService/'
+      const url = '/admin/RentalService/'
       this.$fetch(url, config)
         .then(resp => {
           console.log(resp)

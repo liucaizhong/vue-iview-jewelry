@@ -168,7 +168,7 @@ export default {
         if (valid) {
           this.modifyPasswordLoading = true
           const { oldPassword, newPassword, confirmNewPassword } = this.form
-          const url = '/ChangePasswd/'
+          const url = '/admin/ChangePasswd/'
           this.$fetch(url, {
             data: {
               old_password: oldPassword,

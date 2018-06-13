@@ -70,13 +70,13 @@
       <section>
         <header>关联信息</header>
         <div class="section-body">
-          <FormItem label="服务单" prop="relatedServiceOrder">
+          <FormItem label="服务单" prop="serviceNo">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <router-link
-                :to="{ path: '/rent-service', params: { id: form.relatedServiceOrder }}"
+                :to="`/dashboard/rent-service/${form.serviceNo}`"
               >
-                {{ form.relatedServiceOrder }}
+                {{ form.serviceNo }}
               </router-link>
               </Col>
             </Row>
@@ -116,7 +116,7 @@ export default {
         orderStatus: '',
         createDate: '',
         createdBy: '',
-        relatedServiceOrder: '',
+        serviceNo: '',
         // relatedPaymentOrders: [],
       },
     }
@@ -134,6 +134,34 @@ export default {
       const orderStatus = this.orderStatuss.find(cur => cur.key === this.form.orderStatus) || ''
       return orderStatus && orderStatus.value
     },
+  },
+  created () {
+    this.form.orderNo = this.$route.params.id
+    const url = '/common/backendorder/'
+    this.$fetch(url, {
+      params: {
+        orderNo: this.form.orderNo,
+      }
+    })
+      .then(resp => {
+        console.log(resp)
+        const results = resp.data.results
+        if (results && results.length) {
+          this.form = {
+            ...results[0],
+          }
+        } else {
+          this.$Message.error({
+            content: '未找到该订单的详细信息',
+          })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        this.$Message.error({
+          content: '未找到该订单的详细信息',
+        })
+      })
   },
 }
 </script>

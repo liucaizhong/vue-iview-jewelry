@@ -38,8 +38,8 @@
             </Option>
           </Select>
         </FormItem>
-        <FormItem label="关联服务单号" prop="relatedServiceOrder">
-          <Input v-model="searchForm.relatedServiceOrder" style="width:260px">
+        <FormItem label="关联服务单号" prop="serviceNo">
+          <Input v-model="searchForm.serviceNo" style="width:260px">
           </Input>
         </FormItem>
         <FormItem>
@@ -94,7 +94,7 @@ export default {
         orderType: [],
         orderStatus: [],
         createDate: [],
-        relatedServiceOrder: '',
+        serviceNo: '',
       },
       tableData: [],
       tableLoading: false,
@@ -151,7 +151,7 @@ export default {
           title: '支付时间',
           key: 'paymentDatetime',
           sortable: true,
-          minWidth: 120,
+          minWidth: 150,
         },
         {
           title: '支付方式',
@@ -179,7 +179,7 @@ export default {
         },
         {
           title: '关联服务单号',
-          key: 'relatedServiceOrder',
+          key: 'serviceNo',
           sortable: true,
           minWidth: 200,
         },
@@ -285,9 +285,11 @@ export default {
     }
   },
   created () {
-    this.searchForm.relatedServiceOrder = this.$route.query.serviceNo
+    this.searchForm.serviceNo = this.$route.query.serviceNo
     this.mockTableData({
       params: {
+        offset: 0,
+        limit: this.pageSize,
         ...this.formConditions(this.searchForm),
       }
     })
@@ -302,7 +304,7 @@ export default {
     },
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/RentalOrder/'
+      const url = '/common/backendorder/'
       this.$fetch(url, config)
         .then(resp => {
           console.log(resp)

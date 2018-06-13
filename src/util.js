@@ -51,7 +51,7 @@ export default {
       // const baseUrl = process.env.NODE_ENV === 'production' ?
       //   PRODURL :
       //   DEVURL
-      const baseUrl = '/api-auth/admin'
+      const baseUrl = '/api-auth'
       const realUrl = baseUrl + url
       const mergeConfig = (!config.method || config.method === 'get')
         ? Object.assign({

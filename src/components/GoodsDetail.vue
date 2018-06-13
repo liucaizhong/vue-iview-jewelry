@@ -121,6 +121,7 @@
               <Col :xs="24" :md="16" :lg="12">
               <Cascader
                 :data="goldTypePurity"
+                :value="[form.goldType, form.goldPurity]"
                 trigger="hover"
                 @on-change="changeGoldTypePurity"
               />
@@ -694,7 +695,7 @@ export default {
   },
   created () {
     if (!this.modeType) {
-      const url = '/product/'
+      const url = '/admin/product/'
       this.form.productid = this.$route.params.id
       this.$fetch(url, {
         params: {
@@ -767,7 +768,7 @@ export default {
     save () {
       this.$refs.goodsForm.validate(valid => {
         if (valid) {
-          const url = '/productupdate/'
+          const url = '/admin/productupdate/'
           this.$fetch(url, {
             headers: {
               'Content-Type': 'multipart/form-data'

@@ -83,7 +83,7 @@ export default {
         if (valid) {
           this.loginLoading = true
           const { userid, password } = this.form
-          const url = '/UserLogin/'
+          const url = '/admin/UserLogin/'
           this.$fetch(url, {
             data: {
               userid,

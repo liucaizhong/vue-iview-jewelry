@@ -186,7 +186,7 @@ export default {
   methods: {
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/member/'
+      const url = '/admin/member/'
       this.$fetch(url, config)
         .then(resp => {
           // console.log(resp)

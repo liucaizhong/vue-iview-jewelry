@@ -420,6 +420,20 @@
                   </Col>
                 </Row>
               </FormItem>
+              <FormItem label="用户余额抵扣" prop="useBalance">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <i-switch
+                    v-model="form.useBalance"
+                    :disabled="finishDone"
+                    :true-value="1"
+                    :false-value="0"
+                    size="large"
+                  />
+                  <span>{{ userBalanceDesc }}</span>
+                  </Col>
+                </Row>
+              </FormItem>
               <FormItem label="还货门店" prop="returnStore">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
@@ -503,6 +517,20 @@
                   >
                   <span slot="append">元</span>
                   </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="用户余额抵扣" prop="useBalance">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <i-switch
+                    v-model="form.useBalance"
+                    :disabled="finishDone"
+                    :true-value="1"
+                    :false-value="0"
+                    size="large"
+                  />
+                  <span>{{ userBalanceDesc }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -625,6 +653,7 @@ export default {
       // disableProductid: true,
       searchProductLoading: false,
       serviceFinishStatus: '',
+      userBalance: '20000',
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -686,6 +715,7 @@ export default {
         adjustmentAmount: '0',
         compensation: '0',
         // relatedOrders: [],
+        useBalance: 0,
       },
       ruleValidate: {
         productid: [{
@@ -867,6 +897,9 @@ export default {
       return this.form.serviceStatus === this.serviceStatuss[len - 1].key
         ? 'error' : 'process'
     },
+    userBalanceDesc: function () {
+      return '当前余额 ￥' + this.userBalance
+    },
   },
   watch: {
     'form.compensation': function (val, oldVal) {
@@ -881,7 +914,7 @@ export default {
   },
   created () {
     this.form.serviceNo = this.$route.params.id
-    const url = '/RentalService/'
+    const url = '/admin/RentalService/'
     this.$fetch(url, {
       params: {
         serviceNo: this.form.serviceNo,
@@ -906,7 +939,6 @@ export default {
             content: '未找到该服务单的详细信息',
           })
         }
-        this.$Loading.finish()
       })
       .catch(err => {
         console.log(err)
@@ -928,7 +960,7 @@ export default {
     searchProductid () {
       if (this.form.productid) {
         this.searchProductLoading = true
-        const url = '/product/'
+        const url = '/admin/product/'
         this.$fetch(url, {
           params: {
             productid: this.form.productid,
@@ -988,7 +1020,7 @@ export default {
       } : {
         deliveryStore,
       }
-      const url = '/ClaimGoods/'
+      const url = '/admin/ClaimGoods/'
       this.$fetch(url, {
         data: {
           serviceNo,
@@ -1041,6 +1073,7 @@ export default {
         case 'rentClose': {
           const { compensation, residualDeposit } = this.form
           const amount = (parseFloat(compensation) || 0) - (parseFloat(residualDeposit) || 0)
+          console.log('rentClose', amount)
           if (amount > 0) {
             this.form.returnDeposit = '0'
           } else {
@@ -1049,10 +1082,12 @@ export default {
           break
         }
         case 'rentToSaleClose': {
-          const { sellingPrice, initialRent, initialDeposit } = this.form
+          const { initialRent, initialDeposit } = this.form
+          const { sellingPrice } = this.form.product
           const amount = (parseFloat(sellingPrice) || 0)
             - (parseFloat(initialRent) || 0)
             - (parseFloat(initialDeposit) || 0)
+          console.log('rentToSaleClose', amount)
           if (amount > 0) {
             this.form.returnDeposit = '0'
             this.form.adjustmentAmount = amount.toString()
