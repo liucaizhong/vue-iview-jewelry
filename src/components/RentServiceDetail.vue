@@ -1013,7 +1013,7 @@ export default {
       //   this.confirmDeliveryLoading = false
       // }, 2000)
       const { serviceNo, serviceType, productid, deliveryMode, deliveryOperator,
-        deliveryStore, logisticsCompany, trackingNumber } = this.form
+        deliveryStore, logisticsCompany, trackingNumber, serialNumber } = this.form
       const options = deliveryMode === '0' ? {
         logisticsCompany,
         trackingNumber,
@@ -1028,6 +1028,7 @@ export default {
           productid,
           deliveryMode,
           deliveryOperator,
+          serialNumber,
           ...options,
         },
         method: 'post',
