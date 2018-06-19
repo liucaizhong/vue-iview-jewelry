@@ -174,6 +174,7 @@ export default {
         createDate: [],
         finishDate: [],
         // businessStatus: [],
+        serviceStatus: [],
         leaseholdStatus: [],
         creditStatus: [],
         deliveryStore: '',
