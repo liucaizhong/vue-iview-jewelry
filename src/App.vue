@@ -119,7 +119,7 @@ export default {
 
     .ivu-table-wrapper {
       border: none;
-      height: 100%;
+      // height: 100%;
 
       .ivu-table {
         overflow: auto;
@@ -142,6 +142,7 @@ export default {
       .ivu-table-body {
         // margin-top: 40px;
         // margin-bottom: 10px;
+        min-height: 500px;
       }
 
       // @media screen and (max-width: 768px){

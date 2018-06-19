@@ -324,6 +324,7 @@ export default {
       }
     })
       .then(resp => {
+        console.log('member detail', resp)
         const results = resp.data.results
         if (results && results.length) {
           this.form = {

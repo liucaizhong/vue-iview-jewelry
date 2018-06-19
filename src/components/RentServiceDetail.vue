@@ -355,7 +355,7 @@
           <div v-if="deliveryDone" class="dotted-line" />
           <Tabs
             v-if="deliveryDone"
-            value="rentClose"
+            v-model="completeTabs"
             :animated="false"
             @on-click="switchRentCloseTab"
           >
@@ -426,11 +426,23 @@
                   <i-switch
                     v-model="form.useBalance"
                     :disabled="finishDone"
-                    :true-value="1"
-                    :false-value="0"
+                    :true-value="'1'"
+                    :false-value="'0'"
                     size="large"
+                    @on-change="onChangeUseBalance"
                   />
-                  <span>{{ userBalanceDesc }}</span>
+                  <span v-show="form.useBalance === '1'">{{ userBalanceDesc }}</span>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem
+                v-show="form.useBalance === '1' && form.stillToPayAmount"
+                label="还需支付金额"
+                prop="stillToPayAmount"
+              >
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <span>{{ `¥${form.stillToPayAmount}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -452,11 +464,12 @@
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <Input
-                    v-model="form.remark"
+                    v-model="form.remarks"
                     type="textarea"
                     :autosize="{ minRows: 3 }"
                     :maxlength="500"
                     placeholder="输入备注信息(不超过500字符)"
+                    :disabled="finishDone"
                   >
                   </Input>
                   </Col>
@@ -467,7 +480,7 @@
                   <Col :xs="24" :md="16" :lg="12">
                   <Button
                     type="primary"
-                    @click="confirmFinish('4')"
+                    @click="confirmFinish"
                     :loading="confirmFinishLoading"
                     long
                     :disabled="finishDone"
@@ -526,11 +539,23 @@
                   <i-switch
                     v-model="form.useBalance"
                     :disabled="finishDone"
-                    :true-value="1"
-                    :false-value="0"
+                    :true-value="'1'"
+                    :false-value="'0'"
                     size="large"
+                    @on-change="onChangeUseBalance"
                   />
-                  <span>{{ userBalanceDesc }}</span>
+                  <span v-show="form.useBalance === '1'">{{ userBalanceDesc }}</span>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem
+                v-show="form.useBalance === '1' && form.stillToPayAmount"
+                label="还需支付金额"
+                prop="stillToPayAmount"
+              >
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <span>{{ `¥${form.stillToPayAmount}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -552,11 +577,12 @@
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <Input
-                    v-model="form.remark"
+                    v-model="form.remarks"
                     type="textarea"
                     :autosize="{ minRows: 3 }"
                     :maxlength="500"
                     placeholder="输入备注信息(不超过500字符)"
+                    :disabled="finishDone"
                   >
                   </Input>
                   </Col>
@@ -567,7 +593,7 @@
                   <Col :xs="24" :md="16" :lg="12">
                   <Button
                     type="primary"
-                    @click="confirmFinish('5')"
+                    @click="confirmFinish"
                     :loading="confirmFinishLoading"
                     long
                     :disabled="finishDone"
@@ -629,6 +655,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { SERVICETYPE, SERVICESTATUS, LEASEHOLDSTATUS, CATEGORYOFGOOD,
   CREDITSTATUS, DELIVERYMODE } from '@/constant'
 import IconTooltip from './IconTooltip'
@@ -652,8 +679,8 @@ export default {
       // stepStatus: 'process',
       // disableProductid: true,
       searchProductLoading: false,
-      serviceFinishStatus: '',
-      userBalance: '20000',
+      completeTabs: 'rentClose',
+      userBalance: '',
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -668,7 +695,7 @@ export default {
         rentPeriod: '',
         rentStartDate: '',
         rentDueDate: '',
-        realChargingTime: '',
+        realChargingTime: 0,
         residualRent: '',
         residualDeposit: '',
         serviceStatus: '0',
@@ -715,7 +742,8 @@ export default {
         adjustmentAmount: '0',
         compensation: '0',
         // relatedOrders: [],
-        useBalance: 0,
+        useBalance: '0',
+        stillToPayAmount: 0,
       },
       ruleValidate: {
         productid: [{
@@ -898,8 +926,11 @@ export default {
         ? 'error' : 'process'
     },
     userBalanceDesc: function () {
-      return '当前余额 ￥' + this.userBalance
+      return '当前剩余余额 ￥' + this.userBalance
     },
+    ...mapState([
+      'login',
+    ]),
   },
   watch: {
     'form.compensation': function (val, oldVal) {
@@ -928,6 +959,9 @@ export default {
             ...results[0],
           }
           this.form.serviceType || (this.form.serviceType = '0')
+          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.userId)
+          this.form.serviceCloseOperator ||
+            (this.form.serviceCloseOperator = this.login.userId)
           if (!this.form.product) {
             this.form.product = {
               ...this.form.reservedProduct,
@@ -948,6 +982,31 @@ export default {
       })
   },
   methods: {
+    onChangeUseBalance (use) {
+      if (use) {
+        const url = '/admin/member/'
+        const { memberId } = this.form
+        this.$fetch(url, {
+          params: {
+            memberId,
+          },
+        }).then(resp => {
+          console.log('usebalance', resp)
+          const { balance } = resp.data.results[0]
+          const { compensation, residualDeposit } = this.form
+          const total = compensation - residualDeposit - balance
+          if (total < 0) {
+            this.userBalance = Math.abs(total)
+            this.form.stillToPayAmount = 0
+          } else {
+            this.userBalance = 0
+            this.form.stillToPayAmount = Math.abs(total)
+          }
+        }).catch(err => {
+          console.log('err', err)
+        })
+      }
+    },
     checkRelatedOrders () {
       // console.log(this.form.serviceNo)
       this.$router.push({
@@ -1059,15 +1118,50 @@ export default {
     },
     confirmFinish (status) {
       this.confirmFinishModal = true
-      this.serviceFinishStatus = status
     },
     handleConfirmFinishModal () {
       this.confirmFinishModal = false
       this.confirmFinishLoading = true
-      setTimeout(() => {
-        this.form.serviceStatus = this.serviceFinishStatus
-        this.confirmFinishLoading = false
-      }, 2000)
+      const { serviceNo, serviceType, serviceCloseOperator, realChargingTime,
+        returnStore, useBalance, returnDeposit, compensation, remarks,
+        leaseholdStatus, adjustmentAmount } = this.form
+      const options = this.completeTabs === 'rentClose' ? {
+        realChargingTime,
+      } : {
+        adjustmentAmount,
+      }
+      const url = '/admin/CompleteService/'
+      this.$fetch(url, {
+        data: {
+          serviceNo,
+          serviceType,
+          serviceCloseOperator,
+          returnStore,
+          useBalance,
+          returnDeposit,
+          compensation,
+          remarks,
+          leaseholdStatus,
+          ...options,
+        },
+        method: 'post',
+      })
+        .then(resp => {
+          console.log(resp)
+          const { serviceStatus } = resp.data
+          this.form.serviceStatus = serviceStatus
+          this.confirmFinishLoading = false
+          this.$Message.success({
+            content: '服务完成成功',
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          this.confirmFinishLoading = false
+          this.$Message.error({
+            content: '服务完成失败',
+          })
+        })
     },
     switchRentCloseTab (name) {
       switch (name) {
