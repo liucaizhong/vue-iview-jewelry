@@ -17,7 +17,7 @@
           />
         </FormItem>
         <FormItem label="订单类型" prop="orderType">
-          <Select v-model="searchForm.orderType" multiple style="width:150px">
+          <Select v-model="searchForm.orderType" multiple style="width:350px">
             <Option
               v-for="item in orderType"
               :value="item.key"
@@ -28,7 +28,7 @@
           </Select>
         </FormItem>
         <FormItem label="订单状态" prop="orderStatus">
-          <Select v-model="searchForm.orderStatus" multiple style="width:150px">
+          <Select v-model="searchForm.orderStatus" multiple style="width:350px">
             <Option
               v-for="item in orderStatus"
               :value="item.key"
@@ -274,7 +274,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push(`rent-order/${params.row.orderNo}`)
+                    this.$router.push(`/dashboard/rent-order/${params.row.orderNo}`)
                   }
                 }
               }, '详情'),
@@ -285,7 +285,7 @@ export default {
     }
   },
   created () {
-    this.searchForm.serviceNo = this.$route.query.serviceNo
+    this.searchForm.serviceNo = this.$route.query.serviceNo || ''
     this.mockTableData({
       params: {
         offset: 0,
@@ -362,13 +362,14 @@ export default {
     },
     formConditions (form) {
       const conds = Object.keys(form).reduce((obj, k) => {
-        if (form[k] != false) {
-          if (typeof form[k] === 'object') {
-            obj[k] = [...form[k]]
+        if (form[k]) {
+          if (typeof form[k] === 'object' && form[k] instanceof Array) {
+            form[k].length && (obj[k] = [...form[k]])
           } else {
             obj[k] = form[k]
           }
         }
+
         return obj
       }, {})
 

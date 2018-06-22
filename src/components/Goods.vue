@@ -418,9 +418,9 @@ export default {
     },
     formConditions (form) {
       const conds = Object.keys(form).reduce((obj, k) => {
-        if (form[k] != false) {
-          if (typeof form[k] === 'object') {
-            obj[k] = [...form[k]]
+        if (form[k]) {
+          if (typeof form[k] === 'object' && form[k] instanceof Array) {
+            form[k].length && (obj[k] = [...form[k]])
           } else {
             obj[k] = form[k]
           }

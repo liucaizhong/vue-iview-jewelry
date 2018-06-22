@@ -420,7 +420,7 @@
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="用户余额抵扣" prop="useBalance">
+              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <i-switch
@@ -431,7 +431,7 @@
                     size="large"
                     @on-change="onChangeUseBalance"
                   />
-                  <span v-show="form.useBalance === '1'">{{ userBalanceDesc }}</span>
+                  <span>{{ userBalanceDesc }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -533,7 +533,7 @@
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="用户余额抵扣" prop="useBalance">
+              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <i-switch
@@ -544,7 +544,7 @@
                     size="large"
                     @on-change="onChangeUseBalance"
                   />
-                  <span v-show="form.useBalance === '1'">{{ userBalanceDesc }}</span>
+                  <span>{{ userBalanceDesc }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -681,6 +681,7 @@ export default {
       searchProductLoading: false,
       completeTabs: 'rentClose',
       userBalance: '',
+      showUseBalanceSwitch: false,
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -926,7 +927,7 @@ export default {
         ? 'error' : 'process'
     },
     userBalanceDesc: function () {
-      return '当前剩余余额 ￥' + this.userBalance
+      return '当前账户余额 ￥' + this.userBalance
     },
     ...mapState([
       'login',
@@ -938,8 +939,10 @@ export default {
       const amount = parseFloat(val || '0') - parseFloat(residualDeposit)
       if (amount > 0) {
         this.form.returnDeposit = '0'
+        this.showUseBalanceSwitch = true
       } else {
         this.form.returnDeposit = Math.abs(amount).toString()
+        this.showUseBalanceSwitch = false
       }
     },
   },
@@ -968,6 +971,7 @@ export default {
             }
             this.form.productid = this.form.reservedProductid
           }
+          this.getMemberBalance()
         } else {
           this.$Message.error({
             content: '未找到该服务单的详细信息',
@@ -982,29 +986,31 @@ export default {
       })
   },
   methods: {
+    getMemberBalance () {
+      const url = '/admin/member/'
+      const { memberId } = this.form
+      this.$fetch(url, {
+        params: {
+          memberId,
+        },
+      }).then(resp => {
+        console.log('usebalance', resp)
+        const { balance } = resp.data.results[0]
+        this.userBalance = balance
+      }).catch(err => {
+        console.log('err', err)
+      })
+    },
     onChangeUseBalance (use) {
       if (use) {
-        const url = '/admin/member/'
-        const { memberId } = this.form
-        this.$fetch(url, {
-          params: {
-            memberId,
-          },
-        }).then(resp => {
-          console.log('usebalance', resp)
-          const { balance } = resp.data.results[0]
-          const { compensation, residualDeposit } = this.form
-          const total = compensation - residualDeposit - balance
-          if (total < 0) {
-            this.userBalance = Math.abs(total)
-            this.form.stillToPayAmount = 0
-          } else {
-            this.userBalance = 0
-            this.form.stillToPayAmount = Math.abs(total)
-          }
-        }).catch(err => {
-          console.log('err', err)
-        })
+        const { compensation, residualDeposit } = this.form
+        const total = parseFloat(compensation) - parseFloat(residualDeposit)
+          - parseFloat(this.userBalance)
+        if (total < 0) {
+          this.form.stillToPayAmount = 0
+        } else {
+          this.form.stillToPayAmount = Math.abs(total)
+        }
       }
     },
     checkRelatedOrders () {
@@ -1193,7 +1199,7 @@ export default {
           break
         }
       }
-    }
+    },
   },
 }
 </script>
