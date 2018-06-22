@@ -65,7 +65,7 @@
       <div class="pager" style="float: right;">
         <Page
           :total="totalCount"
-          :current="1"
+          :current.sync="page"
           show-total
           show-elevator
           show-sizer
@@ -323,7 +323,7 @@ export default {
     },
     changePage (page) {
       console.log(page)
-      this.page = page
+      // this.page = page
       this.mockTableData({
         params: {
           offset: (page - 1) * this.pageSize,
@@ -345,9 +345,10 @@ export default {
     },
     search () {
       console.log(this.formConditions(this.searchForm))
+      this.page = 1
       this.mockTableData({
         params: {
-          offset: (this.page - 1) * this.pageSize,
+          offset: 0,
           limit: this.pageSize,
           ...this.formConditions(this.searchForm),
         }
