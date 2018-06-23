@@ -436,13 +436,13 @@
                 </Row>
               </FormItem>
               <FormItem
-                v-show="form.useBalance === '1' && form.stillToPayAmount"
+                v-show="showUseBalanceSwitch"
                 label="还需支付金额"
                 prop="stillToPayAmount"
               >
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <span>{{ `¥${form.stillToPayAmount}` }}</span>
+                  <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -549,13 +549,13 @@
                 </Row>
               </FormItem>
               <FormItem
-                v-show="form.useBalance === '1' && form.stillToPayAmount"
+                v-show="showUseBalanceSwitch"
                 label="还需支付金额"
                 prop="stillToPayAmount"
               >
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <span>{{ `¥${form.stillToPayAmount}` }}</span>
+                  <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -935,14 +935,25 @@ export default {
   },
   watch: {
     'form.compensation': function (val, oldVal) {
-      const { residualDeposit } = this.form
+      const { residualDeposit, useBalance } = this.form
       const amount = parseFloat(val || '0') - parseFloat(residualDeposit)
+      const gap = amount - parseFloat(this.userBalance)
       if (amount > 0) {
         this.form.returnDeposit = '0'
         this.showUseBalanceSwitch = true
+        // console.log('usebalance', useBalance, amount)
+        this.form.stillToPayAmount = useBalance ? (gap > 0 ? gap : 0) : amount
       } else {
         this.form.returnDeposit = Math.abs(amount).toString()
         this.showUseBalanceSwitch = false
+        this.form.stillToPayAmount = 0
+      }
+    },
+    'form.leaseholdStatus': function (val, oldVal) {
+      if (val === '0') {
+        this.showUseBalanceSwitch = false
+        this.form.compensation = '0'
+        this.form.useBalance = false
       }
     },
   },
