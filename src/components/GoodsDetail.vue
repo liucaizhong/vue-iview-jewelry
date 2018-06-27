@@ -750,18 +750,28 @@ export default {
       // console.log(this.form)
       const data = new FormData()
       Object.keys(this.form).forEach(key => {
-        const value = this.form[key]
-        if (key.includes('Image')) {
-          if (value && value[0] && value[0].file) {
-            data.append(key, value[0].file, value[0].name)
+        if (key !== 'attributes') {
+          const value = this.form[key]
+          if (key.includes('Image')) {
+            if (value && value[0] && value[0].file) {
+              data.append(key, value[0].file, value[0].name)
+            }
+            if (value && !value.length) {
+              data.append(key, '')
+            }
+          } else {
+            value && data.append(key, value)
           }
-          if (value && !value.length) {
-            data.append(key, '')
-          }
-        } else {
-          value && data.append(key, value)
         }
       })
+
+      // console.log('this.form', this.form)
+      // for (const i of data.keys()) {
+      //   console.log('key is', i)
+      // }
+      // for (const i of data.values()) {
+      //   console.log('value is', i)
+      // }
 
       return data
     },

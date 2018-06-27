@@ -17,6 +17,7 @@ const RentOrder = () => import('@/components/RentOrder')
 const RentOrderDetail = () => import('@/components/RentOrderDetail')
 const NotFound = () => import('@/components/NotFound')
 const Persona = () => import('@/components/Persona')
+const PackageService = () => import('@/components/PackageService')
 
 export default new Router({
   mode: 'history',
@@ -85,6 +86,12 @@ export default new Router({
       }, {
         path: 'rent-service/:id',
         component: RentServiceDetail,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'package-service',
+        component: PackageService,
         meta: {
           requiresAuth: true,
         },

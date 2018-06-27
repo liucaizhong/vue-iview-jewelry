@@ -186,82 +186,82 @@
             </Col>
           </Row>
           <div class="dotted-line" />
-          <FormItem
-            label="商品ID"
-            prop="productid"
-            :style="{ 'margin-top': '10px' }"
-          >
-            <Row>
-              <Col :xs="24" :md="16" :lg="12">
-              <Input
-                type="text"
-                v-model="form.productid"
-                placeholder="请填写取货的商品ID"
-                :disabled="deliveryDone"
-              >
-              <Button
-                slot="append"
-                icon="ios-search"
-                @click="searchProductid"
-                :disabled="deliveryDone"
-                :loading="searchProductLoading"
-              />
-              </Input>
-              </Col>
-            <!-- <Button
-              type="primary"
-              size="small"
-              :style="{ 'margin-left': '25px' }"
-              @click="clickDeliveryBtn"
-              :disabled="deliveryDone"
-            >
-              {{ disableProductid ? '修改' : '取货' }}
-            </Button> -->
-            </Row>
-          </FormItem>
-          <div class="delivery-container">
-            <Row :style="{ 'padding-left': 0 }">
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品类别" prop="category">
-                <p>{{ category }}</p>
-              </FormItem>
-              </Col>
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品型号" prop="product.model">
-                <p>{{ form.product.model }}</p>
-              </FormItem>
-              </Col>
-            </Row>
-            <Row :style="{ 'padding-left': 0 }">
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品品牌" prop="product.brand">
-                <p>{{ form.product.brand }}</p>
-              </FormItem>
-              </Col>
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品系列" prop="product.series">
-                <p>{{ form.product.series }}</p>
-              </FormItem>
-              </Col>
-            </Row>
-            <Row :style="{ 'padding-left': 0 }">
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品名称" prop="product.title">
-                <p>{{ form.product.title }}</p>
-              </FormItem>
-              </Col>
-              <Col :xs="12" :md="10" :lg="8">
-              <FormItem label="商品销售价" prop="product.sellingPrice">
-                <p>{{ form.product.sellingPrice }}</p>
-              </FormItem>
-              </Col>
-            </Row>
-          </div>
           <Tabs
             v-if="toDelivery"
             value="confirmDelivery"
           >
             <TabPane label="取货信息" name="confirmDelivery">
+              <FormItem
+                label="商品ID"
+                prop="productid"
+                :style="{ 'margin-top': '10px' }"
+              >
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.productid"
+                    placeholder="请填写取货的商品ID"
+                    :disabled="deliveryDone"
+                  >
+                  <Button
+                    slot="append"
+                    icon="ios-search"
+                    @click="searchProductid"
+                    :disabled="deliveryDone"
+                    :loading="searchProductLoading"
+                  />
+                  </Input>
+                  </Col>
+                <!-- <Button
+                  type="primary"
+                  size="small"
+                  :style="{ 'margin-left': '25px' }"
+                  @click="clickDeliveryBtn"
+                  :disabled="deliveryDone"
+                >
+                  {{ disableProductid ? '修改' : '取货' }}
+                </Button> -->
+                </Row>
+              </FormItem>
+              <div class="delivery-container">
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品类别" prop="category">
+                    <p>{{ category }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品型号" prop="product.model">
+                    <p>{{ form.product.model }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品品牌" prop="product.brand">
+                    <p>{{ form.product.brand }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品系列" prop="product.series">
+                    <p>{{ form.product.series }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品名称" prop="product.title">
+                    <p>{{ form.product.title }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品销售价" prop="product.sellingPrice">
+                    <p>{{ form.product.sellingPrice }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+              </div>
               <FormItem
                 label="商品编号"
                 prop="serialNumber"
@@ -453,10 +453,10 @@
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="服务完成人" prop="serviceCloseOpertator">
+              <FormItem label="服务完成人" prop="serviceCloseOperator">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <p>{{ form.serviceCloseOpertator }}</p>
+                  <p>{{ form.serviceCloseOperator }}</p>
                   </Col>
                 </Row>
               </FormItem>
@@ -566,10 +566,10 @@
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="服务完成人" prop="serviceCloseOpertator">
+              <FormItem label="服务完成人" prop="serviceCloseOperator">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <p>{{ form.serviceCloseOpertator }}</p>
+                  <p>{{ form.serviceCloseOperator }}</p>
                   </Col>
                 </Row>
               </FormItem>
@@ -909,13 +909,16 @@ export default {
       })).concat([finishStatus])
     },
     toDelivery: function () {
-      return +this.form.serviceStatus > 1
+      const status = +this.form.serviceStatus
+      return status > 1 && status !== 7
     },
     deliveryDone: function () {
-      return +this.form.serviceStatus > 2
+      const status = +this.form.serviceStatus
+      return +status > 2 && status !== 7
     },
     finishDone: function () {
-      return +this.form.serviceStatus > 3
+      const status = +this.form.serviceStatus
+      return status > 3 && status !== 7
     },
     curStep: function () {
       const status = +this.form.serviceStatus
@@ -973,9 +976,9 @@ export default {
             ...results[0],
           }
           this.form.serviceType || (this.form.serviceType = '0')
-          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.userId)
+          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.userid)
           this.form.serviceCloseOperator ||
-            (this.form.serviceCloseOperator = this.login.userId)
+            (this.form.serviceCloseOperator = this.login.userid)
           if (!this.form.product) {
             this.form.product = {
               ...this.form.reservedProduct,

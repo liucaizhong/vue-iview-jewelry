@@ -83,6 +83,12 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/admin/GetUserInfo/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.get('/admin/product/', (req, res) => {
     request({
       url: mapUrl(req.url),
@@ -90,6 +96,12 @@ module.exports = () => {
   })
 
   router.get('/admin/RentalService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/admin/ComboService/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)

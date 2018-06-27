@@ -74,6 +74,10 @@ export default {
           try {
             const rsp = await axios(mergeConfig)
             resolve(rsp)
+            if (mergeConfig.method !== 'get' &&
+              ['/admin/UserLogin/'].includes(url)) {
+              this.$store.dispatch('getUserInfo')
+            }
           } catch (err) {
             // todo: error handle
             console.error(err)

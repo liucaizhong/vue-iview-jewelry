@@ -10,7 +10,7 @@
           :model="form"
           :label-width="180"
         >
-          <FormItem
+          <!-- <FormItem
             label="旧密码"
             prop="oldPassword"
             :rules="[{
@@ -25,6 +25,15 @@
                 }
                 cb()
               },
+            }]"
+          > -->
+          <FormItem
+            label="旧密码"
+            prop="oldPassword"
+            :rules="[{
+              required: true,
+              trigger: 'blur',
+              message: '旧密码不能为空',
             }]"
           >
             <Row>
@@ -140,7 +149,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+// import { mapState } from 'vuex'
 import IconTooltip from './IconTooltip'
 
 export default {
@@ -157,11 +166,11 @@ export default {
       },
     }
   },
-  computed: {
-    ...mapState([
-      'login',
-    ])
-  },
+  // computed: {
+  //   ...mapState([
+  //     'login',
+  //   ])
+  // },
   methods: {
     modifyPassword () {
       this.$refs.form.validate(valid => {

@@ -37,6 +37,20 @@
               </Col>
             </Row>
           </FormItem>
+          <FormItem label="余额抵扣" prop="amount">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <p>{{ Math.max(parseFloat(form.amount) - parseFloat(form.payedamount), 0) }}</p>
+              </Col>
+            </Row>
+          </FormItem>
+          <FormItem :label="form.orderStatus === '0' ? '待支付金额' : '已支付金额'" prop="amount">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <p>{{ form.payedamount }}</p>
+              </Col>
+            </Row>
+          </FormItem>
           <FormItem label="支付时间" prop="paymentDatetime">
             <Row>
               <Col :xs="24" :md="16" :lg="12">

@@ -20,7 +20,7 @@ module.exports = {
   }],
   ADDRESSMAXNUM: 5,
   MAINIMAGENUM: 6,
-  MAINIMAGEMAXSIZE: 1024,
+  MAINIMAGEMAXSIZE: 2048,
   CSVFILEMAXSIZE: 1024,
   ZIPFILEMAXSIZE: 5120,
   SIDEBARMENUS: [{
@@ -351,5 +351,27 @@ module.exports = {
   }, {
     key: '4',
     value: '订单关闭',
+  }],
+  PACKAGESTATUS: [{
+    key: '0',
+    value: '已创建',
+  }, {
+    key: '1',
+    value: '待支付',
+  }, {
+    key: '2',
+    value: '待取货',
+  }, {
+    key: '3',
+    value: '租赁中',
+  }, {
+    key: '4',
+    value: '套餐完成',
+  }, {
+    key: '5',
+    value: '套餐转租赁完成',
+  }, {
+    key: '6',
+    value: '服务关闭',
   }],
 }

@@ -20,9 +20,7 @@ export default {
   updateUploadingStatus (state, { name, status }) {
     state.uploadingFiles.find(cur => cur.name === name).status = status
   },
-  userLogin (state, loginInfo) {
-    state.login = {
-      ...loginInfo,
-    }
+  updateUserInfo (state, userInfo) {
+    state.login = Object.assign({}, state.login, userInfo)
   },
 }

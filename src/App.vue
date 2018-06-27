@@ -5,8 +5,19 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'App',
+  created () {
+    // getUserInfo
+    this.$getCookie('logged') === '0' && this.getUserInfo()
+  },
+  methods: {
+    ...mapActions([
+      'getUserInfo',
+    ]),
+  },
 }
 </script>
 

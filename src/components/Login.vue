@@ -97,7 +97,7 @@ export default {
                 userid,
                 password,
               })
-              this.$store.commit('userLogin', loginInfo)
+              // this.$store.commit('updateUserInfo', loginInfo)
               this.loginLoading = false
               this.$Message.success({
                 content: '登录成功',
