@@ -541,7 +541,7 @@ export default {
       }, []))
       conds.creditStatus && (conds.creditStatus =
       conds.creditStatus.reduce((cum, cur, i) => {
-        cur && cum.push(this.creditStatuss[i].key)
+        cur && cum.push(this.creditStatus[i].key)
         return cum
       }, []))
       conds.deliveryMode && (conds.deliveryMode =
