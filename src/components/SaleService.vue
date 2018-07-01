@@ -1,13 +1,9 @@
 <template>
-  <div class="package-service">
+  <div class="sale-service">
     <div class="header">
       <Form ref="searchForm" :model="searchForm" :label-width="80">
         <FormItem label="服务单号" prop="serviceNo">
           <Input v-model="searchForm.serviceNo">
-          </Input>
-        </FormItem>
-        <FormItem label="套餐编号" prop="packageNo">
-          <Input v-model="searchForm.packageNo">
           </Input>
         </FormItem>
         <FormItem label="姓名" prop="name">
@@ -46,7 +42,7 @@
       <div class="pager" style="float: right;">
         <Page
           :total="totalCount"
-          :curpackage.sync="page"
+          :cursale.sync="page"
           show-total
           show-elevator
           show-sizer
@@ -99,7 +95,7 @@
             :single="false"
           />
         </FormItem>
-        <FormItem label="物品状态" prop="leaseholdStatus">
+        <!-- <FormItem label="物品状态" prop="leaseholdStatus">
           <enum-selector
             :selected="moreCondModalForm.leaseholdStatus"
             :items="leaseholdStatus"
@@ -112,7 +108,7 @@
             :items="creditStatus"
             :single="false"
           />
-        </FormItem>
+        </FormItem> -->
         <FormItem label="取货门店" prop="deliveryStore">
           <Input v-model="moreCondModalForm.deliveryStore">
           </Input>
@@ -141,8 +137,8 @@
 </template>
 
 <script>
-import { SERVICETYPE, LEASEHOLDSTATUS, CREDITSTATUS,
-  DELIVERYMODE, PACKAGESTATUS } from '@/constant'
+import { SERVICETYPE,
+  DELIVERYMODE, SALESTATUS } from '@/constant'
 import EnumSelector from './EnumSelector'
 
 export default {
@@ -152,10 +148,10 @@ export default {
   data () {
     return {
       serviceType: SERVICETYPE,
-      leaseholdStatus: LEASEHOLDSTATUS,
-      creditStatus: CREDITSTATUS,
+      // leaseholdStatus: LEASEHOLDSTATUS,
+      // creditStatus: CREDITSTATUS,
       deliveryMode: DELIVERYMODE,
-      serviceStatus: PACKAGESTATUS,
+      serviceStatus: SALESTATUS,
       page: 1,
       pageSize: 10,
       totalCount: 0,
@@ -163,13 +159,13 @@ export default {
         serviceNo: '',
         name: '',
         phone: '',
-        packageNo: '',
+        saleNo: '',
         createDate: [],
         finishDate: [],
         // businessStatus: [],
         serviceStatus: [],
-        leaseholdStatus: [],
-        creditStatus: [],
+        // leaseholdStatus: [],
+        // creditStatus: [],
         deliveryStore: '',
         deliveryMode: [],
       },
@@ -180,8 +176,8 @@ export default {
         finishDate: [],
         // businessStatus: [],
         serviceStatus: [],
-        leaseholdStatus: [],
-        creditStatus: [],
+        // leaseholdStatus: [],
+        // creditStatus: [],
         deliveryStore: '',
         deliveryMode: [],
       },
@@ -211,9 +207,9 @@ export default {
           sortable: true,
           minWidth: 120,
           render (h, params) {
-            const serviceStatus = PACKAGESTATUS.find(
+            const serviceStatus = SALESTATUS.find(
               cur => params.row.serviceStatus === cur.key)
-            return h('span', serviceStatus && serviceStatus.value || PACKAGESTATUS[0].value)
+            return h('span', serviceStatus && serviceStatus.value || SALESTATUS[0].value)
           },
         },
         {
@@ -235,30 +231,6 @@ export default {
           minWidth: 130,
         },
         {
-          title: '套餐编号',
-          key: 'packageNo',
-          sortable: true,
-          minWidth: 150,
-        },
-        {
-          title: '套餐名称',
-          key: 'packageTitle',
-          sortable: true,
-          minWidth: 120,
-        },
-        {
-          title: '套餐价格',
-          key: 'packagePrice',
-          sortable: true,
-          minWidth: 130,
-        },
-        {
-          title: '租赁时长(天)',
-          key: 'packagePeriod',
-          sortable: true,
-          minWidth: 140,
-        },
-        {
           title: '服务单创建时间',
           key: 'createDate',
           sortable: true,
@@ -276,42 +248,42 @@ export default {
           sortable: true,
           minWidth: 150,
         },
-        {
-          title: '物品状态',
-          key: 'leaseholdStatus',
-          filters: LEASEHOLDSTATUS.map(t => ({
-            label: t.value,
-            value: t.key,
-          })),
-          filterMultiple: true,
-          filterMethod (value, row) {
-            return row.leaseholdStatus === value
-          },
-          minWidth: 130,
-          render (h, params) {
-            const leaseholdStatus = LEASEHOLDSTATUS.find(
-              cur => params.row.leaseholdStatus === cur.key)
-            return h('span', leaseholdStatus && leaseholdStatus.value)
-          },
-        },
-        {
-          title: '信用状态',
-          key: 'creditStatus',
-          filters: CREDITSTATUS.map(t => ({
-            label: t.value,
-            value: t.key,
-          })),
-          filterMultiple: true,
-          filterMethod (value, row) {
-            return row.creditStatus === value
-          },
-          minWidth: 130,
-          render (h, params) {
-            const creditStatus = CREDITSTATUS.find(
-              cur => params.row.creditStatus === cur.key)
-            return h('span', creditStatus && creditStatus.value)
-          },
-        },
+        // {
+        //   title: '物品状态',
+        //   key: 'leaseholdStatus',
+        //   filters: LEASEHOLDSTATUS.map(t => ({
+        //     label: t.value,
+        //     value: t.key,
+        //   })),
+        //   filterMultiple: true,
+        //   filterMethod (value, row) {
+        //     return row.leaseholdStatus === value
+        //   },
+        //   minWidth: 130,
+        //   render (h, params) {
+        //     const leaseholdStatus = LEASEHOLDSTATUS.find(
+        //       cur => params.row.leaseholdStatus === cur.key)
+        //     return h('span', leaseholdStatus && leaseholdStatus.value)
+        //   },
+        // },
+        // {
+        //   title: '信用状态',
+        //   key: 'creditStatus',
+        //   filters: CREDITSTATUS.map(t => ({
+        //     label: t.value,
+        //     value: t.key,
+        //   })),
+        //   filterMultiple: true,
+        //   filterMethod (value, row) {
+        //     return row.creditStatus === value
+        //   },
+        //   minWidth: 130,
+        //   render (h, params) {
+        //     const creditStatus = CREDITSTATUS.find(
+        //       cur => params.row.creditStatus === cur.key)
+        //     return h('span', creditStatus && creditStatus.value)
+        //   },
+        // },
         {
           title: '取货门店',
           key: 'deliveryStore',
@@ -355,7 +327,7 @@ export default {
                 on: {
                   click: () => {
                     // console.log(params)
-                    this.$router.push(`package-service/${params.row.serviceNo}`)
+                    this.$router.push(`sale-service/${params.row.serviceNo}`)
                   }
                 }
               }, '详情'),
@@ -373,15 +345,15 @@ export default {
       this.moreCondModal = true
     },
     saveMoreCond () {
-      const { createDate, finishDate, leaseholdStatus, serviceStatus,
-        creditStatus, deliveryStore, deliveryMode } = this.moreCondModalForm
+      const { createDate, finishDate, serviceStatus,
+        deliveryStore, deliveryMode } = this.moreCondModalForm
       this.searchForm = Object.assign(this.searchForm, {
         createDate: [...createDate],
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
         serviceStatus: [...serviceStatus],
-        leaseholdStatus: [...leaseholdStatus],
-        creditStatus: [...creditStatus],
+        // leaseholdStatus: [...leaseholdStatus],
+        // creditStatus: [...creditStatus],
         deliveryStore,
         deliveryMode: [...deliveryMode],
       })
@@ -396,8 +368,8 @@ export default {
         finishDate: [...finishDate],
         // businessStatus: [...businessStatus],
         serviceStatus: [...serviceStatus],
-        leaseholdStatus: [...leaseholdStatus],
-        creditStatus: [...creditStatus],
+        // leaseholdStatus: [...leaseholdStatus],
+        // creditStatus: [...creditStatus],
         deliveryStore,
         deliveryMode: [...deliveryMode],
       }
@@ -424,7 +396,7 @@ export default {
     },
     mockTableData (config) {
       this.tableLoading = true
-      const url = '/admin/ComboService/'
+      const url = '/admin/SellService/'
       this.$fetch(url, config)
         .then(resp => {
           console.log(resp)
@@ -481,8 +453,8 @@ export default {
         finishDate: [],
         // businessStatus: [],
         serviceStatus: [],
-        leaseholdStatus: [],
-        creditStatus: [],
+        // leaseholdStatus: [],
+        // creditStatus: [],
         deliveryStore: '',
         deliveryMode: [],
       }
@@ -491,8 +463,8 @@ export default {
         finishDate: [],
         // businessStatus: [],
         serviceStatus: [],
-        leaseholdStatus: [],
-        creditStatus: [],
+        // leaseholdStatus: [],
+        // creditStatus: [],
         deliveryStore: '',
         deliveryMode: [],
       })
@@ -533,16 +505,16 @@ export default {
         cur && cum.push(this.serviceStatus[i].key)
         return cum
       }, []))
-      conds.leaseholdStatus && (conds.leaseholdStatus =
-      conds.leaseholdStatus.reduce((cum, cur, i) => {
-        cur && cum.push(this.leaseholdStatus[i].key)
-        return cum
-      }, []))
-      conds.creditStatus && (conds.creditStatus =
-      conds.creditStatus.reduce((cum, cur, i) => {
-        cur && cum.push(this.creditStatuss[i].key)
-        return cum
-      }, []))
+      // conds.leaseholdStatus && (conds.leaseholdStatus =
+      // conds.leaseholdStatus.reduce((cum, cur, i) => {
+      //   cur && cum.push(this.leaseholdStatus[i].key)
+      //   return cum
+      // }, []))
+      // conds.creditStatus && (conds.creditStatus =
+      // conds.creditStatus.reduce((cum, cur, i) => {
+      //   cur && cum.push(this.creditStatuss[i].key)
+      //   return cum
+      // }, []))
       conds.deliveryMode && (conds.deliveryMode =
       conds.deliveryMode.reduce((cum, cur, i) => {
         cur && cum.push(this.deliveryModes[i].key)

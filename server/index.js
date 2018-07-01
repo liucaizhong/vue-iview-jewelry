@@ -107,6 +107,12 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/admin/SellService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.get('/common/backendorder/', (req, res) => {
     console.log('req.url', req.url)
     request({

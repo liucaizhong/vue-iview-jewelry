@@ -787,9 +787,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('应退款必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('应退款不能为负数'))
               }
               cb()
             }
@@ -799,9 +798,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('应退款必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('应退款不能为负数'))
               }
               cb()
             }
@@ -812,9 +810,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('补差金额必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('补差金额不能为负数'))
               }
               cb()
             }
@@ -824,9 +821,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('补差金额必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('补差金额不能为负数'))
               }
               cb()
             }
@@ -837,9 +833,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('赔偿金额必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('赔偿金额不能为负数'))
               }
               cb()
             }
@@ -849,9 +844,8 @@ export default {
           validator (rule, value, cb) {
             if (value) {
               const numFloat = parseFloat(value, 10)
-              const numInt = parseInt(value, 10)
-              if (isNaN(+value) || numFloat !== numInt || numInt < 0) {
-                cb(new Error('赔偿金额必须为正整数'))
+              if (isNaN(+value) || numFloat < 0) {
+                cb(new Error('赔偿金额不能为负数'))
               }
               cb()
             }

@@ -18,6 +18,8 @@ const RentOrderDetail = () => import('@/components/RentOrderDetail')
 const NotFound = () => import('@/components/NotFound')
 const Persona = () => import('@/components/Persona')
 const PackageService = () => import('@/components/PackageService')
+const SaleService = () => import('@/components/SaleService')
+const SaleServiceDetail = () => import('@/components/SaleServiceDetail')
 
 export default new Router({
   mode: 'history',
@@ -92,6 +94,18 @@ export default new Router({
       }, {
         path: 'package-service',
         component: PackageService,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'sale-service',
+        component: SaleService,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'sale-service/:id',
+        component: SaleServiceDetail,
         meta: {
           requiresAuth: true,
         },

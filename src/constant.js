@@ -374,4 +374,20 @@ module.exports = {
     key: '6',
     value: '服务关闭',
   }],
+  SALESTATUS: [{
+    key: '0',
+    value: '已创建',
+  }, {
+    key: '1',
+    value: '待支付',
+  }, {
+    key: '2',
+    value: '待取货',
+  }, {
+    key: '3',
+    value: '已完成',
+  }, {
+    key: '4',
+    value: '服务关闭',
+  }],
 }

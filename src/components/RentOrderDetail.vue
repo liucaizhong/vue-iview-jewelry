@@ -88,7 +88,7 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <router-link
-                :to="`/dashboard/rent-service/${form.serviceNo}`"
+                :to="backToServiceUrl(form.serviceType, form.serviceNo)"
               >
                 {{ form.serviceNo }}
               </router-link>
@@ -131,6 +131,7 @@ export default {
         createDate: '',
         createdBy: '',
         serviceNo: '',
+        serviceType: '',
         // relatedPaymentOrders: [],
       },
     }
@@ -176,6 +177,18 @@ export default {
           content: '未找到该订单的详细信息',
         })
       })
+  },
+  methods: {
+    backToServiceUrl (type, serviceNo) {
+      switch (type) {
+        case '0':
+          return `/dashboard/rent-service/${serviceNo}`
+        case '1':
+          return `/dashboard/package-service/${serviceNo}`
+        case '2':
+          return `/dashboard/sale-service/${serviceNo}`
+      }
+    },
   },
 }
 </script>
