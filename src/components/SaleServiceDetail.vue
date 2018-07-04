@@ -328,7 +328,7 @@ export default {
       searchProductLoading: false,
       form: {
         serviceNo: '',
-        serviceType: '0',
+        serviceType: '2',
         memberId: '',
         name: '',
         phone: '',
@@ -456,10 +456,10 @@ export default {
           this.form = {
             ...results[0],
           }
-          this.form.serviceType || (this.form.serviceType = '0')
-          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.userid)
+          this.form.serviceType || (this.form.serviceType = '2')
+          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.id)
           this.form.serviceCloseOperator ||
-            (this.form.serviceCloseOperator = this.login.userid)
+            (this.form.serviceCloseOperator = this.login.id)
           if (!this.form.product) {
             this.form.product = {
               ...this.form.reservedProduct,

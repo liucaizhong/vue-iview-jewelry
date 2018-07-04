@@ -18,6 +18,7 @@ const RentOrderDetail = () => import('@/components/RentOrderDetail')
 const NotFound = () => import('@/components/NotFound')
 const Persona = () => import('@/components/Persona')
 const PackageService = () => import('@/components/PackageService')
+const PackageServiceDetail = () => import('@/components/PackageServiceDetail')
 const SaleService = () => import('@/components/SaleService')
 const SaleServiceDetail = () => import('@/components/SaleServiceDetail')
 
@@ -94,6 +95,12 @@ export default new Router({
       }, {
         path: 'package-service',
         component: PackageService,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'package-service/:id',
+        component: PackageServiceDetail,
         meta: {
           requiresAuth: true,
         },
