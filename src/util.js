@@ -46,6 +46,10 @@ export default {
       return true
     }
 
+    Vue.prototype.$roundTo2Decimal = function (number) {
+      return Math.round(number * 100) / 100
+    }
+
     Vue.prototype.$fetch = function (url, config = {}) {
       this.$Loading.start()
       // const baseUrl = process.env.NODE_ENV === 'production' ?

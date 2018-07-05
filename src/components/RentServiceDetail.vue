@@ -1006,8 +1006,8 @@ export default {
     changeCompensation (event) {
       this.form.compensation = event.target.value
       const { residualDeposit, useBalance } = this.form
-      const amount = parseFloat(event.target.value || '0') - parseFloat(residualDeposit)
-      const gap = amount - parseFloat(this.userBalance)
+      const amount = this.$roundTo2Decimal(parseFloat(event.target.value || '0') - parseFloat(residualDeposit))
+      const gap = this.$roundTo2Decimal(amount - parseFloat(this.userBalance))
       if (amount > 0) {
         this.form.returnDeposit = '0'
         this.showUseBalanceSwitch = true

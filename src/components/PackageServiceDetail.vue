@@ -219,7 +219,7 @@
           <div class="dotted-line" />
           <Tabs
             v-if="!finishDone"
-            value="confirmDelivery"
+            :value="toDelivery ? 'confirmDelivery' : 'confirmReturn'"
           >
             <TabPane v-if="toDelivery" label="取货信息" name="confirmDelivery">
               <FormItem
@@ -917,7 +917,7 @@ export default {
             (this.form.returnOperator = this.login.id)
           this.form.serviceCloseOperator ||
             (this.form.serviceCloseOperator = this.login.id)
-          if (!this.form.product) {
+          if (this.form.reservedProduct && !this.form.product) {
             this.form.product = {
               ...this.form.reservedProduct,
             }
@@ -941,8 +941,8 @@ export default {
     changeCompensation (event) {
       this.form.compensation = event.target.value
       const { useBalance } = this.form
-      const amount = parseFloat(event.target.value || '0')
-      const gap = amount - parseFloat(this.userBalance)
+      const amount = this.$roundTo2Decimal(parseFloat(event.target.value || '0'))
+      const gap = this.$roundTo2Decimal(amount - parseFloat(this.userBalance))
       console.log('form.compensation', amount)
       if (amount > 0) {
         this.showUseBalanceSwitch = true
@@ -1121,6 +1121,7 @@ export default {
           if (claimResult === '0') {
             this.form.serviceStatus = serviceStatus
             this.confirmDeliveryLoading = false
+            this.form.reservedProduct = null
             this.$Message.success({
               content: '提货成功',
             })
