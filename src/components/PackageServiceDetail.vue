@@ -216,7 +216,7 @@
             </FormItem>
             </Col>
           </Row>
-          <div class="dotted-line" />
+          <div v-if="!finishDone" class="dotted-line" />
           <Tabs
             v-if="!finishDone"
             :value="toDelivery ? 'confirmDelivery' : 'confirmReturn'"
@@ -371,6 +371,7 @@
                     @click="confirmDelivery"
                     :loading="confirmDeliveryLoading"
                     long
+                    :disabled="confirmFinishLoading"
                   >{{ '确认取货' }}</Button>
                   </Col>
                 </Row>
@@ -382,6 +383,7 @@
                     type="primary"
                     @click="confirmFinish"
                     :loading="confirmFinishLoading"
+                    :disabled="confirmDeliveryLoading"
                     long
                   >{{ '确认完成' }}</Button>
                   </Col>
@@ -563,8 +565,8 @@
                   <Col :xs="24" :md="16" :lg="12">
                   <Button
                     type="primary"
-                    @click="confirmFinish"
-                    :loading="confirmFinishLoading"
+                    @click="confirmReturn"
+                    :loading="confirmReturnLoading"
                     long
                   >{{ '确认还货' }}</Button>
                   </Col>
@@ -576,11 +578,153 @@
       </section>
     </Form>
     <section class="exchange-history">
-      <header>换货记录</header>
-      <div v-if="form.changelist" class="section-body">
+      <header>商品租赁记录</header>
+      <div v-if="form.changelist && form.changelist.length" class="section-body">
+        <Timeline>
+          <TimelineItem v-for="(ev, i) in form.changelist" :key="i">
+            <Card>
+              <p slot="title">
+                {{ ev.startDate + ' ~ ' + (ev.endDate || '至今') }}
+              </p>
+              <Form
+                :label-width="180"
+              >
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品编号">
+                    <p>{{ ev.serialNumber }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品ID">
+                    <p>{{ ev.productid }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品编号">
+                    <p>{{ ev.serialNumber }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品ID">
+                    <p>{{ ev.productid }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品类别">
+                    <p>{{ categoryText(ev.product.category) }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品型号">
+                    <p>{{ ev.product.model }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品品牌">
+                    <p>{{ ev.product.brand }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品系列">
+                    <p>{{ ev.product.series }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品名称">
+                    <p>{{ ev.product.title }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品销售价">
+                    <p>{{ ev.product.sellingPrice }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <FormItem label="提货方式">
+                  <Row>
+                    <Col :xs="24" :md="16" :lg="12">
+                    <p>
+                      {{
+                        ev.receiverName
+                          ? deliveryModes['0'].value
+                          : deliveryModes['1'].value
+                      }}
+                    </p>
+                    </Input>
+                    </Col>
+                  </Row>
+                </FormItem>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="提货经办人">
+                    <p>{{ ev.deliveryOperator }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="取货门店">
+                    <p>{{ ev.deliveryStore }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row v-if="ev.receiverName" :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="收货人姓名">
+                    <p>{{ ev.receiverName }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="收货人手机">
+                    <p>{{ ev.receiverPhone }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <FormItem v-if="ev.receiverAddress" label="收货人地址" >
+                  <Row>
+                    <Col :xs="24" :md="16" :lg="12">
+                    <p>{{ ev.receiverAddress }}</p>
+                    </Col>
+                  </Row>
+                </FormItem>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="物品状态">
+                    <p>{{ ev.leaseholdStatus }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col v-if="ev.compensation" :xs="12" :md="10" :lg="8">
+                  <FormItem label="赔偿金额">
+                    <p>{{ ev.compensation }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="还货经办人">
+                    <p>{{ ev.returnOperator }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="还货门店">
+                    <p>{{ ev.returnStore }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+              </Form>
+            </Card>
+          </TimelineItem>
+        </Timeline>
       </div>
       <div v-else class="has-no-exchange-history">
-        暂无换货历史记录
+        暂无商品租赁记录
       </div>
     </section>
     <Modal v-model="confirmDeliveryModal" width="360">
@@ -594,6 +738,19 @@
       </div>
       <div slot="footer">
         <Button type="success" long @click="handleConfirmDeliveryModal">确认</Button>
+      </div>
+    </Modal>
+    <Modal v-model="confirmReturnModal" width="360">
+      <p slot="header" style="color: #19be6b;text-align: center">
+        <Icon type="ios-information" />
+        <span>确认还货</span>
+      </p>
+      <div style="text-align:center">
+        <p>确认还货后，还货记录将不得再修改。</p>
+        <p>是否确认还货?</p>
+      </div>
+      <div slot="footer">
+        <Button type="success" long @click="handleConfirmReturnModal">确认</Button>
       </div>
     </Modal>
     <Modal v-model="confirmFinishModal" width="360">
@@ -631,8 +788,10 @@ export default {
       deliveryModes: DELIVERYMODE,
       categoryOfGood: CATEGORYOFGOOD,
       confirmDeliveryLoading: false,
+      confirmReturnLoading: false,
       confirmFinishLoading: false,
       confirmDeliveryModal: false,
+      confirmReturnModal: false,
       confirmFinishModal: false,
       // stepStatus: 'process',
       // disableProductid: true,
@@ -938,6 +1097,11 @@ export default {
       })
   },
   methods: {
+    categoryText: function (category) {
+      const categoryText = this.categoryOfGood.find(cur =>
+        cur.key === category)
+      return categoryText && categoryText.value
+    },
     changeCompensation (event) {
       this.form.compensation = event.target.value
       const { useBalance } = this.form
@@ -1080,6 +1244,50 @@ export default {
     // clickDeliveryBtn () {
     //   this.disableProductid = !this.disableProductid
     // },
+    confirmReturn () {
+      this.confirmReturnModal = true
+    },
+    handleConfirmReturnModal () {
+      this.confirmReturnModal = false
+      this.confirmReturnLoading = true
+      const { serviceNo, returnStore, useBalance, compensation, remarks,
+        leaseholdStatus, sellingAmount, returnOperator } = this.form
+      const options = this.returnMethod ? {
+        sellingAmount,
+      } : {
+        compensation,
+      }
+      const url = '/admin/ComboService/giveback/'
+      this.$fetch(url, {
+        data: {
+          serviceNo,
+          returnStore,
+          useBalance,
+          remarks,
+          returnOperator,
+          ...options,
+        },
+        method: 'post',
+      })
+        .then(resp => {
+          console.log(resp)
+          const { serviceStatus } = resp.data
+          serviceStatus && (this.form.serviceStatus = serviceStatus)
+          this.confirmReturnLoading = false
+          this.form.product = null
+          this.form.productid = ''
+          this.$Message.success({
+            content: '还货成功',
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          this.confirmReturnLoading = false
+          this.$Message.error({
+            content: '还货失败',
+          })
+        })
+    },
     confirmDelivery () {
       if (this.form.serialNumber) {
         this.confirmDeliveryModal = true
@@ -1117,20 +1325,15 @@ export default {
       })
         .then(resp => {
           console.log(resp)
-          const { claimResult, serviceStatus } = resp.data
-          if (claimResult === '0') {
-            this.form.serviceStatus = serviceStatus
-            this.confirmDeliveryLoading = false
-            this.form.reservedProduct = null
-            this.$Message.success({
-              content: '提货成功',
-            })
-          } else {
-            this.confirmDeliveryLoading = false
-            this.$Message.error({
-              content: '提货失败',
-            })
-          }
+          const { serviceStatus } = resp.data
+          serviceStatus ? (this.form.serviceStatus = serviceStatus)
+            : (this.form.serviceStatus === '2' && (this.form.serviceStatus = '3'))
+          this.confirmDeliveryLoading = false
+          this.form.reservedProduct = null
+          this.form.reservedProductid = ''
+          this.$Message.success({
+            content: '提货成功',
+          })
         })
         .catch(err => {
           console.log(err)
@@ -1140,34 +1343,23 @@ export default {
           })
         })
     },
-    confirmFinish (status) {
+    confirmFinish () {
       this.confirmFinishModal = true
     },
     handleConfirmFinishModal () {
-      this.confirmFinishModal = false
       this.confirmFinishLoading = true
-      const { serviceNo, serviceType, serviceCloseOperator,
-        returnStore, useBalance, compensation, remarks,
-        leaseholdStatus, sellingAmount } = this.form
-      const options = this.returnMethod ? {
-        sellingAmount,
-      } : {
-        compensation,
-      }
+      this.confirmFinishModal = false
+      const { serviceNo, serviceType, serviceCloseOperator } = this.form
+
       const url = '/admin/CompleteService/'
       this.$fetch(url, {
         data: {
           serviceNo,
           serviceType,
           serviceCloseOperator,
-          returnStore,
-          useBalance,
-          remarks,
-          leaseholdStatus,
-          ...options,
         },
         method: 'post',
-      })
+      }, true)
         .then(resp => {
           console.log(resp)
           const { serviceStatus } = resp.data

@@ -3,7 +3,7 @@ import { Layout, Sider, Menu, Submenu, Icon, MenuItem, Header, LoadingBar,
   Select, Option, Table, Page, Modal, Row, Col, Upload, Progress, Notice,
   Collapse, Panel, Button, Input, Badge, AutoComplete, Message, Cascader,
   DatePicker, Steps, Step, Spin, Tabs, TabPane, Tooltip, Poptip, Tag,
-  Switch } from 'iview'
+  Switch, Timeline, TimelineItem, Card } from 'iview'
 
 export default {
   initComponents (Vue) {
@@ -50,5 +50,8 @@ export default {
     Vue.component('Poptip', Poptip)
     Vue.component('Tag', Tag)
     Vue.component('iSwitch', Switch)
+    Vue.component('Timeline', Timeline)
+    Vue.component('TimelineItem', TimelineItem)
+    Vue.component('Card', Card)
   }
 }

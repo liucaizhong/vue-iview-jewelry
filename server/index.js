@@ -6,8 +6,8 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://86nzrr.natappfree.cc/api-auth'
-// const baseUrl = 'http://120.55.55.106/api-auth'
+// const baseUrl = 'http://yttse3.natappfree.cc/api-auth'
+const baseUrl = 'http://120.55.55.106/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -161,6 +161,22 @@ module.exports = () => {
   })
 
   router.post('/admin/ClaimGoods/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
+  // router.post('/admin/ComboService/claimgood/', (req, res) => {
+  //   request({
+  //     url: mapUrl(req.url),
+  //     method: 'post',
+  //     data: req.body,
+  //   }, req, res)
+  // })
+
+  router.post('/admin/ComboService/giveback/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
