@@ -20,6 +20,8 @@ module.exports = {
   }],
   ADDRESSMAXNUM: 5,
   MAINIMAGENUM: 6,
+  APPSWIPERIMAGENUM: 5,
+  APPADIMAGENUM: 3,
   MAINIMAGEMAXSIZE: 2048,
   CSVFILEMAXSIZE: 1024,
   ZIPFILEMAXSIZE: 5120,
@@ -30,11 +32,7 @@ module.exports = {
       name: '信息管理',
       icon: 'search',
       url: '/dashboard/member'
-    }, {
-      name: '预约管理',
-      icon: 'ios-list',
-      url: '/dashboard/booking'
-    }]
+    }],
   }, {
     name: '商品管理',
     icon: 'ios-box',
@@ -75,8 +73,15 @@ module.exports = {
       icon: 'search',
       url: '/dashboard/rent-order',
     }],
+  }, {
+    name: '公众号管理',
+    icon: 'home',
+    items: [{
+      name: '首页配置',
+      icon: 'settings',
+      url: '/dashboard/index-conf',
+    }],
   }],
-
   SIDEBARSUBMENUS: {
     '/dashboard/member': '0-0',
     '/dashboard/booking': '0-1',
@@ -87,6 +92,7 @@ module.exports = {
     '/dashboard/package-service': '2-1',
     '/dashboard/sale-service': '2-2',
     '/dashboard/rent-order': '3-0',
+    '/dashboard/index-conf': '4-0',
   },
   CATEGORYOFGOOD: [{
     key: '0',

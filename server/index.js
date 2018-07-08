@@ -120,6 +120,21 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/admin/appindexconf/', (req, res) => {
+    console.log('req.url', req.url)
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/admin/appindexconf/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body
+    }, req, res)
+  })
+
   router.post('/admin/member/', (req, res) => {
     request({
       url: mapUrl(req.url),

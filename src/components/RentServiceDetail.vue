@@ -383,7 +383,7 @@
                   <Select
                     v-model="form.leaseholdStatus"
                     :disabled="finishDone"
-                    @on-change="changeLeaseholdStatus"
+                    @on-change="changeLeaseholdStatus0"
                   >
                     <Option
                       v-for="item in leaseholdStatuss"
@@ -419,13 +419,14 @@
                     v-model="form.returnDeposit"
                     placeholder="请填写应退款金额"
                     :disabled="finishDone"
+                    readonly
                   >
                   <span slot="append">元</span>
                   </Input>
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch">
+              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch0">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <i-switch
@@ -434,20 +435,20 @@
                     :true-value="'1'"
                     :false-value="'0'"
                     size="large"
-                    @on-change="onChangeUseBalance"
+                    @on-change="onChangeUseBalance0"
                   />
                   <span>{{ userBalanceDesc }}</span>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem
-                v-show="showUseBalanceSwitch"
+                v-show="showUseBalanceSwitch0"
                 label="还需支付金额"
-                prop="stillToPayAmount"
+                prop="stillToPayAmount0"
               >
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
+                  <span>{{ `¥${form.stillToPayAmount0 || 0}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -501,7 +502,6 @@
                   <Select
                     v-model="form.leaseholdStatus"
                     :disabled="finishDone"
-                    @on-change="changeLeaseholdStatus"
                   >
                     <Option
                       v-for="item in leaseholdStatuss"
@@ -522,6 +522,7 @@
                     v-model="form.adjustmentAmount"
                     placeholder="请填写租转售补差金额"
                     :disabled="finishDone"
+                    readonly
                   >
                   <span slot="append">元</span>
                   </Input>
@@ -536,13 +537,14 @@
                     v-model="form.returnDeposit"
                     placeholder="请填写应退款金额"
                     :disabled="finishDone"
+                    readonly
                   >
                   <span slot="append">元</span>
                   </Input>
                   </Col>
                 </Row>
               </FormItem>
-              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch">
+              <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch1">
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
                   <i-switch
@@ -551,20 +553,20 @@
                     :true-value="'1'"
                     :false-value="'0'"
                     size="large"
-                    @on-change="onChangeUseBalance"
+                    @on-change="onChangeUseBalance1"
                   />
                   <span>{{ userBalanceDesc }}</span>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem
-                v-show="showUseBalanceSwitch"
+                v-show="showUseBalanceSwitch1"
                 label="还需支付金额"
-                prop="stillToPayAmount"
+                prop="stillToPayAmount1"
               >
                 <Row>
                   <Col :xs="24" :md="16" :lg="12">
-                  <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
+                  <span>{{ `¥${form.stillToPayAmount1 || 0}` }}</span>
                   </Col>
                 </Row>
               </FormItem>
@@ -690,7 +692,8 @@ export default {
       searchProductLoading: false,
       completeTabs: 'rentClose',
       userBalance: '',
-      showUseBalanceSwitch: false,
+      showUseBalanceSwitch0: false,
+      showUseBalanceSwitch1: false,
       form: {
         serviceNo: '',
         serviceType: '0',
@@ -753,7 +756,8 @@ export default {
         compensation: '0',
         // relatedOrders: [],
         useBalance: '0',
-        stillToPayAmount: 0,
+        stillToPayAmount0: 0,
+        stillToPayAmount1: 0,
       },
       ruleValidate: {
         productid: [{
@@ -988,6 +992,10 @@ export default {
             }
             this.form.productid = this.form.reservedProductid
           }
+
+          const amount = this.$roundTo2Decimal((parseFloat(this.form.compensation) || 0)
+            - (parseFloat(this.form.residualDeposit) || 0))
+          this.form.returnDeposit = amount > 0 ? '0' : Math.abs(amount).toString()
           this.getMemberBalance()
         } else {
           this.$Message.error({
@@ -1010,24 +1018,32 @@ export default {
       const gap = this.$roundTo2Decimal(amount - parseFloat(this.userBalance))
       if (amount > 0) {
         this.form.returnDeposit = '0'
-        this.showUseBalanceSwitch = true
+        this.showUseBalanceSwitch0 = true
         // console.log('usebalance', useBalance, amount)
-        this.form.stillToPayAmount = +useBalance ? (gap > 0 ? gap : 0) : amount
+        this.form.stillToPayAmount0 = +useBalance ? (gap > 0 ? gap : 0) : amount
       } else {
         this.form.returnDeposit = Math.abs(amount).toString()
-        this.showUseBalanceSwitch = false
-        this.form.stillToPayAmount = 0
+        this.showUseBalanceSwitch0 = false
+        this.form.stillToPayAmount0 = 0
       }
       this.$forceUpdate()
     },
-    changeLeaseholdStatus (value) {
+    changeLeaseholdStatus0 (value) {
       if (value === '0') {
-        this.showUseBalanceSwitch = false
+        this.showUseBalanceSwitch0 = false
         this.form.compensation = '0'
         this.form.useBalance = '0'
         this.$forceUpdate()
       }
     },
+    // changeLeaseholdStatus1 (value) {
+    //   if (value === '0') {
+    //     this.showUseBalanceSwitch1 = false
+    //     this.form.compensation = '0'
+    //     this.form.useBalance = '0'
+    //     this.$forceUpdate()
+    //   }
+    // },
     getMemberBalance () {
       const url = '/admin/member/'
       const { memberId } = this.form
@@ -1043,16 +1059,48 @@ export default {
         console.log('err', err)
       })
     },
-    onChangeUseBalance (use) {
-      if (use) {
-        const { compensation, residualDeposit } = this.form
-        const total = parseFloat(compensation) - parseFloat(residualDeposit)
-          - parseFloat(this.userBalance)
+    onChangeUseBalance0 (use) {
+      const { compensation, residualDeposit } = this.form
+      if (+use) {
+        const total = this.$roundTo2Decimal(parseFloat(compensation) - parseFloat(residualDeposit)
+          - parseFloat(this.userBalance))
+        console.log('changeusebalance', total)
         if (total < 0) {
-          this.form.stillToPayAmount = 0
+          this.form.stillToPayAmount0 = 0
         } else {
-          this.form.stillToPayAmount = Math.abs(total)
+          this.form.stillToPayAmount0 = Math.abs(total)
         }
+      } else {
+        const total = this.$roundTo2Decimal(parseFloat(compensation) - parseFloat(residualDeposit))
+        console.log('changeusebalance', total)
+        if (total < 0) {
+          this.form.stillToPayAmount0 = 0
+        } else {
+          this.form.stillToPayAmount0 = Math.abs(total)
+        }
+      }
+    },
+    onChangeUseBalance1 (use) {
+      const { initialRent, initialDeposit } = this.form
+      const { sellingPrice } = this.form.product
+      const amount = this.$roundTo2Decimal((parseFloat(sellingPrice) || 0)
+        - (parseFloat(initialRent) || 0)
+        - (parseFloat(initialDeposit) || 0))
+      const total = this.$roundTo2Decimal((parseFloat(sellingPrice) || 0)
+        - (parseFloat(initialRent) || 0)
+        - (parseFloat(initialDeposit) || 0)
+        - parseFloat(this.userBalance))
+
+      if (+use) {
+        if (total > 0) {
+          this.form.stillToPayAmount1 = total
+        } else {
+          this.form.stillToPayAmount1 = 0
+        }
+      } else if (amount > 0) {
+        this.form.stillToPayAmount1 = amount
+      } else {
+        this.form.stillToPayAmount1 = 0
       }
     },
     checkRelatedOrders () {
@@ -1215,29 +1263,37 @@ export default {
       switch (name) {
         case 'rentClose': {
           const { compensation, residualDeposit } = this.form
-          const amount = (parseFloat(compensation) || 0) - (parseFloat(residualDeposit) || 0)
+          const amount = this.$roundTo2Decimal((parseFloat(compensation) || 0)
+            - (parseFloat(residualDeposit) || 0))
           console.log('rentClose', amount)
           if (amount > 0) {
+            this.showUseBalanceSwitch0 = true
             this.form.returnDeposit = '0'
           } else {
+            this.showUseBalanceSwitch0 = false
             this.form.returnDeposit = Math.abs(amount).toString()
           }
+          this.form.leaseholdStatus = '0'
           break
         }
         case 'rentToSaleClose': {
           const { initialRent, initialDeposit } = this.form
           const { sellingPrice } = this.form.product
-          const amount = (parseFloat(sellingPrice) || 0)
+          const amount = this.$roundTo2Decimal((parseFloat(sellingPrice) || 0)
             - (parseFloat(initialRent) || 0)
-            - (parseFloat(initialDeposit) || 0)
+            - (parseFloat(initialDeposit) || 0))
           console.log('rentToSaleClose', amount)
           if (amount > 0) {
+            this.showUseBalanceSwitch1 = true
             this.form.returnDeposit = '0'
             this.form.adjustmentAmount = amount.toString()
+            this.form.stillToPayAmount1 = amount
           } else {
+            this.showUseBalanceSwitch1 = false
             this.form.returnDeposit = Math.abs(amount).toString()
             this.form.adjustmentAmount = '0'
           }
+          this.form.leaseholdStatus = '0'
           break
         }
       }

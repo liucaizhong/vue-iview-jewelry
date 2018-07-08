@@ -420,7 +420,6 @@
                     <Col :xs="24" :md="16" :lg="12" :style="{ position: 'relative' }">
                     <Select
                       v-model="form.leaseholdStatus"
-                      @on-change="changeLeaseholdStatus"
                     >
                       <Option
                         v-for="item in leaseholdStatuss"
@@ -447,7 +446,7 @@
                     </Col>
                   </Row>
                 </FormItem>
-                <FormItem label="用户余额抵扣" prop="useBalance" v-show="showUseBalanceSwitch">
+                <FormItem label="用户余额抵扣" prop="useBalance" v-show="showUseBalanceSwitch1">
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
                     <i-switch
@@ -455,20 +454,20 @@
                       :true-value="'1'"
                       :false-value="'0'"
                       size="large"
-                      @on-change="onChangeUseBalance"
+                      @on-change="onChangeUseBalance1"
                     />
                     <span>{{ userBalanceDesc }}</span>
                     </Col>
                   </Row>
                 </FormItem>
                 <FormItem
-                  v-show="showUseBalanceSwitch"
+                  v-show="showUseBalanceSwitch1"
                   label="还需支付金额"
                   prop="stillToPayAmount"
                 >
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
-                    <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
+                    <span>{{ `¥${form.stillToPayAmount1 || 0}` }}</span>
                     </Col>
                   </Row>
                 </FormItem>
@@ -506,7 +505,7 @@
                     </Col>
                   </Row>
                 </FormItem>
-                <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch">
+                <FormItem label="用户余额抵扣" prop="useBalance" v-if="showUseBalanceSwitch0">
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
                     <i-switch
@@ -514,20 +513,20 @@
                       :true-value="'1'"
                       :false-value="'0'"
                       size="large"
-                      @on-change="onChangeUseBalance"
+                      @on-change="onChangeUseBalance0"
                     />
                     <span>{{ userBalanceDesc }}</span>
                     </Col>
                   </Row>
                 </FormItem>
                 <FormItem
-                  v-show="showUseBalanceSwitch"
+                  v-show="showUseBalanceSwitch0"
                   label="还需支付金额"
                   prop="stillToPayAmount"
                 >
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
-                    <span>{{ `¥${form.stillToPayAmount || 0}` }}</span>
+                    <span>{{ `¥${form.stillToPayAmount0 || 0}` }}</span>
                     </Col>
                   </Row>
                 </FormItem>
@@ -587,20 +586,9 @@
                 {{ ev.startDate + ' ~ ' + (ev.endDate || '至今') }}
               </p>
               <Form
-                :label-width="180"
+                :label-width="150"
+                class="exchange-history-form"
               >
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品编号">
-                    <p>{{ ev.serialNumber }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品ID">
-                    <p>{{ ev.productid }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
                 <Row :style="{ 'padding-left': 0 }">
                   <Col :xs="12" :md="10" :lg="8">
                   <FormItem label="商品编号">
@@ -651,7 +639,7 @@
                 </Row>
                 <FormItem label="提货方式">
                   <Row>
-                    <Col :xs="24" :md="16" :lg="12">
+                    <Col :xs="24" :md="24" :lg="24">
                     <p>
                       {{
                         ev.receiverName
@@ -689,7 +677,7 @@
                 </Row>
                 <FormItem v-if="ev.receiverAddress" label="收货人地址" >
                   <Row>
-                    <Col :xs="24" :md="16" :lg="12">
+                    <Col :xs="24" :md="24" :lg="24">
                     <p>{{ ev.receiverAddress }}</p>
                     </Col>
                   </Row>
@@ -697,7 +685,7 @@
                 <Row :style="{ 'padding-left': 0 }">
                   <Col :xs="12" :md="10" :lg="8">
                   <FormItem label="物品状态">
-                    <p>{{ ev.leaseholdStatus }}</p>
+                    <p>{{ leaseholdStatuss[ev.leaseholdStatus].value }}</p>
                   </FormItem>
                   </Col>
                   <Col v-if="ev.compensation" :xs="12" :md="10" :lg="8">
@@ -798,7 +786,8 @@ export default {
       searchProductLoading: false,
       completeTabs: 'rentClose',
       userBalance: '',
-      showUseBalanceSwitch: false,
+      showUseBalanceSwitch0: false,
+      showUseBalanceSwitch1: false,
       returnMethod: 0, // 0: normal, 1: toSell
       form: {
         serviceNo: '',
@@ -860,7 +849,8 @@ export default {
         realChargingRent: '0',
         compensation: '0',
         useBalance: '0',
-        stillToPayAmount: 0,
+        stillToPayAmount0: 0,
+        stillToPayAmount1: 0,
         changelist: [],
         sellingAmount: '0',
       },
@@ -1082,6 +1072,7 @@ export default {
             }
             this.form.productid = this.form.reservedProductid
           }
+          this.form.leaseholdStatus = '0'
           this.getMemberBalance()
         } else {
           this.$Message.error({
@@ -1109,12 +1100,12 @@ export default {
       const gap = this.$roundTo2Decimal(amount - parseFloat(this.userBalance))
       console.log('form.compensation', amount)
       if (amount > 0) {
-        this.showUseBalanceSwitch = true
-        this.form.stillToPayAmount = +useBalance ? (gap > 0 ? gap : 0) : amount
+        this.showUseBalanceSwitch0 = true
+        this.form.stillToPayAmount0 = +useBalance ? (gap > 0 ? gap : 0) : amount
         // console.log('form.compensation', amount)
       } else {
-        this.showUseBalanceSwitch = false
-        this.form.stillToPayAmount = 0
+        this.showUseBalanceSwitch0 = false
+        this.form.stillToPayAmount0 = 0
       }
       this.$forceUpdate()
     },
@@ -1122,22 +1113,24 @@ export default {
       if (value) {
         this.form.sellingAmount = this.form.product.sellingPrice
         this.form.useBalance = '0'
-        this.showUseBalanceSwitch = true
-        this.form.stillToPayAmount = parseFloat(this.form.sellingAmount)
+        this.showUseBalanceSwitch1 = true
+        this.form.stillToPayAmount1 = this.$roundTo2Decimal(parseFloat(this.form.sellingAmount))
       } else {
         this.form.useBalance = '0'
-        this.showUseBalanceSwitch = false
+        this.showUseBalanceSwitch0 = false
         this.form.compensation = '0'
       }
+      this.form.leaseholdStatus = '0'
       this.$forceUpdate()
     },
     changeLeaseholdStatus (value) {
+      console.log('changeLeaseholdStatus', value)
       if (value === '0') {
-        this.showUseBalanceSwitch = false
+        this.showUseBalanceSwitch0 = false
         this.form.compensation = '0'
         this.form.useBalance = '0'
-        this.$forceUpdate()
       }
+      this.$forceUpdate()
     },
     changeSellingAmount (event) {
       // console.log('form.sellingAmount', event.target.value)
@@ -1171,26 +1164,31 @@ export default {
         console.log('err', err)
       })
     },
-    onChangeUseBalance (use) {
-      if (use) {
-        if (this.returnMethod) {
-          const { sellingAmount } = this.form
-          const total = parseFloat(sellingAmount)
-            - parseFloat(this.userBalance)
-          if (total < 0) {
-            this.form.stillToPayAmount = 0
-          } else {
-            this.form.stillToPayAmount = Math.abs(total)
-          }
+    onChangeUseBalance0 (use) {
+      if (+use) {
+        const { compensation } = this.form
+        const total = this.$roundTo2Decimal(parseFloat(compensation)
+          - parseFloat(this.userBalance))
+        if (total < 0) {
+          this.form.stillToPayAmount0 = 0
         } else {
-          const { compensation } = this.form
-          const total = parseFloat(compensation)
-            - parseFloat(this.userBalance)
-          if (total < 0) {
-            this.form.stillToPayAmount = 0
-          } else {
-            this.form.stillToPayAmount = Math.abs(total)
-          }
+          this.form.stillToPayAmount0 = Math.abs(total)
+        }
+      } else {
+        const { compensation } = this.form
+        const total = this.$roundTo2Decimal(parseFloat(compensation))
+        this.form.stillToPayAmount0 = total
+      }
+    },
+    onChangeUseBalance1 (use) {
+      if (use) {
+        const { sellingAmount } = this.form
+        const total = this.$roundTo2Decimal(parseFloat(sellingAmount)
+          - parseFloat(this.userBalance))
+        if (total < 0) {
+          this.form.stillToPayAmount1 = 0
+        } else {
+          this.form.stillToPayAmount1 = Math.abs(total)
         }
       }
     },
@@ -1434,6 +1432,12 @@ export default {
     .has-no-exchange-history {
       padding: 15px;
       font-size: 12px;
+    }
+
+    .exchange-history-form {
+      .ivu-row {
+        width: 100%;
+      }
     }
   }
 }

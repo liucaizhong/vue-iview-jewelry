@@ -21,6 +21,7 @@ const PackageService = () => import('@/components/PackageService')
 const PackageServiceDetail = () => import('@/components/PackageServiceDetail')
 const SaleService = () => import('@/components/SaleService')
 const SaleServiceDetail = () => import('@/components/SaleServiceDetail')
+const AppIndexConf = () => import('@/components/AppIndexConf')
 
 export default new Router({
   mode: 'history',
@@ -132,6 +133,12 @@ export default new Router({
         path: 'persona',
         alias: '/persona',
         component: Persona,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'index-conf',
+        component: AppIndexConf,
         meta: {
           requiresAuth: true,
         },

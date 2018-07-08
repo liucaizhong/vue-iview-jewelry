@@ -244,7 +244,7 @@ export default {
     span {
       display: inline-block;
       overflow: hidden;
-      width: 69px;
+      width: 75px;
       text-overflow: ellipsis;
       white-space: nowrap;
       vertical-align: bottom;
