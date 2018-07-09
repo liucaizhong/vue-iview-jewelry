@@ -25,7 +25,7 @@ const AppIndexConf = () => import('@/components/AppIndexConf')
 
 export default new Router({
   mode: 'history',
-  base: '/B/',
+  // base: '/B/',
   routes: [
     {
       path: '*',
