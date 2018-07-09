@@ -27,6 +27,22 @@
               action="javascript(void)"
             />
           </FormItem>
+          <FormItem label="常见问题配置" class="main-images">
+            <image-uploader
+              :image-list="form.FAQImages"
+              :image-max-num="1"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+            />
+          </FormItem>
+          <FormItem label="关于我们配置" class="main-images">
+            <image-uploader
+              :image-list="form.aboutUsImages"
+              :image-max-num="1"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+            />
+          </FormItem>
           <FormItem>
             <Button
               type="success"
@@ -60,6 +76,8 @@ export default {
       form: {
         swiperImages: [],
         adImages: [],
+        FAQImages: [],
+        aboutUsImages: [],
       },
       formBak: {},
     }
