@@ -1,6 +1,13 @@
 <template>
   <div class="image-uploader">
-    <div class="upload-list" v-for="item in uploadList" :key="item.url">
+    <div
+      class="upload-list"
+      v-for="(item, i) in uploadList"
+      :key="item.url"
+      :style="{
+        height: needLink ? '250px' : '200px',
+      }"
+    >
       <template v-if="item.status === 'finished'">
         <img :src="item.avatar || item.url">
         <div class="upload-list-cover">
@@ -11,6 +18,12 @@
       <template v-else>
         <Progress v-if="item.showProgress" :percent="item.percentage" hide-info />
       </template>
+      <Input
+        v-if="needLink"
+        v-model="imageList[i].link"
+        placeholder="图片如需链接，请输入正确路径"
+        class="input-link"
+      ></Input>
     </div>
     <Upload
       v-if="uploadList.length < imageMaxNum"
@@ -104,6 +117,10 @@ export default {
       default: function () {
         return {}
       },
+    },
+    needLink: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
@@ -235,6 +252,7 @@ export default {
     img {
       width: 100%;
       height: 100%;
+      max-height: 200px;
     }
 
     .upload-list-cover{
@@ -257,6 +275,21 @@ export default {
 
     &:hover .upload-list-cover {
       display: block;
+    }
+
+    .input-link {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 30px;
+      left: 0;
+
+      input {
+        border: none;
+        outline: none;
+        box-shadow: none;
+        border-radius: 0;
+      }
     }
   }
 

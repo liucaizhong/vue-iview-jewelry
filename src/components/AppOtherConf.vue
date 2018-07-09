@@ -1,32 +1,35 @@
 <template>
-  <div id="app-conf">
+  <div id="other-conf">
     <Form
       ref="form"
       :model="form"
       :label-width="150"
     >
       <section>
-        <header>首页配置</header>
+        <header>其他配置</header>
         <div class="section-body">
-          <FormItem label="轮播图配置" prop="swiperImages">
+          <FormItem label="租赁攻略" class="main-images">
             <image-uploader
-              :image-list="form.swiperImages"
-              multiple
-              :image-max-num="swiperImageNum"
-              :image-max-size="imageMaxSize"
-              action="javascript(void)"
-              need-link
-            />
-          </FormItem>
-          <FormItem label="广告栏配置" class="main-images">
-            <image-uploader
-              v-for="i in adImageNum"
-              :key="i - 1"
-              :image-list="form[`adImages${i-1}`]"
+              :image-list="form.strategyImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
-              need-link
+            />
+          </FormItem>
+          <FormItem label="常见问题" class="main-images">
+            <image-uploader
+              :image-list="form.FAQImages"
+              :image-max-num="1"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+            />
+          </FormItem>
+          <FormItem label="关于我们" class="main-images">
+            <image-uploader
+              :image-list="form.aboutUsImages"
+              :image-max-num="1"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
             />
           </FormItem>
           <FormItem>
@@ -47,7 +50,7 @@
 </template>
 
 <script>
-import { APPSWIPERIMAGENUM, MAINIMAGEMAXSIZE, APPADIMAGENUM } from '@/constant'
+import { MAINIMAGEMAXSIZE } from '@/constant'
 import ImageUploader from './ImageUploader'
 
 export default {
@@ -56,20 +59,17 @@ export default {
   },
   data () {
     return {
-      swiperImageNum: APPSWIPERIMAGENUM,
       imageMaxSize: MAINIMAGEMAXSIZE,
-      adImageNum: APPADIMAGENUM,
       form: {
-        swiperImages: [],
-        adImages0: [],
-        adImages1: [],
-        adImages2: [],
+        strategyImages: [],
+        FAQImages: [],
+        aboutUsImages: [],
       },
       formBak: {},
     }
   },
   created () {
-    const url = '/admin/appindexconf/'
+    const url = '/admin/appotherconf/'
     this.$fetch(url)
       .then(resp => {
         console.log(resp)
@@ -84,14 +84,14 @@ export default {
           }
         } else {
           this.$Message.error({
-            content: '未找到公众号首页配置信息',
+            content: '未找到公众号其他页配置信息',
           })
         }
       })
       .catch(err => {
         console.log(err)
         this.$Message.error({
-          content: '未找到公众号首页配置信息',
+          content: '未找到公众号其他页配置信息',
         })
       })
   },
@@ -119,7 +119,7 @@ export default {
     save () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          const url = '/admin/appindexconf/'
+          const url = '/admin/appotherconf/'
           this.$fetch(url, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -166,7 +166,7 @@ export default {
 </script>
 
 <style lang="less">
-#app-conf {
+#other-conf {
   padding: 15px;
   justify-content: flex-start;
   background: #f7f7f7;

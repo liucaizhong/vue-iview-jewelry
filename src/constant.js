@@ -80,6 +80,10 @@ module.exports = {
       name: '首页配置',
       icon: 'settings',
       url: '/dashboard/index-conf',
+    }, {
+      name: '其他配置',
+      icon: 'hammer',
+      url: '/dashboard/other-conf',
     }],
   }],
   SIDEBARSUBMENUS: {
@@ -93,6 +97,7 @@ module.exports = {
     '/dashboard/sale-service': '2-2',
     '/dashboard/rent-order': '3-0',
     '/dashboard/index-conf': '4-0',
+    '/dashboard/other-conf': '4-1',
   },
   CATEGORYOFGOOD: [{
     key: '0',

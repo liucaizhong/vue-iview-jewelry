@@ -6,8 +6,8 @@ const fs = require('fs')
 
 const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://gdfgy2.natappfree.cc/api-auth'
-// const baseUrl = 'http://120.55.55.106/api-auth'
+// const baseUrl = 'http://gdfgy2.natappfree.cc/api-auth'
+const baseUrl = 'http://120.55.55.106/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -128,6 +128,21 @@ module.exports = () => {
   })
 
   router.post('/admin/appindexconf/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body
+    }, req, res)
+  })
+
+  router.get('/admin/appotherconf/', (req, res) => {
+    console.log('req.url', req.url)
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/admin/appotherconf/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

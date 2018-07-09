@@ -56,7 +56,7 @@
           <FormItem label="邮箱" prop="email">
             <Row>
               <Col :xs="24" :md="16" :lg="12">
-              <p>{{ form.email }}</p>
+              <p>{{ form.email || '待添加' }}</p>
               <Icon
                 class="edit-btn"
                 type="edit"
@@ -76,7 +76,7 @@
             @click.native="editField('address')"
           />
         </header>
-        <div class="section-body">
+        <div class="section-body" v-if="form.address && form.address.length">
           <FormItem
             v-for="(ad, seq) in form.address"
             :key="seq"
@@ -89,6 +89,13 @@
               </Col>
             </Row>
           </FormItem>
+        </div>
+        <div v-else class="section-body">
+          <Row>
+            <Col :xs="24" :md="16" :lg="12">
+            <p>暂无地址信息</p>
+            </Col>
+          </Row>
         </div>
       </section>
       <section>
