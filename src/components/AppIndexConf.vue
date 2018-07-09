@@ -8,11 +8,20 @@
       <section>
         <header>首页配置</header>
         <div class="section-body">
-          <FormItem label="轮播图配置" prop="swiperImages">
-            <image-uploader
+          <FormItem label="轮播图配置" class="main-images">
+            <!-- <image-uploader
               :image-list="form.swiperImages"
               multiple
               :image-max-num="swiperImageNum"
+              :image-max-size="imageMaxSize"
+              action="javascript(void)"
+              need-link
+            /> -->
+            <image-uploader
+              v-for="i in swiperImageNum"
+              :key="i - 1"
+              :image-list="form[`swiperImages${i-1}`]"
+              :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
               need-link
@@ -60,7 +69,11 @@ export default {
       imageMaxSize: MAINIMAGEMAXSIZE,
       adImageNum: APPADIMAGENUM,
       form: {
-        swiperImages: [],
+        swiperImages0: [],
+        swiperImages1: [],
+        swiperImages2: [],
+        swiperImages3: [],
+        swiperImages4: [],
         adImages0: [],
         adImages1: [],
         adImages2: [],
@@ -76,6 +89,22 @@ export default {
         const results = resp.data.results
         if (results && results.length) {
           const temp = results[0]
+          for (let i = 0; i < this.swiperImageNum; ++i) {
+            temp[`swiperImages${i}`] =
+              temp[`swiperImages${i}`]
+                && [{
+                  ...temp[`swiperImages${i}`],
+                }]
+                || []
+          }
+          for (let i = 0; i < this.adImageNum; ++i) {
+            temp[`adImages${i}`] =
+              temp[`adImages${i}`]
+                && [{
+                  ...temp[`adImages${i}`],
+                }]
+                || []
+          }
           this.form = {
             ...temp,
           }
@@ -105,6 +134,7 @@ export default {
           if (key.includes('Image')) {
             if (value && value[0] && value[0].file) {
               data.append(key, value[0].file, value[0].name)
+              value[0].link && data.append(key + '_link', value[0].link)
             }
             if (value && !value.length) {
               data.append(key, '')
@@ -117,41 +147,49 @@ export default {
       return data
     },
     save () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          const url = '/admin/appindexconf/'
-          this.$fetch(url, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            },
-            data: this.formPostdata(),
-            method: 'post',
+      const url = '/admin/appindexconf/'
+      this.$fetch(url, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: this.formPostdata(),
+        method: 'post',
+      })
+        .then(resp => {
+          console.log(resp)
+          const temp = resp.data
+          for (let i = 0; i < this.swiperImageNum; ++i) {
+            temp[`swiperImages${i}`] =
+              temp[`swiperImages${i}`]
+                && [{
+                  ...temp[`swiperImages${i}`],
+                }]
+                || []
+          }
+          for (let i = 0; i < this.adImageNum; ++i) {
+            temp[`adImages${i}`] =
+              temp[`adImages${i}`]
+                && [{
+                  ...temp[`adImages${i}`],
+                }]
+                || []
+          }
+          this.form = {
+            ...temp,
+          }
+          this.formBak = {
+            ...temp,
+          }
+          this.$Message.success({
+            content: '保存成功',
           })
-            .then(resp => {
-              console.log(resp)
-              const temp = resp.data
-              this.form = {
-                ...temp,
-              }
-              this.formBak = {
-                ...temp,
-              }
-              this.$Message.success({
-                content: '保存成功',
-              })
-            })
-            .catch(err => {
-              console.log(err)
-              this.$Message.error({
-                content: '保存失败',
-              })
-            })
-        } else {
+        })
+        .catch(err => {
+          console.log(err)
           this.$Message.error({
             content: '保存失败',
           })
-        }
-      })
+        })
     },
     cancel () {
       this.form = {
