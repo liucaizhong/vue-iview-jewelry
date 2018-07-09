@@ -385,7 +385,7 @@
                     :loading="confirmFinishLoading"
                     :disabled="confirmDeliveryLoading"
                     long
-                  >{{ '确认完成' }}</Button>
+                  >{{ '确认完成服务' }}</Button>
                   </Col>
                 </Row>
               </FormItem>
