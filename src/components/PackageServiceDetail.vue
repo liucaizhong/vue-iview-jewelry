@@ -321,7 +321,7 @@
                   </Col>
                 </Row>
               </FormItem>
-              <div v-if="form.deliveryMode === '0'">
+              <div v-show="form.deliveryMode === '0'">
                 <FormItem label="物流公司" prop="logisticsCompany">
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
@@ -347,7 +347,7 @@
                   </Row>
                 </FormItem>
               </div>
-              <div v-else>
+              <div v-show="form.deliveryMode === '1'">
                 <FormItem label="取货门店" prop="deliveryStore">
                   <Row>
                     <Col :xs="24" :md="16" :lg="12">
@@ -865,6 +865,16 @@ export default {
           message: '商品编号不能为空',
           trigger: 'blur',
         }],
+        logisticsCompany: [{
+          required: true,
+          message: '物流公司不能为空',
+          trigger: 'blur',
+        }],
+        trackingNumber: [{
+          required: true,
+          message: '运单号不能为空',
+          trigger: 'blur',
+        }],
         sellingAmount: [{
           trigger: 'blur',
           validator (rule, value, cb) {
@@ -1287,10 +1297,14 @@ export default {
         })
     },
     confirmDelivery () {
-      if (this.form.serialNumber) {
-        this.confirmDeliveryModal = true
-      } else {
+      if (!this.form.serialNumber) {
         this.$Message.error('商品编号不能为空')
+      } else if (this.form.deliveryMode === '0' && !this.form.logisticsCompany) {
+        this.$Message.error('物流公司不能为空')
+      } else if (this.form.deliveryMode === '0' && !this.form.trackingNumber) {
+        this.$Message.error('运单号不能为空')
+      } else {
+        this.confirmDeliveryModal = true
       }
     },
     handleConfirmDeliveryModal () {
