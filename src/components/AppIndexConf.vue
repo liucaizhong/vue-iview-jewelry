@@ -10,7 +10,7 @@
         <div class="section-body">
           <FormItem label="轮播图配置" class="main-images">
             <!-- <image-uploader
-              :image-list="form.swiperImages"
+              :image-list="form.spImages"
               multiple
               :image-max-num="swiperImageNum"
               :image-max-size="imageMaxSize"
@@ -20,7 +20,7 @@
             <image-uploader
               v-for="i in swiperImageNum"
               :key="i - 1"
-              :image-list="form[`swiperImages${i-1}`]"
+              :image-list="form[`spImages${i-1}`]"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
@@ -31,7 +31,7 @@
             <image-uploader
               v-for="i in adImageNum"
               :key="i - 1"
-              :image-list="form[`adImages${i-1}`]"
+              :image-list="form[`advImages${i-1}`]"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
               action="javascript(void)"
@@ -69,14 +69,14 @@ export default {
       imageMaxSize: MAINIMAGEMAXSIZE,
       adImageNum: APPADIMAGENUM,
       form: {
-        swiperImages0: [],
-        swiperImages1: [],
-        swiperImages2: [],
-        swiperImages3: [],
-        swiperImages4: [],
-        adImages0: [],
-        adImages1: [],
-        adImages2: [],
+        spImages0: [],
+        spImages1: [],
+        spImages2: [],
+        spImages3: [],
+        spImages4: [],
+        advImages0: [],
+        advImages1: [],
+        advImages2: [],
       },
       formBak: {},
     }
@@ -90,18 +90,18 @@ export default {
         if (results && results.length) {
           const temp = results[0]
           for (let i = 0; i < this.swiperImageNum; ++i) {
-            temp[`swiperImages${i}`] =
-              temp[`swiperImages${i}`]
+            temp[`spImages${i}`] =
+              temp[`spImages${i}`]
                 && [{
-                  ...temp[`swiperImages${i}`],
+                  ...temp[`spImages${i}`],
                 }]
                 || []
           }
           for (let i = 0; i < this.adImageNum; ++i) {
-            temp[`adImages${i}`] =
-              temp[`adImages${i}`]
+            temp[`advImages${i}`] =
+              temp[`advImages${i}`]
                 && [{
-                  ...temp[`adImages${i}`],
+                  ...temp[`advImages${i}`],
                 }]
                 || []
           }
@@ -159,18 +159,18 @@ export default {
           console.log(resp)
           const temp = resp.data
           for (let i = 0; i < this.swiperImageNum; ++i) {
-            temp[`swiperImages${i}`] =
-              temp[`swiperImages${i}`]
+            temp[`spImages${i}`] =
+              temp[`spImages${i}`]
                 && [{
-                  ...temp[`swiperImages${i}`],
+                  ...temp[`spImages${i}`],
                 }]
                 || []
           }
           for (let i = 0; i < this.adImageNum; ++i) {
-            temp[`adImages${i}`] =
-              temp[`adImages${i}`]
+            temp[`advImages${i}`] =
+              temp[`advImages${i}`]
                 && [{
-                  ...temp[`adImages${i}`],
+                  ...temp[`advImages${i}`],
                 }]
                 || []
           }
