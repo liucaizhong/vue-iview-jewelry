@@ -22,6 +22,7 @@ module.exports = {
   MAINIMAGENUM: 6,
   APPSWIPERIMAGENUM: 5,
   APPADIMAGENUM: 3,
+  APPPRODUCTNUM: 15,
   MAINIMAGEMAXSIZE: 2048,
   CSVFILEMAXSIZE: 1024,
   ZIPFILEMAXSIZE: 5120,
@@ -81,6 +82,10 @@ module.exports = {
       icon: 'settings',
       url: '/dashboard/index-conf',
     }, {
+      name: '推荐/新品配置',
+      icon: 'gear-b',
+      url: '/dashboard/product-conf',
+    }, {
       name: '其他配置',
       icon: 'hammer',
       url: '/dashboard/other-conf',
@@ -97,7 +102,8 @@ module.exports = {
     '/dashboard/sale-service': '2-2',
     '/dashboard/rent-order': '3-0',
     '/dashboard/index-conf': '4-0',
-    '/dashboard/other-conf': '4-1',
+    '/dashboard/product-conf': '4-1',
+    '/dashboard/other-conf': '4-2',
   },
   CATEGORYOFGOOD: [{
     key: '0',

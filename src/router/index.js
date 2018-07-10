@@ -22,6 +22,7 @@ const PackageServiceDetail = () => import('@/components/PackageServiceDetail')
 const SaleService = () => import('@/components/SaleService')
 const SaleServiceDetail = () => import('@/components/SaleServiceDetail')
 const AppIndexConf = () => import('@/components/AppIndexConf')
+const AppProductConf = () => import('@/components/AppProductConf')
 const AppOtherConf = () => import('@/components/AppOtherConf')
 
 export default new Router({
@@ -140,6 +141,12 @@ export default new Router({
       }, {
         path: 'index-conf',
         component: AppIndexConf,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'product-conf',
+        component: AppProductConf,
         meta: {
           requiresAuth: true,
         },
