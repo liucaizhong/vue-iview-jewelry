@@ -137,12 +137,11 @@ export default {
               : 'adImages' + key.slice(key.length - 1)
             if (value && value[0] && value[0].file) {
               data.append(realKey, value[0].file, value[0].name)
-              value[0].link && data.append(realKey + '_link', value[0].link || '')
             }
             if (value && !value.length) {
               data.append(realKey, '')
-              data.append(realKey + '_link', '')
             }
+            data.append(realKey + '_link', value && value[0] && value[0].link || '')
           } else {
             value && data.append(key, value)
           }
