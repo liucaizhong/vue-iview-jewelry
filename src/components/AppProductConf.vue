@@ -9,13 +9,13 @@
         <header>推荐商品配置</header>
         <div class="section-body">
           <FormItem
-            v-for="(item, index) in form.recommend"
+            v-for="(item, index) in form.recommendProducts"
             :key="index"
             :label="'商品型号' + (index+1)"
-            :prop="`recommend[${index}]`"
+            :prop="`recommendProducts[${index}]`"
             :rules="{
               required: true,
-              message: 'recommend' + (index+1) + '不能为空',
+              message: 'recommendProducts' + (index+1) + '不能为空',
               trigger: 'blur'
             }"
           >
@@ -23,14 +23,14 @@
               <Col span="18">
               <Input
                 type="text"
-                v-model="form.recommend[index]"
+                v-model="form.recommendProducts[index]"
                 placeholder="请填写商品型号"
               ></Input>
               </Col>
               <Col span="4" offset="1">
               <Button
                 type="error"
-                @click="removeItem('recommend', index)"
+                @click="removeItem('recommendProducts', index)"
               >删除</Button>
               </Col>
             </Row>
@@ -39,10 +39,10 @@
             <Row>
               <Col span="12">
               <Button
-                v-show="form.recommend.length < appProductNum"
+                v-show="form.recommendProducts.length < appProductNum"
                 type="dashed"
                 long
-                @click="addItem('recommend')"
+                @click="addItem('recommendProducts')"
                 icon="plus-round"
               >添加推荐商品</Button>
               </Col>
@@ -54,13 +54,13 @@
         <header>新品上市配置</header>
         <div class="section-body">
           <FormItem
-            v-for="(item, index) in form.fresh"
+            v-for="(item, index) in form.newProducts"
             :key="index"
             :label="'商品型号' + (index+1)"
-            :prop="`fresh[${index}]`"
+            :prop="`newProducts[${index}]`"
             :rules="{
               required: true,
-              message: 'fresh' + (index+1) + '不能为空',
+              message: 'newProducts' + (index+1) + '不能为空',
               trigger: 'blur'
             }"
           >
@@ -68,14 +68,14 @@
               <Col span="18">
               <Input
                 type="text"
-                v-model="form.fresh[index]"
+                v-model="form.newProducts[index]"
                 placeholder="请填写商品型号"
               ></Input>
               </Col>
               <Col span="4" offset="1">
               <Button
                 type="error"
-                @click="removeItem('fresh', index)"
+                @click="removeItem('newProducts', index)"
               >删除</Button>
               </Col>
             </Row>
@@ -84,10 +84,10 @@
             <Row>
               <Col span="12">
               <Button
-                v-show="form.recommend.length < appProductNum"
+                v-show="form.newProducts.length < appProductNum"
                 type="dashed"
                 long
-                @click="addItem('fresh')"
+                @click="addItem('newProducts')"
                 icon="plus-round"
               >添加上市新品</Button>
               </Col>
@@ -118,8 +118,8 @@ export default {
     return {
       appProductNum: APPPRODUCTNUM,
       form: {
-        recommend: [],
-        fresh: [],
+        recommendProducts: [],
+        newProducts: [],
       },
       formBak: {},
     }
@@ -171,12 +171,12 @@ export default {
       }
     },
     save () {
-      const { recommend, fresh } = this.form
+      const { recommendProducts, newProducts } = this.form
       const url = '/admin/appproductconf/'
       this.$fetch(url, {
         data: {
-          recommend,
-          fresh,
+          recommendProducts,
+          newProducts,
         },
         method: 'post',
       })
