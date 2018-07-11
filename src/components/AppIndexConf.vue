@@ -132,13 +132,16 @@ export default {
         if (key !== 'attributes') {
           const value = this.form[key]
           if (key.includes('Image')) {
+            const realKey = key.includes('spImages')
+              ? 'swiperImages' + key.slice(key.length - 1)
+              : 'adImages' + key.slice(key.length - 1)
             if (value && value[0] && value[0].file) {
-              data.append(key, value[0].file, value[0].name)
-              value[0].link && data.append(key + '_link', value[0].link || '')
+              data.append(realKey, value[0].file, value[0].name)
+              value[0].link && data.append(realKey + '_link', value[0].link || '')
             }
             if (value && !value.length) {
-              data.append(key, '')
-              data.append(key + '_link', '')
+              data.append(realKey, '')
+              data.append(realKey + '_link', '')
             }
           } else {
             value && data.append(key, value)
