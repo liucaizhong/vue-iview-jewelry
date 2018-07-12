@@ -135,6 +135,21 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/admin/appproductconf/', (req, res) => {
+    console.log('req.url', req.url)
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/admin/appproductconf/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body
+    }, req, res)
+  })
+
   router.get('/admin/appotherconf/', (req, res) => {
     console.log('req.url', req.url)
     request({
