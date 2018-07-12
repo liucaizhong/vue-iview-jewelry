@@ -1008,9 +1008,11 @@ export default {
           this.form.returnDeposit = amount > 0 ? '0' : Math.abs(amount).toString()
           if (this.form.serviceStatus === '5') {
             this.completeTabs = 'rentClose'
+            this.form.returnDeposit = results[0].returnDeposit
           }
           if (this.form.serviceStatus === '6') {
             this.completeTabs = 'rentToSaleClose'
+            this.form.returnDeposit = results[0].returnDeposit
           }
           this.getMemberBalance()
         } else {

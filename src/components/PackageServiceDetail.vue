@@ -1083,6 +1083,9 @@ export default {
             this.form.productid = this.form.reservedProductid
           }
           this.form.leaseholdStatus = '0'
+          if (this.form.serviceStatus === '4' || this.form.serviceStatus === '5') {
+            this.form.leaseholdStatus = results[0].leaseholdStatus
+          }
           this.getMemberBalance()
         } else {
           this.$Message.error({
