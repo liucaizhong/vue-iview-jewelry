@@ -90,6 +90,14 @@ module.exports = {
       icon: 'hammer',
       url: '/dashboard/other-conf',
     }],
+  }, {
+    name: '报表管理',
+    icon: 'social-buffer',
+    items: [{
+      name: '报表下载',
+      icon: 'ios-cloud-download',
+      url: '/dashboard/report-download',
+    }],
   }],
   SIDEBARSUBMENUS: {
     '/dashboard/member': '0-0',
@@ -104,6 +112,7 @@ module.exports = {
     '/dashboard/index-conf': '4-0',
     '/dashboard/product-conf': '4-1',
     '/dashboard/other-conf': '4-2',
+    '/dashboard/report-download': '5-0',
   },
   CATEGORYOFGOOD: [{
     key: '0',

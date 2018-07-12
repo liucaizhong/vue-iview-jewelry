@@ -24,6 +24,7 @@ const SaleServiceDetail = () => import('@/components/SaleServiceDetail')
 const AppIndexConf = () => import('@/components/AppIndexConf')
 const AppProductConf = () => import('@/components/AppProductConf')
 const AppOtherConf = () => import('@/components/AppOtherConf')
+const ReportDownload = () => import('@/components/ReportDownload')
 
 export default new Router({
   mode: 'history',
@@ -153,6 +154,12 @@ export default new Router({
       }, {
         path: 'other-conf',
         component: AppOtherConf,
+        meta: {
+          requiresAuth: true,
+        },
+      }, {
+        path: 'report-download',
+        component: ReportDownload,
         meta: {
           requiresAuth: true,
         },

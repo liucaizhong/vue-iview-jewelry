@@ -1006,6 +1006,12 @@ export default {
           const amount = this.$roundTo2Decimal((parseFloat(this.form.compensation) || 0)
             - (parseFloat(this.form.residualDeposit) || 0))
           this.form.returnDeposit = amount > 0 ? '0' : Math.abs(amount).toString()
+          if (this.form.serviceStatus === '5') {
+            this.completeTabs = 'rentClose'
+          }
+          if (this.form.serviceStatus === '6') {
+            this.completeTabs = 'rentToSaleClose'
+          }
           this.getMemberBalance()
         } else {
           this.$Message.error({
