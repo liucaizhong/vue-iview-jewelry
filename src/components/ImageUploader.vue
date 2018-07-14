@@ -125,7 +125,7 @@ export default {
     format: {
       type: Array,
       default: function () {
-        return ['jpg','jpeg','png']
+        return ['jpg', 'jpeg', 'png']
       },
     }
   },
