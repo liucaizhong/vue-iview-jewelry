@@ -32,7 +32,7 @@
       :show-upload-list="showUploadList"
       :default-file-list="defaultList"
       :on-success="handleSuccess"
-      :format="['jpg','jpeg','png']"
+      :format="format"
       :accept="'image/*'"
       :max-size="imageMaxSize"
       :on-format-error="handleFormatError"
@@ -122,6 +122,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    format: {
+      type: Array,
+      default: function () {
+        return ['jpg','jpeg','png']
+      },
+    }
   },
   data () {
     return {

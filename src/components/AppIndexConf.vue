@@ -25,6 +25,7 @@
               :image-max-size="imageMaxSize"
               action="javascript(void)"
               need-link
+              :format="['jpg']"
             />
           </FormItem>
           <FormItem label="广告栏配置" class="main-images">
@@ -36,6 +37,7 @@
               :image-max-size="imageMaxSize"
               action="javascript(void)"
               need-link
+              :format="['jpg']"
             />
           </FormItem>
           <FormItem>

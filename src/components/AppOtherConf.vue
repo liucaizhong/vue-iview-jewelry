@@ -13,6 +13,7 @@
               :image-list="form.strategyImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
+              :format="['jpg']"
               action="javascript(void)"
             />
           </FormItem>
@@ -21,6 +22,7 @@
               :image-list="form.FAQImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
+              :format="['jpg']"
               action="javascript(void)"
             />
           </FormItem>
@@ -29,6 +31,16 @@
               :image-list="form.aboutUsImages"
               :image-max-num="1"
               :image-max-size="imageMaxSize"
+              :format="['jpg']"
+              action="javascript(void)"
+            />
+          </FormItem>
+          <FormItem label="首饰保养" class="main-images">
+            <image-uploader
+              :image-list="form.jewelryCareImages"
+              :image-max-num="1"
+              :image-max-size="imageMaxSize"
+              :format="['jpg']"
               action="javascript(void)"
             />
           </FormItem>
@@ -64,6 +76,7 @@ export default {
         strategyImages: [],
         FAQImages: [],
         aboutUsImages: [],
+        jewelryCareImages: [],
       },
       formBak: {},
     }
@@ -89,6 +102,11 @@ export default {
           temp.aboutUsImages = temp.aboutUsImages
             && [{
               ...temp.aboutUsImages,
+            }]
+            || []
+          temp.jewelryCareImages = temp.jewelryCareImages
+            && [{
+              ...temp.jewelryCareImages,
             }]
             || []
           this.form = {
@@ -158,6 +176,11 @@ export default {
           temp.aboutUsImages = temp.aboutUsImages
             && [{
               ...temp.aboutUsImages,
+            }]
+            || []
+          temp.jewelryCareImages = temp.jewelryCareImages
+            && [{
+              ...temp.jewelryCareImages,
             }]
             || []
           this.form = {
