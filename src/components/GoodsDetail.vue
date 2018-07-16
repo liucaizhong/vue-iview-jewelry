@@ -540,7 +540,7 @@ export default {
                 if (isNaN(num)) {
                   cb(new Error('输入必须为数值'))
                 }
-                if (num <= 0) {
+                if (num < 0) {
                   cb(new Error('含金量不能小于0'))
                 }
               }
@@ -562,7 +562,7 @@ export default {
                   cb(new Error('输入必须为数值'))
                 }
                 const num = parseFloat(value, 10)
-                if (num <= 0) {
+                if (num < 0) {
                   cb(new Error('钻石重量不能小于0'))
                 }
               }
@@ -581,7 +581,7 @@ export default {
               cb(new Error('输入必须为数值'))
             }
             const num = parseFloat(value, 10)
-            if (num <= 0) {
+            if (num < 0) {
               cb(new Error('销售价不能小于0'))
             }
             cb()
@@ -599,7 +599,7 @@ export default {
             }
             const num = parseFloat(value, 10)
 
-            if (num <= 0) {
+            if (num < 0) {
               cb(new Error('押金不能小于0'))
             }
             cb()
@@ -616,7 +616,7 @@ export default {
               cb(new Error('输入必须为数值'))
             }
             const num = parseFloat(value, 10)
-            if (num <= 0) {
+            if (num < 0) {
               cb(new Error('租金不能小于0'))
             }
             cb()
