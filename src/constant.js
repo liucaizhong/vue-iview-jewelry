@@ -228,7 +228,7 @@ module.exports = {
     value: '无',
   }, {
     key: '1',
-    value: 'IGI证书',
+    value: '国检证书',
   }, {
     key: '2',
     value: 'GIA证书',
