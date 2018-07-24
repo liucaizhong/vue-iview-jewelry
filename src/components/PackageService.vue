@@ -99,13 +99,13 @@
             :single="false"
           />
         </FormItem>
-        <FormItem label="物品状态" prop="leaseholdStatus">
+        <!-- <FormItem label="物品状态" prop="leaseholdStatus">
           <enum-selector
             :selected="moreCondModalForm.leaseholdStatus"
             :items="leaseholdStatus"
             :single="false"
           />
-        </FormItem>
+        </FormItem> -->
         <FormItem label="信用状态" prop="creditStatus">
           <enum-selector
             :selected="moreCondModalForm.creditStatus"
@@ -276,24 +276,24 @@ export default {
           sortable: true,
           minWidth: 150,
         },
-        {
-          title: '物品状态',
-          key: 'leaseholdStatus',
-          filters: LEASEHOLDSTATUS.map(t => ({
-            label: t.value,
-            value: t.key,
-          })),
-          filterMultiple: true,
-          filterMethod (value, row) {
-            return row.leaseholdStatus === value
-          },
-          minWidth: 130,
-          render (h, params) {
-            const leaseholdStatus = LEASEHOLDSTATUS.find(
-              cur => params.row.leaseholdStatus === cur.key)
-            return h('span', leaseholdStatus && leaseholdStatus.value)
-          },
-        },
+        // {
+        //   title: '物品状态',
+        //   key: 'leaseholdStatus',
+        //   filters: LEASEHOLDSTATUS.map(t => ({
+        //     label: t.value,
+        //     value: t.key,
+        //   })),
+        //   filterMultiple: true,
+        //   filterMethod (value, row) {
+        //     return row.leaseholdStatus === value
+        //   },
+        //   minWidth: 130,
+        //   render (h, params) {
+        //     const leaseholdStatus = LEASEHOLDSTATUS.find(
+        //       cur => params.row.leaseholdStatus === cur.key)
+        //     return h('span', leaseholdStatus && leaseholdStatus.value)
+        //   },
+        // },
         {
           title: '信用状态',
           key: 'creditStatus',

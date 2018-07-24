@@ -256,37 +256,37 @@
               <div class="delivery-container">
                 <Row :style="{ 'padding-left': 0 }">
                   <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品类别" prop="category">
-                    <p>{{ category }}</p>
+                  <FormItem label="商品类别">
+                    <p>{{ categoryText(deliveryProduct.category) }}</p>
                   </FormItem>
                   </Col>
                   <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品型号" prop="product.model">
-                    <p>{{ form.product && form.product.model }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品品牌" prop="product.brand">
-                    <p>{{ form.product && form.product.brand }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品系列" prop="product.series">
-                    <p>{{ form.product && form.product.series }}</p>
+                  <FormItem label="商品型号">
+                    <p>{{ deliveryProduct.model }}</p>
                   </FormItem>
                   </Col>
                 </Row>
                 <Row :style="{ 'padding-left': 0 }">
                   <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品名称" prop="product.title">
-                    <p>{{ form.product && form.product.title }}</p>
+                  <FormItem label="商品品牌">
+                    <p>{{ deliveryProduct.brand }}</p>
                   </FormItem>
                   </Col>
                   <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品销售价" prop="product.sellingPrice">
-                    <p>{{ form.product && form.product.sellingPrice }}</p>
+                  <FormItem label="商品系列">
+                    <p>{{ deliveryProduct.series }}</p>
+                  </FormItem>
+                  </Col>
+                </Row>
+                <Row :style="{ 'padding-left': 0 }">
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品名称">
+                    <p>{{ deliveryProduct.title }}</p>
+                  </FormItem>
+                  </Col>
+                  <Col :xs="12" :md="10" :lg="8">
+                  <FormItem label="商品销售价">
+                    <p>{{ deliveryProduct.sellingPrice }}</p>
                   </FormItem>
                   </Col>
                 </Row>
@@ -854,6 +854,14 @@ export default {
         changelist: [],
         sellingAmount: '0',
       },
+      deliveryProduct: {
+        category: '',
+        model: '',
+        title: '',
+        brand: '',
+        series: '',
+        sellingPrice: '',
+      },
       ruleValidate: {
         productid: [{
           required: true,
@@ -939,11 +947,11 @@ export default {
       const creditStatus = this.creditStatuss.find(cur => cur.key === this.form.creditStatus)
       return creditStatus && creditStatus.value
     },
-    category: function () {
-      const category = this.form.product && this.categoryOfGood.find(cur =>
-        cur.key === this.form.product.category)
-      return category && category.value
-    },
+    // category: function () {
+    //   const category = this.form.product && this.categoryOfGood.find(cur =>
+    //     cur.key === this.form.product.category)
+    //   return category && category.value
+    // },
     reservedCategory: function () {
       const reservedCategory = this.form.reservedProduct && this.categoryOfGood.find(cur =>
         cur.key === this.form.reservedProduct.category)
@@ -1057,51 +1065,61 @@ export default {
   // },
   created () {
     this.form.serviceNo = this.$route.params.id
-    const url = '/admin/ComboService/'
-    this.$fetch(url, {
-      params: {
-        serviceNo: this.form.serviceNo,
-      }
-    })
-      .then(resp => {
-        console.log(resp)
-        const results = resp.data.results
-        if (results && results.length) {
-          this.form = {
-            ...results[0],
-          }
-          this.form.serviceType || (this.form.serviceType = '1')
-          this.form.deliveryOperator || (this.form.deliveryOperator = this.login.id)
-          this.form.returnOperator ||
-            (this.form.returnOperator = this.login.id)
-          this.form.serviceCloseOperator ||
-            (this.form.serviceCloseOperator = this.login.id)
-          if (this.form.reservedProduct && !this.form.product) {
-            this.form.product = {
-              ...this.form.reservedProduct,
+    this.getPackageService()
+  },
+  methods: {
+    getPackageService () {
+      const url = '/admin/ComboService/'
+      this.$fetch(url, {
+        params: {
+          serviceNo: this.form.serviceNo,
+        }
+      })
+        .then(resp => {
+          console.log(resp)
+          const results = resp.data.results
+          if (results && results.length) {
+            this.form = {
+              ...results[0],
             }
-            this.form.productid = this.form.reservedProductid
+            this.form.serviceType || (this.form.serviceType = '1')
+            // this.form.deliveryOperator || (this.form.deliveryOperator = this.login.id)
+            // this.form.returnOperator ||
+            //   (this.form.returnOperator = this.login.id)
+            // this.form.serviceCloseOperator ||
+            //   (this.form.serviceCloseOperator = this.login.id)
+            this.form.deliveryOperator = this.login.id
+            this.form.returnOperator = this.login.id
+            this.form.serviceCloseOperator = this.login.id
+            this.deliveryProduct = {}
+            if (this.form.reservedProduct && !this.form.product) {
+              this.form.product = {
+                ...this.form.reservedProduct,
+              }
+              this.deliveryProduct = {
+                ...this.form.reservedProduct,
+              }
+              this.form.productid = this.form.reservedProductid
+            }
+            this.form.leaseholdStatus = '0'
+            if (this.form.serviceStatus === '4' || this.form.serviceStatus === '5') {
+              this.form.leaseholdStatus = results[0].leaseholdStatus
+            }
+            this.getMemberBalance()
+          } else {
+            this.$Message.error({
+              content: '未找到该服务单的详细信息',
+            })
           }
-          this.form.leaseholdStatus = '0'
-          if (this.form.serviceStatus === '4' || this.form.serviceStatus === '5') {
-            this.form.leaseholdStatus = results[0].leaseholdStatus
-          }
-          this.getMemberBalance()
-        } else {
+        })
+        .catch(err => {
+          console.log(err)
           this.$Message.error({
             content: '未找到该服务单的详细信息',
           })
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        this.$Message.error({
-          content: '未找到该服务单的详细信息',
         })
-      })
-  },
-  methods: {
-    categoryText: function (category) {
+    },
+    categoryText (category) {
       const categoryText = this.categoryOfGood.find(cur =>
         cur.key === category)
       return categoryText && categoryText.value
@@ -1231,7 +1249,7 @@ export default {
               // this.form = Object.assign({}, this.form., {
               //   category, model, title, brand, series, sellingPrice,
               // })
-              this.form.product = {
+              this.deliveryProduct = {
                 ...results[0],
               }
             } else {
@@ -1282,14 +1300,15 @@ export default {
       })
         .then(resp => {
           console.log(resp)
-          const { serviceStatus } = resp.data
-          serviceStatus && (this.form.serviceStatus = serviceStatus)
+          // const { serviceStatus } = resp.data
+          // serviceStatus && (this.form.serviceStatus = serviceStatus)
           this.confirmReturnLoading = false
-          this.form.product = null
-          this.form.productid = ''
+          // this.form.product = null
+          // this.form.productid = ''
           this.$Message.success({
             content: '还货成功',
           })
+          this.getPackageService()
         })
         .catch(err => {
           console.log(err)
@@ -1340,15 +1359,16 @@ export default {
       })
         .then(resp => {
           console.log(resp)
-          const { serviceStatus } = resp.data
-          serviceStatus ? (this.form.serviceStatus = serviceStatus)
-            : (this.form.serviceStatus === '2' && (this.form.serviceStatus = '3'))
+          // const { serviceStatus } = resp.data
+          // serviceStatus ? (this.form.serviceStatus = serviceStatus)
+          //   : (this.form.serviceStatus === '2' && (this.form.serviceStatus = '3'))
           this.confirmDeliveryLoading = false
-          this.form.reservedProduct = null
-          this.form.reservedProductid = ''
+          // this.form.reservedProduct = null
+          // this.form.reservedProductid = ''
           this.$Message.success({
             content: '提货成功',
           })
+          this.getPackageService()
         })
         .catch(err => {
           console.log(err)
@@ -1377,12 +1397,13 @@ export default {
       }, true)
         .then(resp => {
           console.log(resp)
-          const { serviceStatus } = resp.data
-          this.form.serviceStatus = serviceStatus
+          // const { serviceStatus } = resp.data
+          // this.form.serviceStatus = serviceStatus
           this.confirmFinishLoading = false
           this.$Message.success({
             content: '服务完成成功',
           })
+          this.getPackageService()
         })
         .catch(err => {
           console.log(err)
