@@ -85,6 +85,14 @@ export default {
           } catch (err) {
             // todo: error handle
             console.error(err)
+            // /* eslint-disable */
+            // alert(JSON.stringify(err))
+            if (process.env.NODE_ENV === 'production') {
+              this.$Message.error({
+                content: err,
+              })
+            }
+
             reject(err)
           }
           this.$Loading.finish()

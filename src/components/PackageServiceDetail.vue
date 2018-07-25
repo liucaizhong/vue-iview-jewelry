@@ -581,133 +581,135 @@
       <div v-if="form.changelist && form.changelist.length" class="section-body">
         <Timeline>
           <TimelineItem v-for="(ev, i) in form.changelist" :key="i">
-            <Card>
-              <p slot="title">
+            <Collapse :value="[i]">
+              <Panel name="i">
                 {{ ev.startDate + ' ~ ' + (ev.endDate || '至今') }}
-              </p>
-              <Form
-                :label-width="150"
-                class="exchange-history-form"
-              >
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品编号">
-                    <p>{{ ev.serialNumber }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品ID">
-                    <p>{{ ev.productid }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品类别">
-                    <p>{{ categoryText(ev.product.category) }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品型号">
-                    <p>{{ ev.product.model }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品品牌">
-                    <p>{{ ev.product.brand }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品系列">
-                    <p>{{ ev.product.series }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品名称">
-                    <p>{{ ev.product.title }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="商品销售价">
-                    <p>{{ ev.product.sellingPrice }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <FormItem label="提货方式">
-                  <Row>
-                    <Col :xs="24" :md="24" :lg="24">
-                    <p>
-                      {{
-                        ev.receiverName
-                          ? deliveryModes['0'].value
-                          : deliveryModes['1'].value
-                      }}
-                    </p>
-                    </Input>
-                    </Col>
-                  </Row>
-                </FormItem>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="提货经办人">
-                    <p>{{ ev.deliveryOperator }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="取货门店">
-                    <p>{{ ev.deliveryStore }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row v-if="ev.receiverName" :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="收货人姓名">
-                    <p>{{ ev.receiverName }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="收货人手机">
-                    <p>{{ ev.receiverPhone }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <FormItem v-if="ev.receiverAddress" label="收货人地址" >
-                  <Row>
-                    <Col :xs="24" :md="24" :lg="24">
-                    <p>{{ ev.receiverAddress }}</p>
-                    </Col>
-                  </Row>
-                </FormItem>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="物品状态">
-                    <p>{{ leaseholdStatuss[ev.leaseholdStatus].value }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col v-if="ev.compensation" :xs="12" :md="10" :lg="8">
-                  <FormItem label="赔偿金额">
-                    <p>{{ ev.compensation }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-                <Row :style="{ 'padding-left': 0 }">
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="还货经办人">
-                    <p>{{ ev.returnOperator }}</p>
-                  </FormItem>
-                  </Col>
-                  <Col :xs="12" :md="10" :lg="8">
-                  <FormItem label="还货门店">
-                    <p>{{ ev.returnStore }}</p>
-                  </FormItem>
-                  </Col>
-                </Row>
-              </Form>
-            </Card>
+                <Card slot="content">
+                  <Form
+                    :label-width="150"
+                    class="exchange-history-form"
+                  >
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品编号">
+                        <p>{{ ev.serialNumber }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品ID">
+                        <p>{{ ev.productid }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品类别">
+                        <p>{{ categoryText(ev.product.category) }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品型号">
+                        <p>{{ ev.product.model }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品品牌">
+                        <p>{{ ev.product.brand }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品系列">
+                        <p>{{ ev.product.series }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品名称">
+                        <p>{{ ev.product.title }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="商品销售价">
+                        <p>{{ ev.product.sellingPrice }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <FormItem label="提货方式">
+                      <Row>
+                        <Col :xs="24" :md="24" :lg="24">
+                        <p>
+                          {{
+                            ev.receiverName
+                              ? deliveryModes['0'].value
+                              : deliveryModes['1'].value
+                          }}
+                        </p>
+                        </Input>
+                        </Col>
+                      </Row>
+                    </FormItem>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="提货经办人">
+                        <p>{{ ev.deliveryOperator }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="取货门店">
+                        <p>{{ ev.deliveryStore }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <Row v-if="ev.receiverName" :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="收货人姓名">
+                        <p>{{ ev.receiverName }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="收货人手机">
+                        <p>{{ ev.receiverPhone }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <FormItem v-if="ev.receiverAddress" label="收货人地址" >
+                      <Row>
+                        <Col :xs="24" :md="24" :lg="24">
+                        <p>{{ ev.receiverAddress }}</p>
+                        </Col>
+                      </Row>
+                    </FormItem>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="物品状态">
+                        <p>{{ leaseholdStatuss[ev.leaseholdStatus].value }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col v-if="ev.compensation" :xs="12" :md="10" :lg="8">
+                      <FormItem label="赔偿金额">
+                        <p>{{ ev.compensation }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                    <Row :style="{ 'padding-left': 0 }">
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="还货经办人">
+                        <p>{{ ev.returnOperator }}</p>
+                      </FormItem>
+                      </Col>
+                      <Col :xs="12" :md="10" :lg="8">
+                      <FormItem label="还货门店">
+                        <p>{{ ev.returnStore }}</p>
+                      </FormItem>
+                      </Col>
+                    </Row>
+                  </Form>
+                </Card>
+              </Panel>
+            </Collapse>
           </TimelineItem>
         </Timeline>
       </div>
@@ -1274,7 +1276,16 @@ export default {
     //   this.disableProductid = !this.disableProductid
     // },
     confirmReturn () {
-      this.confirmReturnModal = true
+      this.$refs.form.validate(valid => {
+        console.log('valid', valid)
+        if (valid) {
+          this.confirmReturnModal = true
+        } else {
+          this.$Message.error({
+            content: '还货失败',
+          })
+        }
+      })
     },
     handleConfirmReturnModal () {
       this.confirmReturnModal = false
@@ -1326,7 +1337,16 @@ export default {
       } else if (this.form.deliveryMode === '0' && !this.form.trackingNumber) {
         this.$Message.error('运单号不能为空')
       } else {
-        this.confirmDeliveryModal = true
+        this.$refs.form.validate(valid => {
+          console.log('valid', valid)
+          if (valid) {
+            this.confirmDeliveryModal = true
+          } else {
+            this.$Message.error({
+              content: '取货失败',
+            })
+          }
+        })
       }
     },
     handleConfirmDeliveryModal () {
@@ -1379,7 +1399,16 @@ export default {
         })
     },
     confirmFinish () {
-      this.confirmFinishModal = true
+      this.$refs.form.validate(valid => {
+        console.log('valid', valid)
+        if (valid) {
+          this.confirmFinishModal = true
+        } else {
+          this.$Message.error({
+            content: '服务完成失败',
+          })
+        }
+      })
     },
     handleConfirmFinishModal () {
       this.confirmFinishLoading = true
