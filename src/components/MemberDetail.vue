@@ -337,7 +337,7 @@ export default {
           this.form = {
             ...results[0],
           }
-          this.form.address = JSON.parse(this.form.address)
+          this.form.address = this.form.address && JSON.parse(this.form.address) || []
         } else {
           this.$Message.error({
             content: '未找到该会员的详细信息',
@@ -406,7 +406,7 @@ export default {
     addAddressItem () {
       if (this.addressModalForm.address.length === this.addressMaxNum) {
         this.$Message.error({
-          content: '最多添加5个常用地址',
+          content: `最多添加${this.addressMaxNu}个常用地址`,
         })
       } else {
         this.addressModalForm.address.push('')

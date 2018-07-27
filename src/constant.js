@@ -18,7 +18,7 @@ module.exports = {
     value: '女',
     key: '1',
   }],
-  ADDRESSMAXNUM: 5,
+  ADDRESSMAXNUM: 1,
   MAINIMAGENUM: 6,
   APPSWIPERIMAGENUM: 5,
   APPADIMAGENUM: 3,

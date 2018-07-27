@@ -517,7 +517,7 @@ export default {
       // }, []))
       conds.deliveryMode && (conds.deliveryMode =
       conds.deliveryMode.reduce((cum, cur, i) => {
-        cur && cum.push(this.deliveryModes[i].key)
+        cur && cum.push(this.deliveryMode[i].key)
         return cum
       }, []))
       return conds

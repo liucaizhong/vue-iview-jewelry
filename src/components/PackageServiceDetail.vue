@@ -1276,16 +1276,7 @@ export default {
     //   this.disableProductid = !this.disableProductid
     // },
     confirmReturn () {
-      this.$refs.form.validate(valid => {
-        console.log('valid', valid)
-        if (valid) {
-          this.confirmReturnModal = true
-        } else {
-          this.$Message.error({
-            content: '还货失败',
-          })
-        }
-      })
+      this.confirmReturnModal = true
     },
     handleConfirmReturnModal () {
       this.confirmReturnModal = false
@@ -1337,16 +1328,7 @@ export default {
       } else if (this.form.deliveryMode === '0' && !this.form.trackingNumber) {
         this.$Message.error('运单号不能为空')
       } else {
-        this.$refs.form.validate(valid => {
-          console.log('valid', valid)
-          if (valid) {
-            this.confirmDeliveryModal = true
-          } else {
-            this.$Message.error({
-              content: '取货失败',
-            })
-          }
-        })
+        this.confirmDeliveryModal = true
       }
     },
     handleConfirmDeliveryModal () {
@@ -1399,16 +1381,7 @@ export default {
         })
     },
     confirmFinish () {
-      this.$refs.form.validate(valid => {
-        console.log('valid', valid)
-        if (valid) {
-          this.confirmFinishModal = true
-        } else {
-          this.$Message.error({
-            content: '服务完成失败',
-          })
-        }
-      })
+      this.confirmFinishModal = true
     },
     handleConfirmFinishModal () {
       this.confirmFinishLoading = true
