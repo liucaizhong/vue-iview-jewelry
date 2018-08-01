@@ -305,6 +305,9 @@ module.exports = {
   }, {
     key: '1',
     value: '损坏',
+  }, {
+    key: '2',
+    value: '未知',
   }],
   CREDITSTATUS: [{
     key: '0',
