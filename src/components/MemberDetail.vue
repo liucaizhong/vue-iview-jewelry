@@ -22,6 +22,11 @@
             <Row>
               <Col :xs="24" :md="16" :lg="12">
               <p>{{ gender }}</p>
+              <Icon
+                class="edit-btn"
+                type="edit"
+                @click.native="editField('gender')"
+              />
               </Col>
             </Row>
           </FormItem>
@@ -260,6 +265,38 @@
         </FormItem>
       </Form>
     </Modal>
+    <Modal
+      class="edit-field-modal"
+      v-model="genderModal"
+      title="修改性别"
+      :mask-closable="false"
+    >
+      <Form
+        ref="genderModalForm"
+        :model="genderModalForm"
+        :label-width="50"
+      >
+        <FormItem label="性别" prop="gender">
+          <Select v-model="genderModalForm.gender" style="width: 100px">
+            <Option v-for="item in genders" :value="item.key" :key="item.key">
+              {{ item.value }}
+            </Option>
+          </Select>
+        </FormItem>
+        <FormItem>
+          <Button
+            type="success"
+            @click="saveField('gender')"
+            :loading="saveLoading"
+          >保存</Button>
+          <Button
+            type="ghost"
+            style="margin-left: 8px"
+            @click="cancelSaveField('gender')"
+          >取消</Button>
+        </FormItem>
+      </Form>
+    </Modal>
   </div>
 </template>
 
@@ -305,7 +342,11 @@ export default {
       addressModal: false,
       addressModalForm: {
         address: [],
-      }
+      },
+      genderModal: false,
+      genderModalForm: {
+        gender: '',
+      },
     }
   },
   computed: {
@@ -319,7 +360,7 @@ export default {
     },
     gender: function () {
       const gender = this.genders.find(cur => cur.key === this.form.gender)
-      return gender && gender.value
+      return gender && gender.value || ''
     },
   },
   created () {
