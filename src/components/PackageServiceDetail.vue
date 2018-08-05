@@ -983,13 +983,17 @@ export default {
       })).concat([finishStatus])
     },
     toDelivery: function () {
-      const { serviceStatus, reservedProduct, product } = this.form
+      // const { serviceStatus, reservedProduct, product } = this.form
+      const { serviceStatus, product } = this.form
       const status = +serviceStatus
-      return reservedProduct || !product || status === 2
+      // return reservedProduct || !product || status === 2
+      return !product || status === 2
     },
     toReturn: function () {
-      const { product, reservedProduct } = this.form
-      return product && !reservedProduct
+      // const { product, reservedProduct } = this.form
+      // return product && !reservedProduct
+      const { product } = this.form
+      return product
     },
     finishDone: function () {
       const status = +this.form.serviceStatus
