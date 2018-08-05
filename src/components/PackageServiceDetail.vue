@@ -216,6 +216,49 @@
             </FormItem>
             </Col>
           </Row>
+          <FormItem label="在租商品ID" prop="productid">
+            <Row>
+              <Col :xs="24" :md="16" :lg="12">
+              <p>{{ form.productid }}</p>
+              </Col>
+            </Row>
+          </FormItem>
+          <Row :style="{ 'padding-left': 0 }">
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品类别" prop="product.category">
+              <p>{{ productCategory }}</p>
+            </FormItem>
+            </Col>
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品型号" prop="product.model">
+              <p>{{ form.product && form.product.model }}</p>
+            </FormItem>
+            </Col>
+          </Row>
+          <Row :style="{ 'padding-left': 0 }">
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品品牌" prop="product.brand">
+              <p>{{ form.product && form.product.brand }}</p>
+            </FormItem>
+            </Col>
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品系列" prop="product.series">
+              <p>{{ form.product && form.product.series }}</p>
+            </FormItem>
+            </Col>
+          </Row>
+          <Row :style="{ 'padding-left': 0 }">
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品名称" prop="product.title">
+              <p>{{ form.product && form.product.title }}</p>
+            </FormItem>
+            </Col>
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品销售价" prop="product.sellingPrice">
+              <p>{{ form.product && form.product.sellingPrice }}</p>
+            </FormItem>
+            </Col>
+          </Row>
           <div v-if="!finishDone" class="dotted-line" />
           <Tabs
             v-if="!finishDone"
@@ -958,6 +1001,11 @@ export default {
       const reservedCategory = this.form.reservedProduct && this.categoryOfGood.find(cur =>
         cur.key === this.form.reservedProduct.category)
       return reservedCategory && reservedCategory.value
+    },
+    productCategory: function () {
+      const productCategory = this.form.product && this.categoryOfGood.find(cur =>
+        cur.key === this.form.product.category)
+      return productCategory && productCategory.value
     },
     steps: function () {
       const len = this.serviceStatuss.length
