@@ -216,13 +216,18 @@
             </FormItem>
             </Col>
           </Row>
-          <FormItem label="在租商品ID" prop="productid">
-            <Row>
-              <Col :xs="24" :md="16" :lg="12">
+          <Row :style="{ 'padding-left': 0 }">
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品ID" prop="productid">
               <p>{{ form.productid }}</p>
-              </Col>
-            </Row>
-          </FormItem>
+            </FormItem>
+            </Col>
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="在租商品编号" prop="serialNumber">
+              <p>{{ form.serialNumber }}</p>
+            </FormItem>
+            </Col>
+          </Row>
           <Row :style="{ 'padding-left': 0 }">
             <Col :xs="12" :md="10" :lg="8">
             <FormItem label="在租商品类别" prop="product.category">
@@ -259,6 +264,53 @@
             </FormItem>
             </Col>
           </Row>
+          <Row :style="{ 'padding-left': 0 }">
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="取货方式" prop="deliveryMode">
+              <p>{{ deliveryModeDesc }}</p>
+            </FormItem>
+            </Col>
+            <Col :xs="12" :md="10" :lg="8">
+            <FormItem label="提货经办人" prop="deliveryOperator">
+              <p>{{ form.deliveryOperator }}</p>
+            </FormItem>
+            </Col>
+          </Row>
+          <div v-show="form.deliveryMode === '0'">
+            <FormItem label="物流公司" prop="logisticsCompany">
+              <Row>
+                <Col :xs="24" :md="16" :lg="12">
+                <Input
+                  type="text"
+                  v-model="form.logisticsCompany"
+                  placeholder="请填写物流公司"
+                >
+                </Input>
+                </Col>
+              </Row>
+            </FormItem>
+            <FormItem label="运单号" prop="trackingNumber">
+              <Row>
+                <Col :xs="24" :md="16" :lg="12">
+                <Input
+                  type="text"
+                  v-model="form.trackingNumber"
+                  placeholder="请填写运单号"
+                >
+                </Input>
+                </Col>
+              </Row>
+            </FormItem>
+          </div>
+          <div v-show="form.deliveryMode === '1'">
+            <FormItem label="取货门店" prop="deliveryStore">
+              <Row>
+                <Col :xs="24" :md="16" :lg="12">
+                <p>{{ form.deliveryStore }}</p>
+                </Col>
+              </Row>
+            </FormItem>
+          </div>
           <div v-if="!finishDone" class="dotted-line" />
           <Tabs
             v-if="!finishDone"
@@ -984,6 +1036,10 @@ export default {
     }
   },
   computed: {
+    deliveryModeDesc: function () {
+      const deliveryMode = this.deliveryModes.find(cur => cur.key === this.form.deliveryMode)
+      return deliveryMode && deliveryMode.value
+    },
     serviceType: function () {
       const serviceType = this.serviceTypes.find(cur => cur.key === this.form.serviceType)
       return serviceType && serviceType.value
