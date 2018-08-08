@@ -216,100 +216,103 @@
             </FormItem>
             </Col>
           </Row>
-          <Row :style="{ 'padding-left': 0 }">
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品ID" prop="productid">
-              <p>{{ form.productid }}</p>
-            </FormItem>
-            </Col>
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品编号" prop="serialNumber">
-              <p>{{ form.serialNumber }}</p>
-            </FormItem>
-            </Col>
-          </Row>
-          <Row :style="{ 'padding-left': 0 }">
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品类别" prop="product.category">
-              <p>{{ productCategory }}</p>
-            </FormItem>
-            </Col>
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品型号" prop="product.model">
-              <p>{{ form.product && form.product.model }}</p>
-            </FormItem>
-            </Col>
-          </Row>
-          <Row :style="{ 'padding-left': 0 }">
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品品牌" prop="product.brand">
-              <p>{{ form.product && form.product.brand }}</p>
-            </FormItem>
-            </Col>
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品系列" prop="product.series">
-              <p>{{ form.product && form.product.series }}</p>
-            </FormItem>
-            </Col>
-          </Row>
-          <Row :style="{ 'padding-left': 0 }">
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品名称" prop="product.title">
-              <p>{{ form.product && form.product.title }}</p>
-            </FormItem>
-            </Col>
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="在租商品销售价" prop="product.sellingPrice">
-              <p>{{ form.product && form.product.sellingPrice }}</p>
-            </FormItem>
-            </Col>
-          </Row>
-          <Row :style="{ 'padding-left': 0 }">
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="取货方式" prop="deliveryMode">
-              <p>{{ deliveryModeDesc }}</p>
-            </FormItem>
-            </Col>
-            <Col :xs="12" :md="10" :lg="8">
-            <FormItem label="提货经办人" prop="deliveryOperator">
-              <p>{{ form.deliveryOperator }}</p>
-            </FormItem>
-            </Col>
-          </Row>
-          <div v-show="form.deliveryMode === '0'">
-            <FormItem label="物流公司" prop="logisticsCompany">
-              <Row>
-                <Col :xs="24" :md="16" :lg="12">
-                <Input
-                  type="text"
-                  v-model="form.logisticsCompany"
-                  placeholder="请填写物流公司"
-                >
-                </Input>
-                </Col>
-              </Row>
-            </FormItem>
-            <FormItem label="运单号" prop="trackingNumber">
-              <Row>
-                <Col :xs="24" :md="16" :lg="12">
-                <Input
-                  type="text"
-                  v-model="form.trackingNumber"
-                  placeholder="请填写运单号"
-                >
-                </Input>
-                </Col>
-              </Row>
-            </FormItem>
-          </div>
-          <div v-show="form.deliveryMode === '1'">
-            <FormItem label="取货门店" prop="deliveryStore">
-              <Row>
-                <Col :xs="24" :md="16" :lg="12">
-                <p>{{ form.deliveryStore }}</p>
-                </Col>
-              </Row>
-            </FormItem>
+          <div v-show="toReturn">
+            <div class="dotted-line" />
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品ID" prop="productid">
+                <p>{{ form.productid }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品编号" prop="serialNumber">
+                <p>{{ form.serialNumber }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品类别" prop="product.category">
+                <p>{{ productCategory }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品型号" prop="product.model">
+                <p>{{ form.product && form.product.model }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品品牌" prop="product.brand">
+                <p>{{ form.product && form.product.brand }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品系列" prop="product.series">
+                <p>{{ form.product && form.product.series }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品名称" prop="product.title">
+                <p>{{ form.product && form.product.title }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="在租商品销售价" prop="product.sellingPrice">
+                <p>{{ form.product && form.product.sellingPrice }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <Row :style="{ 'padding-left': 0 }">
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="取货方式" prop="deliveryMode">
+                <p>{{ deliveryModeDesc }}</p>
+              </FormItem>
+              </Col>
+              <Col :xs="12" :md="10" :lg="8">
+              <FormItem label="提货经办人" prop="deliveryOperator">
+                <p>{{ form.deliveryOperator }}</p>
+              </FormItem>
+              </Col>
+            </Row>
+            <div v-show="form.deliveryMode === '0'">
+              <FormItem label="物流公司" prop="logisticsCompany">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.logisticsCompany"
+                    placeholder="请填写物流公司"
+                  >
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+              <FormItem label="运单号" prop="trackingNumber">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <Input
+                    type="text"
+                    v-model="form.trackingNumber"
+                    placeholder="请填写运单号"
+                  >
+                  </Input>
+                  </Col>
+                </Row>
+              </FormItem>
+            </div>
+            <div v-show="form.deliveryMode === '1'">
+              <FormItem label="取货门店" prop="deliveryStore">
+                <Row>
+                  <Col :xs="24" :md="16" :lg="12">
+                  <p>{{ form.deliveryStore }}</p>
+                  </Col>
+                </Row>
+              </FormItem>
+            </div>
           </div>
           <div v-if="!finishDone" class="dotted-line" />
           <Tabs
@@ -1203,9 +1206,9 @@ export default {
             this.form.serviceCloseOperator = this.login.id
             this.deliveryProduct = {}
             if (this.form.reservedProduct && !this.form.product) {
-              this.form.product = {
-                ...this.form.reservedProduct,
-              }
+              // this.form.product = {
+              //   ...this.form.reservedProduct,
+              // }
               this.deliveryProduct = {
                 ...this.form.reservedProduct,
               }
